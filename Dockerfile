@@ -1,8 +1,9 @@
 # Multi-stage Dockerfile for Saans (Cloud Run)
 # Stage 1: Build
-FROM node:22-alpine AS builder
+FROM node:22-bookworm-slim AS builder
 
 WORKDIR /app
+ENV NODE_OPTIONS="--stack-size=4096"
 
 # Copy root configs and package definitions
 COPY package*.json tsconfig.base.json .eslintrc.json .prettierrc ./
@@ -26,7 +27,7 @@ COPY docs/ ./docs/
 RUN npm run build --workspace=shared && npm run build --workspace=server && npm run build --workspace=web
 
 # Stage 2: Production runtime
-FROM node:22-alpine AS runner
+FROM node:22-bookworm-slim AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
