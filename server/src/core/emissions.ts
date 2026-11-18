@@ -44,23 +44,101 @@ interface Factor {
 }
 
 const TRANSPORT_FACTORS: Record<TransportMode, Factor> = {
-  petrol_car: { co2eG: 170.0, pm25G: 0.025, noxG: 0.25, uncertaintyPct: 10, citation: "ARAI (2020)" },
-  diesel_car: { co2eG: 160.0, pm25G: 0.085, noxG: 0.65, uncertaintyPct: 15, citation: "ARAI / CPCB (2020)" },
-  two_wheeler_petrol: { co2eG: 45.0, pm25G: 0.04, noxG: 0.18, uncertaintyPct: 10, citation: "TERI (2021)" },
-  auto_rickshaw_cng: { co2eG: 65.0, pm25G: 0.012, noxG: 0.2, uncertaintyPct: 15, citation: "TERI / CPCB (2020)" },
-  cng_bus: { co2eG: 35.0, pm25G: 0.006, noxG: 0.12, uncertaintyPct: 20, citation: "CSE India (2020)" },
-  electric_metro: { co2eG: 18.0, pm25G: 0.001, noxG: 0.01, uncertaintyPct: 10, citation: "DMRC Sustainability Report (2022)" },
-  electric_vehicle: { co2eG: 45.0, pm25G: 0.002, noxG: 0.02, uncertaintyPct: 15, citation: "CEA India (2023)" },
-  carpool_2person: { co2eG: 85.0, pm25G: 0.012, noxG: 0.12, uncertaintyPct: 12, citation: "ARAI / Carpool 50% allocation" },
-  cycling: { co2eG: 0.0, pm25G: 0.0, noxG: 0.0, uncertaintyPct: 0, citation: "Zero tailpipe emission" },
-  walking: { co2eG: 0.0, pm25G: 0.0, noxG: 0.0, uncertaintyPct: 0, citation: "Zero tailpipe emission" },
-  wfh_day: { co2eG: 0.0, pm25G: 0.0, noxG: 0.0, uncertaintyPct: 0, citation: "Eliminates commuter trip entirely" },
+  petrol_car: {
+    co2eG: 170.0,
+    pm25G: 0.025,
+    noxG: 0.25,
+    uncertaintyPct: 10,
+    citation: "ARAI (2020)",
+  },
+  diesel_car: {
+    co2eG: 160.0,
+    pm25G: 0.085,
+    noxG: 0.65,
+    uncertaintyPct: 15,
+    citation: "ARAI / CPCB (2020)",
+  },
+  two_wheeler_petrol: {
+    co2eG: 45.0,
+    pm25G: 0.04,
+    noxG: 0.18,
+    uncertaintyPct: 10,
+    citation: "TERI (2021)",
+  },
+  auto_rickshaw_cng: {
+    co2eG: 65.0,
+    pm25G: 0.012,
+    noxG: 0.2,
+    uncertaintyPct: 15,
+    citation: "TERI / CPCB (2020)",
+  },
+  cng_bus: {
+    co2eG: 35.0,
+    pm25G: 0.006,
+    noxG: 0.12,
+    uncertaintyPct: 20,
+    citation: "CSE India (2020)",
+  },
+  electric_metro: {
+    co2eG: 18.0,
+    pm25G: 0.001,
+    noxG: 0.01,
+    uncertaintyPct: 10,
+    citation: "DMRC Sustainability Report (2022)",
+  },
+  electric_vehicle: {
+    co2eG: 45.0,
+    pm25G: 0.002,
+    noxG: 0.02,
+    uncertaintyPct: 15,
+    citation: "CEA India (2023)",
+  },
+  carpool_2person: {
+    co2eG: 85.0,
+    pm25G: 0.012,
+    noxG: 0.12,
+    uncertaintyPct: 12,
+    citation: "ARAI / Carpool 50% allocation",
+  },
+  cycling: {
+    co2eG: 0.0,
+    pm25G: 0.0,
+    noxG: 0.0,
+    uncertaintyPct: 0,
+    citation: "Zero tailpipe emission",
+  },
+  walking: {
+    co2eG: 0.0,
+    pm25G: 0.0,
+    noxG: 0.0,
+    uncertaintyPct: 0,
+    citation: "Zero tailpipe emission",
+  },
+  wfh_day: {
+    co2eG: 0.0,
+    pm25G: 0.0,
+    noxG: 0.0,
+    uncertaintyPct: 0,
+    citation: "Eliminates commuter trip entirely",
+  },
 };
 
 const COOKING_FACTORS: Record<CookingFuel, Factor> = {
-  biomass: { co2eG: 1200.0, pm25G: 25.0, noxG: 1.8, uncertaintyPct: 25, citation: "WHO Indoor Air Guidelines (2014)" },
+  biomass: {
+    co2eG: 1200.0,
+    pm25G: 25.0,
+    noxG: 1.8,
+    uncertaintyPct: 25,
+    citation: "WHO Indoor Air Guidelines (2014)",
+  },
   lpg: { co2eG: 380.0, pm25G: 0.15, noxG: 0.35, uncertaintyPct: 10, citation: "TERI (2021)" },
-  induction_electric: { co2eG: 210.0, pm25G: 0.02, noxG: 0.05, uncertaintyPct: 15, citation: "CEA (2023)" },
+  induction_electric: {
+    co2eG: 210.0,
+    pm25G: 0.02,
+    noxG: 0.05,
+    uncertaintyPct: 15,
+    citation: "CEA (2023)",
+  },
 };
 
 /**

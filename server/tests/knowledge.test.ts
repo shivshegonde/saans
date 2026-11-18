@@ -43,7 +43,9 @@ describe("Curated Knowledge Base & Myth Check Engine (knowledge.test)", () => {
   });
 
   it("evaluates viral myth: houseplants do not clean room air", () => {
-    const res = checkMythClaim("Do indoor snake plants and areca palms clean room air during smog?");
+    const res = checkMythClaim(
+      "Do indoor snake plants and areca palms clean room air during smog?",
+    );
     expect(res.verdict).toBe("unsupported");
     expect(res.matchedMyth?.id).toBe("myth-houseplants-clean-air");
     expect(res.explanation).toContain("NASA Clean Air Study");

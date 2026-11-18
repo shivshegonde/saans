@@ -32,7 +32,9 @@ describe("Pre-Model Safety Interceptor (safety.interceptor.test)", () => {
   });
 
   it("passes legitimate air quality questions", () => {
-    const res = runPreModelSafetyCheck("Should I ventilate my living room when outdoor AQI is 280?");
+    const res = runPreModelSafetyCheck(
+      "Should I ventilate my living room when outdoor AQI is 280?",
+    );
     expect(res.allowed).toBe(true);
     expect(res.action).toBe("PASS");
   });

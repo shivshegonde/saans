@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Defense-in-depth: All access to Firestore documents must go through the Saans Cloud Run backend.
+    // Direct client access is denied by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

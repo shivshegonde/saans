@@ -28,6 +28,14 @@ export class FakeClock implements Clock {
     this.advanceMinutes(hours * 60);
   }
 
+  advanceDays(days: number): void {
+    this.advanceHours(days * 24);
+  }
+
+  reset(): void {
+    this.currentTime = new Date("2026-11-18T08:00:00.000Z");
+  }
+
   setTime(newTime: Date | string): void {
     this.currentTime =
       typeof newTime === "string" ? new Date(newTime) : new Date(newTime.getTime());

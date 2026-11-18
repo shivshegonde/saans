@@ -31,8 +31,8 @@ describe("Smog Drivers Engine (smogDrivers.test)", () => {
     });
 
     expect(drivers.length).toBe(1);
-    expect(drivers[0].id).toBe("dispersive-atmosphere");
-    expect(drivers[0].severity).toBe("low");
+    expect(drivers[0]?.id).toBe("dispersive-atmosphere");
+    expect(drivers[0]?.severity).toBe("low");
   });
 
   it("identifies light breeze and moderate humidity when conditions are intermediate", () => {

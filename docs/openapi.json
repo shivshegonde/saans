@@ -187,6 +187,83 @@
           "provenance"
         ]
       },
+      "AirForecastResponse": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            },
+            "required": ["name", "lat", "lng"]
+          },
+          "series": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "time": {
+                  "type": "string"
+                },
+                "pm25": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "pm10": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "aqi": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "category": {
+                  "type": "string",
+                  "enum": ["Good", "Satisfactory", "Moderate", "Poor", "Very Poor", "Severe"]
+                },
+                "temperatureC": {
+                  "type": "number"
+                },
+                "humidityPercent": {
+                  "type": "number"
+                },
+                "windSpeedKmh": {
+                  "type": "number"
+                },
+                "isBestWindow": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": ["time", "pm25", "aqi", "category"]
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "fetchedAt": {
+                "type": "string"
+              },
+              "isStale": {
+                "type": "boolean"
+              }
+            },
+            "required": ["source", "fetchedAt", "isStale"]
+          }
+        },
+        "required": ["location", "series", "provenance"]
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -273,6 +350,9 @@
           },
           "password": {
             "type": "string"
+          },
+          "householdId": {
+            "type": "string"
           }
         },
         "required": ["email", "password"]
@@ -323,6 +403,989 @@
           }
         },
         "required": ["token", "user", "household"]
+      },
+      "HouseholdProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            },
+            "required": ["name", "lat", "lng"]
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ageGroup": {
+                  "type": "string",
+                  "enum": ["child", "adult", "olderAdult"]
+                },
+                "sensitiveFlags": {
+                  "type": "object",
+                  "properties": {
+                    "child": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "olderAdult": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "respiratoryCondition": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "pregnancy": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  }
+                },
+                "commuteMode": {
+                  "type": "string",
+                  "default": "metro"
+                },
+                "commuteDistanceKm": {
+                  "type": "number",
+                  "minimum": 0,
+                  "default": 10
+                }
+              },
+              "required": ["id", "name", "ageGroup", "sensitiveFlags"]
+            }
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "volumeM3": {
+                  "type": "number",
+                  "minimum": 0,
+                  "exclusiveMinimum": true
+                },
+                "hasPurifier": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "purifierCadrM3h": {
+                  "type": "number",
+                  "minimum": 0,
+                  "default": 0
+                },
+                "windowsHabit": {
+                  "type": "string",
+                  "enum": ["closed", "cracked", "open"],
+                  "default": "closed"
+                }
+              },
+              "required": ["id", "name", "volumeM3"]
+            }
+          },
+          "cookingFuel": {
+            "type": "string",
+            "enum": ["biomass", "lpg", "electric", "png"],
+            "default": "lpg"
+          },
+          "aiPersonalizationConsent": {
+            "type": "boolean",
+            "default": true
+          },
+          "shareWithCommunityConsent": {
+            "type": "boolean",
+            "default": false
+          },
+          "preferredLanguage": {
+            "type": "string",
+            "enum": ["en", "hi", "mr"],
+            "default": "en"
+          }
+        },
+        "required": ["id", "name", "location", "members", "rooms"]
+      },
+      "UpdateHouseholdRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            },
+            "required": ["name", "lat", "lng"]
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "ageGroup": {
+                  "type": "string",
+                  "enum": ["child", "adult", "olderAdult"]
+                },
+                "sensitiveFlags": {
+                  "type": "object",
+                  "properties": {
+                    "child": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "olderAdult": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "respiratoryCondition": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "pregnancy": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  }
+                },
+                "commuteMode": {
+                  "type": "string",
+                  "default": "metro"
+                },
+                "commuteDistanceKm": {
+                  "type": "number",
+                  "minimum": 0,
+                  "default": 10
+                }
+              },
+              "required": ["id", "name", "ageGroup", "sensitiveFlags"]
+            }
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "volumeM3": {
+                  "type": "number",
+                  "minimum": 0,
+                  "exclusiveMinimum": true
+                },
+                "hasPurifier": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "purifierCadrM3h": {
+                  "type": "number",
+                  "minimum": 0,
+                  "default": 0
+                },
+                "windowsHabit": {
+                  "type": "string",
+                  "enum": ["closed", "cracked", "open"],
+                  "default": "closed"
+                }
+              },
+              "required": ["id", "name", "volumeM3"]
+            }
+          },
+          "cookingFuel": {
+            "type": "string",
+            "enum": ["biomass", "lpg", "electric", "png"]
+          },
+          "aiPersonalizationConsent": {
+            "type": "boolean"
+          },
+          "shareWithCommunityConsent": {
+            "type": "boolean"
+          },
+          "preferredLanguage": {
+            "type": "string",
+            "enum": ["en", "hi", "mr"]
+          }
+        }
+      },
+      "CreateInvitationRequest": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": ["MEMBER"],
+            "default": "MEMBER"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["VIEW_PLAN", "LOG_ACTIONS", "EDIT_PROFILE"]
+            },
+            "minItems": 1
+          },
+          "recipientEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "expiresInDays": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 7
+          }
+        },
+        "required": ["scopes"]
+      },
+      "JoinInvitationRequest": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "minLength": 8
+          }
+        },
+        "required": ["token"]
+      },
+      "InvitationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "householdId": {
+            "type": "string"
+          },
+          "householdName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "invitationToken": {
+            "type": "string"
+          },
+          "inviterUserId": {
+            "type": "string"
+          },
+          "recipientEmail": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "ACCEPTED", "REVOKED", "EXPIRED"]
+          },
+          "expiresAt": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "revokedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "householdId",
+          "householdName",
+          "role",
+          "scopes",
+          "inviterUserId",
+          "status",
+          "expiresAt",
+          "createdAt"
+        ]
+      },
+      "TodayPlanResponse": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "currentAqi": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "naqiCategory": {
+            "type": "string",
+            "enum": ["Good", "Satisfactory", "Moderate", "Poor", "Very Poor", "Severe"]
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "ruleId": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "timeSlot": {
+                  "type": "string",
+                  "enum": ["morning", "afternoon", "evening", "night", "allDay"]
+                },
+                "recommendedTime": {
+                  "type": "string"
+                },
+                "why": {
+                  "type": "string"
+                },
+                "impact": {
+                  "type": "object",
+                  "properties": {
+                    "healthExposureReductionPercent": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "cityCo2eAvoidedKg": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": ["healthExposureReductionPercent", "cityCo2eAvoidedKg"]
+                },
+                "effort": {
+                  "type": "string",
+                  "enum": ["low", "medium", "high"]
+                },
+                "costBand": {
+                  "type": "string",
+                  "enum": ["free", "₹", "₹₹", "₹₹₹"]
+                },
+                "evidence": {
+                  "type": "object",
+                  "properties": {
+                    "level": {
+                      "type": "string",
+                      "enum": ["strong", "moderate", "limited"]
+                    },
+                    "sources": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "organisation": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "number"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["title", "organisation"]
+                      }
+                    }
+                  },
+                  "required": ["level", "sources"]
+                },
+                "knowledgeIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "completed": {
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "required": [
+                "id",
+                "ruleId",
+                "title",
+                "description",
+                "timeSlot",
+                "why",
+                "impact",
+                "effort",
+                "costBand",
+                "evidence",
+                "knowledgeIds"
+              ]
+            }
+          },
+          "top3PriorityCardIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isAiEnhanced": {
+            "type": "boolean",
+            "default": false
+          },
+          "aiBadge": {
+            "type": "string",
+            "default": "Standard guidance"
+          }
+        },
+        "required": ["date", "currentAqi", "naqiCategory", "cards", "top3PriorityCardIds"]
+      },
+      "ActionToggleRequest": {
+        "type": "object",
+        "properties": {
+          "completed": {
+            "type": "boolean"
+          }
+        },
+        "required": ["completed"]
+      },
+      "ImpactCalculationRequest": {
+        "type": "object",
+        "properties": {
+          "commuteMode": {
+            "type": "string",
+            "default": "petrolCar"
+          },
+          "commuteDistanceKm": {
+            "type": "number",
+            "minimum": 0,
+            "default": 15
+          },
+          "hasPurifier": {
+            "type": "boolean",
+            "default": true
+          },
+          "maskWornOutdoor": {
+            "type": "boolean",
+            "default": true
+          },
+          "cookingFuel": {
+            "type": "string",
+            "default": "lpg"
+          },
+          "hoursOutdoor": {
+            "type": "number",
+            "minimum": 0,
+            "default": 2
+          },
+          "baselineAqi": {
+            "type": "number",
+            "minimum": 0,
+            "default": 280
+          }
+        }
+      },
+      "ImpactCalculationResponse": {
+        "type": "object",
+        "properties": {
+          "familyExposure": {
+            "type": "object",
+            "properties": {
+              "baselineDoseUg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "actionDoseUg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "reductionPercent": {
+                "type": "number",
+                "minimum": 0
+              },
+              "pointEstimateUg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "uncertaintyRangeUg": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "max": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": ["min", "max"]
+              }
+            },
+            "required": [
+              "baselineDoseUg",
+              "actionDoseUg",
+              "reductionPercent",
+              "pointEstimateUg",
+              "uncertaintyRangeUg"
+            ]
+          },
+          "cityEmissions": {
+            "type": "object",
+            "properties": {
+              "co2eAvoidedKg": {
+                "type": "number",
+                "minimum": 0
+              },
+              "pm25AvoidedGrams": {
+                "type": "number",
+                "minimum": 0
+              },
+              "noxAvoidedGrams": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": ["co2eAvoidedKg", "pm25AvoidedGrams", "noxAvoidedGrams"]
+          },
+          "formulaSheet": {
+            "type": "object",
+            "properties": {
+              "exposureFormula": {
+                "type": "string"
+              },
+              "emissionsFormula": {
+                "type": "string"
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "assumptions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["exposureFormula", "emissionsFormula", "sources", "assumptions"]
+          }
+        },
+        "required": ["familyExposure", "cityEmissions", "formulaSheet"]
+      },
+      "CommunityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "joinCode": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "memberCount": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "activePledgesCount": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": ["id", "name", "joinCode", "memberCount", "activePledgesCount"]
+      },
+      "JoinCommunityRequest": {
+        "type": "object",
+        "properties": {
+          "joinCode": {
+            "type": "string",
+            "minLength": 4
+          }
+        },
+        "required": ["joinCode"]
+      },
+      "CreatePledgeRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string"
+          },
+          "targetParticipants": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "targetCo2eKg": {
+            "type": "number",
+            "minimum": 0
+          },
+          "deadline": {
+            "type": "string"
+          }
+        },
+        "required": ["title", "description", "targetParticipants", "targetCo2eKg", "deadline"]
+      },
+      "PledgeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "communityId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "targetParticipants": {
+            "type": "integer",
+            "minimum": 0,
+            "exclusiveMinimum": true
+          },
+          "currentParticipants": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "targetCo2eKg": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currentCo2eKg": {
+            "type": "number",
+            "minimum": 0
+          },
+          "deadline": {
+            "type": "string"
+          },
+          "hasUserPledged": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "id",
+          "communityId",
+          "title",
+          "description",
+          "targetParticipants",
+          "currentParticipants",
+          "targetCo2eKg",
+          "currentCo2eKg",
+          "deadline"
+        ]
+      },
+      "CommunityAggregatesDto": {
+        "type": "object",
+        "properties": {
+          "communityId": {
+            "type": "string"
+          },
+          "contributingHouseholds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "kAnonymityMet": {
+            "type": "boolean"
+          },
+          "totalCo2eSavedKg": {
+            "type": "number",
+            "minimum": 0
+          },
+          "totalPm25SavedG": {
+            "type": "number",
+            "minimum": 0
+          },
+          "averageBreatheScore": {
+            "type": "number",
+            "minimum": 0
+          },
+          "exposureReductionAveragePercent": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": ["communityId", "contributingHouseholds", "kAnonymityMet"]
+      },
+      "CreateAdvisoryDraftRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "content": {
+            "type": "string",
+            "minLength": 10
+          }
+        },
+        "required": ["title", "content"]
+      },
+      "AdvisoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "communityId": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["DRAFT", "APPROVED", "DISPATCHED"]
+          },
+          "draftedBy": {
+            "type": "string"
+          },
+          "approvedBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "communityId", "title", "content", "status", "draftedBy", "createdAt"]
+      },
+      "AlertPreferenceDto": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean",
+            "default": true
+          },
+          "aqiThreshold": {
+            "type": "integer",
+            "default": 200
+          },
+          "coGuardianEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "coGuardianConsent": {
+            "type": "boolean",
+            "default": false
+          },
+          "deliveryChannel": {
+            "type": "string",
+            "enum": ["email", "push"],
+            "default": "email"
+          }
+        },
+        "required": ["householdId"]
+      },
+      "OutboxItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["email", "push"]
+          },
+          "recipient": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["PENDING", "PROCESSING", "SENT", "FAILED", "DEAD_LETTER"]
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "idempotencyKey": {
+            "type": "string"
+          },
+          "scheduledFor": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "lastAttemptAt": {
+            "type": "string"
+          },
+          "acknowledgedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "entityId",
+          "eventType",
+          "channel",
+          "recipient",
+          "subject",
+          "body",
+          "status",
+          "attempts",
+          "idempotencyKey",
+          "scheduledFor",
+          "createdAt"
+        ]
+      },
+      "AuditLogEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "actorId": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "beforeSnapshot": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "afterSnapshot": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "reason": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "actorId",
+          "action",
+          "entityType",
+          "entityId",
+          "beforeSnapshot",
+          "afterSnapshot",
+          "correlationId",
+          "at"
+        ]
+      },
+      "DemoScenarioRequest": {
+        "type": "object",
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "enum": ["Clean", "Moderate", "Poor", "Severe", "Hazardous"]
+          }
+        },
+        "required": ["scenario"]
+      },
+      "DemoTimeTravelRequest": {
+        "type": "object",
+        "properties": {
+          "minutes": {
+            "type": "integer"
+          }
+        },
+        "required": ["minutes"]
       }
     },
     "parameters": {}
@@ -402,6 +1465,684 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "Register new user and create household",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8
+                  },
+                  "displayName": {
+                    "type": "string",
+                    "minLength": 2
+                  },
+                  "householdName": {
+                    "type": "string",
+                    "minLength": 2
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["name", "lat", "lng"]
+                  }
+                },
+                "required": ["email", "password", "displayName", "householdName", "location"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registration successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["id", "email", "displayName"]
+                    },
+                    "household": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["OWNER", "MEMBER"]
+                        },
+                        "scopes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": ["id", "name", "role", "scopes"]
+                    }
+                  },
+                  "required": ["token", "user", "household"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "User login with lockout protection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "householdId": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "displayName": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["id", "email", "displayName"]
+                    },
+                    "household": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": ["OWNER", "MEMBER"]
+                        },
+                        "scopes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": ["id", "name", "role", "scopes"]
+                    }
+                  },
+                  "required": ["token", "user", "household"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "summary": "Invalidate session",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Logout successful"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "summary": "Get current authenticated session info",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Current session info"
+          }
+        }
+      }
+    },
+    "/api/v1/household": {
+      "get": {
+        "summary": "Get household profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Household profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lng": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["name", "lat", "lng"]
+                    },
+                    "members": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "ageGroup": {
+                            "type": "string",
+                            "enum": ["child", "adult", "olderAdult"]
+                          },
+                          "sensitiveFlags": {
+                            "type": "object",
+                            "properties": {
+                              "child": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "olderAdult": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "respiratoryCondition": {
+                                "type": "boolean",
+                                "default": false
+                              },
+                              "pregnancy": {
+                                "type": "boolean",
+                                "default": false
+                              }
+                            }
+                          },
+                          "commuteMode": {
+                            "type": "string",
+                            "default": "metro"
+                          },
+                          "commuteDistanceKm": {
+                            "type": "number",
+                            "minimum": 0,
+                            "default": 10
+                          }
+                        },
+                        "required": ["id", "name", "ageGroup", "sensitiveFlags"]
+                      }
+                    },
+                    "rooms": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "volumeM3": {
+                            "type": "number",
+                            "minimum": 0,
+                            "exclusiveMinimum": true
+                          },
+                          "hasPurifier": {
+                            "type": "boolean",
+                            "default": false
+                          },
+                          "purifierCadrM3h": {
+                            "type": "number",
+                            "minimum": 0,
+                            "default": 0
+                          },
+                          "windowsHabit": {
+                            "type": "string",
+                            "enum": ["closed", "cracked", "open"],
+                            "default": "closed"
+                          }
+                        },
+                        "required": ["id", "name", "volumeM3"]
+                      }
+                    },
+                    "cookingFuel": {
+                      "type": "string",
+                      "enum": ["biomass", "lpg", "electric", "png"],
+                      "default": "lpg"
+                    },
+                    "aiPersonalizationConsent": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "shareWithCommunityConsent": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "preferredLanguage": {
+                      "type": "string",
+                      "enum": ["en", "hi", "mr"],
+                      "default": "en"
+                    }
+                  },
+                  "required": ["id", "name", "location", "members", "rooms"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update household profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["name", "lat", "lng"]
+                  },
+                  "members": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "ageGroup": {
+                          "type": "string",
+                          "enum": ["child", "adult", "olderAdult"]
+                        },
+                        "sensitiveFlags": {
+                          "type": "object",
+                          "properties": {
+                            "child": {
+                              "type": "boolean",
+                              "default": false
+                            },
+                            "olderAdult": {
+                              "type": "boolean",
+                              "default": false
+                            },
+                            "respiratoryCondition": {
+                              "type": "boolean",
+                              "default": false
+                            },
+                            "pregnancy": {
+                              "type": "boolean",
+                              "default": false
+                            }
+                          }
+                        },
+                        "commuteMode": {
+                          "type": "string",
+                          "default": "metro"
+                        },
+                        "commuteDistanceKm": {
+                          "type": "number",
+                          "minimum": 0,
+                          "default": 10
+                        }
+                      },
+                      "required": ["id", "name", "ageGroup", "sensitiveFlags"]
+                    }
+                  },
+                  "rooms": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "volumeM3": {
+                          "type": "number",
+                          "minimum": 0,
+                          "exclusiveMinimum": true
+                        },
+                        "hasPurifier": {
+                          "type": "boolean",
+                          "default": false
+                        },
+                        "purifierCadrM3h": {
+                          "type": "number",
+                          "minimum": 0,
+                          "default": 0
+                        },
+                        "windowsHabit": {
+                          "type": "string",
+                          "enum": ["closed", "cracked", "open"],
+                          "default": "closed"
+                        }
+                      },
+                      "required": ["id", "name", "volumeM3"]
+                    }
+                  },
+                  "cookingFuel": {
+                    "type": "string",
+                    "enum": ["biomass", "lpg", "electric", "png"]
+                  },
+                  "aiPersonalizationConsent": {
+                    "type": "boolean"
+                  },
+                  "shareWithCommunityConsent": {
+                    "type": "boolean"
+                  },
+                  "preferredLanguage": {
+                    "type": "string",
+                    "enum": ["en", "hi", "mr"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated household profile"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete household and all associated data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Household deleted"
+          }
+        }
+      }
+    },
+    "/api/v1/household/members": {
+      "get": {
+        "summary": "List household members",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Member list"
+          }
+        }
+      }
+    },
+    "/api/v1/household/members/{targetUserId}": {
+      "delete": {
+        "summary": "Revoke household member",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "targetUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Member revoked"
+          }
+        }
+      }
+    },
+    "/api/v1/household/invitations": {
+      "post": {
+        "summary": "Create member invitation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["MEMBER"],
+                    "default": "MEMBER"
+                  },
+                  "scopes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": ["VIEW_PLAN", "LOG_ACTIONS", "EDIT_PROFILE"]
+                    },
+                    "minItems": 1
+                  },
+                  "recipientEmail": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "expiresInDays": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 30,
+                    "default": 7
+                  }
+                },
+                "required": ["scopes"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Invitation created"
+          }
+        }
+      },
+      "get": {
+        "summary": "List household invitations",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitation list"
+          }
+        }
+      }
+    },
+    "/api/v1/household/invitations/{id}": {
+      "delete": {
+        "summary": "Revoke invitation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Invitation revoked"
+          }
+        }
+      }
+    },
+    "/api/v1/household/invitations/join": {
+      "post": {
+        "summary": "Accept invitation by token",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "minLength": 8
+                  }
+                },
+                "required": ["token"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Joined household"
           }
         }
       }
@@ -561,53 +2302,6 @@
                 }
               }
             }
-          },
-          "500": {
-            "description": "Error response",
-            "content": {
-              "application/problem+json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "default": "about:blank"
-                    },
-                    "title": {
-                      "type": "string"
-                    },
-                    "status": {
-                      "type": "integer"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "instance": {
-                      "type": "string"
-                    },
-                    "correlationId": {
-                      "type": "string"
-                    },
-                    "invalidParams": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "reason": {
-                            "type": "string"
-                          }
-                        },
-                        "required": ["name", "reason"]
-                      }
-                    }
-                  },
-                  "required": ["title", "status", "detail", "correlationId"]
-                }
-              }
-            }
           }
         }
       }
@@ -646,7 +2340,1144 @@
         ],
         "responses": {
           "200": {
-            "description": "Air forecast data"
+            "description": "Air forecast data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lng": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["name", "lat", "lng"]
+                    },
+                    "series": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "time": {
+                            "type": "string"
+                          },
+                          "pm25": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "pm10": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "aqi": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "category": {
+                            "type": "string",
+                            "enum": [
+                              "Good",
+                              "Satisfactory",
+                              "Moderate",
+                              "Poor",
+                              "Very Poor",
+                              "Severe"
+                            ]
+                          },
+                          "temperatureC": {
+                            "type": "number"
+                          },
+                          "humidityPercent": {
+                            "type": "number"
+                          },
+                          "windSpeedKmh": {
+                            "type": "number"
+                          },
+                          "isBestWindow": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        },
+                        "required": ["time", "pm25", "aqi", "category"]
+                      }
+                    },
+                    "provenance": {
+                      "type": "object",
+                      "properties": {
+                        "source": {
+                          "type": "string"
+                        },
+                        "fetchedAt": {
+                          "type": "string"
+                        },
+                        "isStale": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": ["source", "fetchedAt", "isStale"]
+                    }
+                  },
+                  "required": ["location", "series", "provenance"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plan/today": {
+      "get": {
+        "summary": "Today's daily action plan",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daily plan cards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "currentAqi": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "naqiCategory": {
+                      "type": "string",
+                      "enum": ["Good", "Satisfactory", "Moderate", "Poor", "Very Poor", "Severe"]
+                    },
+                    "cards": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "ruleId": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "timeSlot": {
+                            "type": "string",
+                            "enum": ["morning", "afternoon", "evening", "night", "allDay"]
+                          },
+                          "recommendedTime": {
+                            "type": "string"
+                          },
+                          "why": {
+                            "type": "string"
+                          },
+                          "impact": {
+                            "type": "object",
+                            "properties": {
+                              "healthExposureReductionPercent": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "cityCo2eAvoidedKg": {
+                                "type": "number",
+                                "minimum": 0
+                              }
+                            },
+                            "required": ["healthExposureReductionPercent", "cityCo2eAvoidedKg"]
+                          },
+                          "effort": {
+                            "type": "string",
+                            "enum": ["low", "medium", "high"]
+                          },
+                          "costBand": {
+                            "type": "string",
+                            "enum": ["free", "₹", "₹₹", "₹₹₹"]
+                          },
+                          "evidence": {
+                            "type": "object",
+                            "properties": {
+                              "level": {
+                                "type": "string",
+                                "enum": ["strong", "moderate", "limited"]
+                              },
+                              "sources": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "title": {
+                                      "type": "string"
+                                    },
+                                    "organisation": {
+                                      "type": "string"
+                                    },
+                                    "year": {
+                                      "type": "number"
+                                    },
+                                    "url": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": ["title", "organisation"]
+                                }
+                              }
+                            },
+                            "required": ["level", "sources"]
+                          },
+                          "knowledgeIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "completed": {
+                            "type": "boolean",
+                            "default": false
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "ruleId",
+                          "title",
+                          "description",
+                          "timeSlot",
+                          "why",
+                          "impact",
+                          "effort",
+                          "costBand",
+                          "evidence",
+                          "knowledgeIds"
+                        ]
+                      }
+                    },
+                    "top3PriorityCardIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "isAiEnhanced": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "aiBadge": {
+                      "type": "string",
+                      "default": "Standard guidance"
+                    }
+                  },
+                  "required": ["date", "currentAqi", "naqiCategory", "cards", "top3PriorityCardIds"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plan/action/{cardId}/toggle": {
+      "post": {
+        "summary": "Toggle plan action completion",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "cardId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "completed": {
+                    "type": "boolean"
+                  }
+                },
+                "required": ["completed"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action toggled"
+          }
+        }
+      }
+    },
+    "/api/v1/plan/export.ics": {
+      "get": {
+        "summary": "Export plan as RFC 5545 iCalendar format",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "iCalendar file stream"
+          }
+        }
+      }
+    },
+    "/api/v1/impact/calculate": {
+      "post": {
+        "summary": "Calculate family exposure and city emissions impact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "commuteMode": {
+                    "type": "string",
+                    "default": "petrolCar"
+                  },
+                  "commuteDistanceKm": {
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 15
+                  },
+                  "hasPurifier": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "maskWornOutdoor": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "cookingFuel": {
+                    "type": "string",
+                    "default": "lpg"
+                  },
+                  "hoursOutdoor": {
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 2
+                  },
+                  "baselineAqi": {
+                    "type": "number",
+                    "minimum": 0,
+                    "default": 280
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Impact calculation results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "familyExposure": {
+                      "type": "object",
+                      "properties": {
+                        "baselineDoseUg": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "actionDoseUg": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "reductionPercent": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "pointEstimateUg": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "uncertaintyRangeUg": {
+                          "type": "object",
+                          "properties": {
+                            "min": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "max": {
+                              "type": "number",
+                              "minimum": 0
+                            }
+                          },
+                          "required": ["min", "max"]
+                        }
+                      },
+                      "required": [
+                        "baselineDoseUg",
+                        "actionDoseUg",
+                        "reductionPercent",
+                        "pointEstimateUg",
+                        "uncertaintyRangeUg"
+                      ]
+                    },
+                    "cityEmissions": {
+                      "type": "object",
+                      "properties": {
+                        "co2eAvoidedKg": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "pm25AvoidedGrams": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "noxAvoidedGrams": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": ["co2eAvoidedKg", "pm25AvoidedGrams", "noxAvoidedGrams"]
+                    },
+                    "formulaSheet": {
+                      "type": "object",
+                      "properties": {
+                        "exposureFormula": {
+                          "type": "string"
+                        },
+                        "emissionsFormula": {
+                          "type": "string"
+                        },
+                        "sources": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "assumptions": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": ["exposureFormula", "emissionsFormula", "sources", "assumptions"]
+                    }
+                  },
+                  "required": ["familyExposure", "cityEmissions", "formulaSheet"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/impact/formula": {
+      "get": {
+        "summary": "Get methodology and formulas",
+        "responses": {
+          "200": {
+            "description": "Formula and assumptions documentation"
+          }
+        }
+      }
+    },
+    "/api/v1/community": {
+      "post": {
+        "summary": "Create a community",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Community created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "joinCode": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "memberCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "activePledgesCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "required": ["id", "name", "joinCode", "memberCount", "activePledgesCount"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/community/join": {
+      "post": {
+        "summary": "Join community via join code",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "joinCode": {
+                    "type": "string",
+                    "minLength": 4
+                  }
+                },
+                "required": ["joinCode"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Joined community"
+          }
+        }
+      }
+    },
+    "/api/v1/community/{id}/leave": {
+      "post": {
+        "summary": "Leave community",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Left community"
+          }
+        }
+      }
+    },
+    "/api/v1/community/{id}/stats": {
+      "get": {
+        "summary": "Get k-anonymized community aggregates",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggregates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "communityId": {
+                      "type": "string"
+                    },
+                    "contributingHouseholds": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "kAnonymityMet": {
+                      "type": "boolean"
+                    },
+                    "totalCo2eSavedKg": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "totalPm25SavedG": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "averageBreatheScore": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "exposureReductionAveragePercent": {
+                      "type": "number",
+                      "minimum": 0
+                    }
+                  },
+                  "required": ["communityId", "contributingHouseholds", "kAnonymityMet"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/community/{id}/pledges": {
+      "get": {
+        "summary": "List community pledges",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pledge list"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create community pledge",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 3
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "targetParticipants": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                  },
+                  "targetCo2eKg": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "deadline": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "description",
+                  "targetParticipants",
+                  "targetCo2eKg",
+                  "deadline"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pledge created"
+          }
+        }
+      }
+    },
+    "/api/v1/community/pledges/{pledgeId}/participate": {
+      "post": {
+        "summary": "Join community pledge",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pledgeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pledged"
+          }
+        }
+      }
+    },
+    "/api/v1/community/{id}/advisories": {
+      "post": {
+        "summary": "Draft community advisory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 3
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 10
+                  }
+                },
+                "required": ["title", "content"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Advisory drafted"
+          }
+        }
+      },
+      "get": {
+        "summary": "List community advisories",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisories list"
+          }
+        }
+      }
+    },
+    "/api/v1/community/{id}/advisories/{advId}/approve": {
+      "post": {
+        "summary": "Approve community advisory",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "advId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisory approved"
+          }
+        }
+      }
+    },
+    "/api/v1/alerts/preference": {
+      "get": {
+        "summary": "Get alert preferences",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Alert preference",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "householdId": {
+                      "type": "string"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "aqiThreshold": {
+                      "type": "integer",
+                      "default": 200
+                    },
+                    "coGuardianEmail": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "coGuardianConsent": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "deliveryChannel": {
+                      "type": "string",
+                      "enum": ["email", "push"],
+                      "default": "email"
+                    }
+                  },
+                  "required": ["householdId"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update alert preferences",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "householdId": {
+                    "type": "string"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "aqiThreshold": {
+                    "type": "integer",
+                    "default": 200
+                  },
+                  "coGuardianEmail": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "coGuardianConsent": {
+                    "type": "boolean",
+                    "default": false
+                  },
+                  "deliveryChannel": {
+                    "type": "string",
+                    "enum": ["email", "push"],
+                    "default": "email"
+                  }
+                },
+                "required": ["householdId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      }
+    },
+    "/api/v1/alerts/evaluate": {
+      "post": {
+        "summary": "Evaluate smog alerts",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Evaluation results"
+          }
+        }
+      }
+    },
+    "/api/v1/alerts/{alertId}/acknowledge": {
+      "post": {
+        "summary": "Acknowledge smog alert",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "alertId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Acknowledged"
+          }
+        }
+      }
+    },
+    "/api/v1/alerts/outbox": {
+      "get": {
+        "summary": "List outbox items for household",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Outbox item list"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/audit": {
+      "get": {
+        "summary": "Get immutable audit trail",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Audit trail"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/breathe-score": {
+      "get": {
+        "summary": "Get current Breathe Score",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Breathe score breakdown"
+          }
+        }
+      }
+    },
+    "/api/v1/analytics/ledger": {
+      "get": {
+        "summary": "Get weekly impact ledger",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Impact ledger"
+          }
+        }
+      }
+    },
+    "/api/v1/demo/scenario": {
+      "post": {
+        "summary": "Demo: Switch air quality scenario",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "scenario": {
+                    "type": "string",
+                    "enum": ["Clean", "Moderate", "Poor", "Severe", "Hazardous"]
+                  }
+                },
+                "required": ["scenario"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Scenario switched"
+          }
+        }
+      }
+    },
+    "/api/v1/demo/time-travel": {
+      "post": {
+        "summary": "Demo: Time travel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "minutes": {
+                    "type": "integer"
+                  }
+                },
+                "required": ["minutes"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Clock adjusted"
+          }
+        }
+      }
+    },
+    "/api/v1/demo/trigger-severe": {
+      "post": {
+        "summary": "Demo: Trigger severe smog event",
+        "responses": {
+          "200": {
+            "description": "Triggered"
+          }
+        }
+      }
+    },
+    "/api/v1/demo/trigger-grace-timeout": {
+      "post": {
+        "summary": "Demo: Trigger grace timeout and escalation",
+        "responses": {
+          "200": {
+            "description": "Escalated"
+          }
+        }
+      }
+    },
+    "/api/v1/demo/personas": {
+      "get": {
+        "summary": "Demo: Get quick login persona list",
+        "responses": {
+          "200": {
+            "description": "Persona list"
+          }
+        }
+      }
+    },
+    "/internal/outbox/process": {
+      "post": {
+        "summary": "Internal: Process transactional outbox",
+        "responses": {
+          "200": {
+            "description": "Processed"
+          }
+        }
+      }
+    },
+    "/internal/alerts/evaluate": {
+      "post": {
+        "summary": "Internal: Evaluate alerts across households",
+        "responses": {
+          "200": {
+            "description": "Evaluated"
+          }
+        }
+      }
+    },
+    "/internal/demo/reset": {
+      "post": {
+        "summary": "Internal: Reset demo state",
+        "responses": {
+          "200": {
+            "description": "Reset"
           }
         }
       }

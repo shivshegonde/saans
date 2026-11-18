@@ -54,7 +54,8 @@ export function searchKnowledge(query: string): KnowledgeEntry[] {
   if (terms.length === 0) return ALL_ENTRIES.slice(0, 10);
 
   return ALL_ENTRIES.filter((entry) => {
-    const haystack = `${entry.title} ${entry.effectModel} ${entry.appliesWhen} ${entry.id}`.toLowerCase();
+    const haystack =
+      `${entry.title} ${entry.effectModel} ${entry.appliesWhen} ${entry.id}`.toLowerCase();
     return terms.some((term) => haystack.includes(term));
   });
 }
@@ -72,7 +73,10 @@ export function checkMythClaim(claim: string): MythCheckResult {
   const mythEntries = getKnowledgeByCategory("myth");
 
   for (const myth of mythEntries) {
-    const terms = myth.title.toLowerCase().split(/\s+/).filter((w) => w.length > 3);
+    const terms = myth.title
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 3);
     const matchCount = terms.filter((term) => lower.includes(term)).length;
 
     if (matchCount >= 2 || lower.includes(myth.id.replace("myth-", ""))) {

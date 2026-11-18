@@ -61,9 +61,7 @@ export function computeCommunityAggregate(
 
   const avgExposure = Number((sumExposure / n).toFixed(1));
   const participationPct =
-    totalMembersInCommunity > 0
-      ? Number(((n / totalMembersInCommunity) * 100).toFixed(1))
-      : 100.0;
+    totalMembersInCommunity > 0 ? Number(((n / totalMembersInCommunity) * 100).toFixed(1)) : 100.0;
 
   return {
     suppressed: false,

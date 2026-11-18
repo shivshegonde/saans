@@ -13,10 +13,32 @@ import {
   HealthResponseSchema,
   ReadyResponseSchema,
   AirNowResponseSchema,
+  AirForecastResponseSchema,
   ProblemDetailsSchema,
   UserRegisterRequestSchema,
   UserLoginRequestSchema,
   AuthSessionResponseSchema,
+  HouseholdProfileSchema,
+  UpdateHouseholdRequestSchema,
+  CreateInvitationRequestSchema,
+  JoinInvitationRequestSchema,
+  InvitationDtoSchema,
+  TodayPlanResponseSchema,
+  ActionToggleRequestSchema,
+  ImpactCalculationRequestSchema,
+  ImpactCalculationResponseSchema,
+  CommunityDtoSchema,
+  JoinCommunityRequestSchema,
+  CreatePledgeRequestSchema,
+  PledgeDtoSchema,
+  CommunityAggregatesDtoSchema,
+  CreateAdvisoryDraftRequestSchema,
+  AdvisoryDtoSchema,
+  AlertPreferenceDtoSchema,
+  OutboxItemDtoSchema,
+  AuditLogEntrySchema,
+  DemoScenarioRequestSchema,
+  DemoTimeTravelRequestSchema,
 } from "shared";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,16 +54,38 @@ registry.registerComponent("securitySchemes", "bearerAuth", {
   description: "Opaque 256-bit bearer session token",
 });
 
-// Register Common Schemas
+// Register Schemas
 registry.register("HealthResponse", HealthResponseSchema);
 registry.register("ReadyResponse", ReadyResponseSchema);
 registry.register("AirNowResponse", AirNowResponseSchema);
+registry.register("AirForecastResponse", AirForecastResponseSchema);
 registry.register("ProblemDetails", ProblemDetailsSchema);
 registry.register("UserRegisterRequest", UserRegisterRequestSchema);
 registry.register("UserLoginRequest", UserLoginRequestSchema);
 registry.register("AuthSessionResponse", AuthSessionResponseSchema);
+registry.register("HouseholdProfile", HouseholdProfileSchema);
+registry.register("UpdateHouseholdRequest", UpdateHouseholdRequestSchema);
+registry.register("CreateInvitationRequest", CreateInvitationRequestSchema);
+registry.register("JoinInvitationRequest", JoinInvitationRequestSchema);
+registry.register("InvitationDto", InvitationDtoSchema);
+registry.register("TodayPlanResponse", TodayPlanResponseSchema);
+registry.register("ActionToggleRequest", ActionToggleRequestSchema);
+registry.register("ImpactCalculationRequest", ImpactCalculationRequestSchema);
+registry.register("ImpactCalculationResponse", ImpactCalculationResponseSchema);
+registry.register("CommunityDto", CommunityDtoSchema);
+registry.register("JoinCommunityRequest", JoinCommunityRequestSchema);
+registry.register("CreatePledgeRequest", CreatePledgeRequestSchema);
+registry.register("PledgeDto", PledgeDtoSchema);
+registry.register("CommunityAggregatesDto", CommunityAggregatesDtoSchema);
+registry.register("CreateAdvisoryDraftRequest", CreateAdvisoryDraftRequestSchema);
+registry.register("AdvisoryDto", AdvisoryDtoSchema);
+registry.register("AlertPreferenceDto", AlertPreferenceDtoSchema);
+registry.register("OutboxItemDto", OutboxItemDtoSchema);
+registry.register("AuditLogEntry", AuditLogEntrySchema);
+registry.register("DemoScenarioRequest", DemoScenarioRequestSchema);
+registry.register("DemoTimeTravelRequest", DemoTimeTravelRequestSchema);
 
-// Register Endpoints
+// Endpoints
 registry.registerPath({
   method: "get",
   path: "/health",
@@ -67,6 +111,130 @@ registry.registerPath({
 });
 
 registry.registerPath({
+  method: "post",
+  path: "/api/v1/auth/register",
+  summary: "Register new user and create household",
+  request: { body: { content: { "application/json": { schema: UserRegisterRequestSchema } } } },
+  responses: {
+    201: {
+      description: "Registration successful",
+      content: { "application/json": { schema: AuthSessionResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/auth/login",
+  summary: "User login with lockout protection",
+  request: { body: { content: { "application/json": { schema: UserLoginRequestSchema } } } },
+  responses: {
+    200: {
+      description: "Login successful",
+      content: { "application/json": { schema: AuthSessionResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/auth/logout",
+  summary: "Invalidate session",
+  security: [{ bearerAuth: [] }],
+  responses: { 204: { description: "Logout successful" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/auth/me",
+  summary: "Get current authenticated session info",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Current session info" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/household",
+  summary: "Get household profile",
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: "Household profile",
+      content: { "application/json": { schema: HouseholdProfileSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "patch",
+  path: "/api/v1/household",
+  summary: "Update household profile",
+  security: [{ bearerAuth: [] }],
+  request: { body: { content: { "application/json": { schema: UpdateHouseholdRequestSchema } } } },
+  responses: { 200: { description: "Updated household profile" } },
+});
+
+registry.registerPath({
+  method: "delete",
+  path: "/api/v1/household",
+  summary: "Delete household and all associated data",
+  security: [{ bearerAuth: [] }],
+  responses: { 204: { description: "Household deleted" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/household/members",
+  summary: "List household members",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Member list" } },
+});
+
+registry.registerPath({
+  method: "delete",
+  path: "/api/v1/household/members/{targetUserId}",
+  summary: "Revoke household member",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "targetUserId", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 204: { description: "Member revoked" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/household/invitations",
+  summary: "Create member invitation",
+  security: [{ bearerAuth: [] }],
+  request: { body: { content: { "application/json": { schema: CreateInvitationRequestSchema } } } },
+  responses: { 201: { description: "Invitation created" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/household/invitations",
+  summary: "List household invitations",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Invitation list" } },
+});
+
+registry.registerPath({
+  method: "delete",
+  path: "/api/v1/household/invitations/{id}",
+  summary: "Revoke invitation",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 204: { description: "Invitation revoked" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/household/invitations/join",
+  summary: "Accept invitation by token",
+  security: [{ bearerAuth: [] }],
+  request: { body: { content: { "application/json": { schema: JoinInvitationRequestSchema } } } },
+  responses: { 200: { description: "Joined household" } },
+});
+
+registry.registerPath({
   method: "get",
   path: "/api/v1/air/now",
   summary: "Current air quality, NAQI, and smog drivers",
@@ -85,10 +253,6 @@ registry.registerPath({
       description: "Live air conditions",
       content: { "application/json": { schema: AirNowResponseSchema } },
     },
-    500: {
-      description: "Error response",
-      content: { "application/problem+json": { schema: ProblemDetailsSchema } },
-    },
   },
 });
 
@@ -104,8 +268,297 @@ registry.registerPath({
   responses: {
     200: {
       description: "Air forecast data",
+      content: { "application/json": { schema: AirForecastResponseSchema } },
     },
   },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/plan/today",
+  summary: "Today's daily action plan",
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: "Daily plan cards",
+      content: { "application/json": { schema: TodayPlanResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/plan/action/{cardId}/toggle",
+  summary: "Toggle plan action completion",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "cardId", in: "path", required: true, schema: { type: "string" } }],
+  request: { body: { content: { "application/json": { schema: ActionToggleRequestSchema } } } },
+  responses: { 200: { description: "Action toggled" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/plan/export.ics",
+  summary: "Export plan as RFC 5545 iCalendar format",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "iCalendar file stream" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/impact/calculate",
+  summary: "Calculate family exposure and city emissions impact",
+  request: {
+    body: { content: { "application/json": { schema: ImpactCalculationRequestSchema } } },
+  },
+  responses: {
+    200: {
+      description: "Impact calculation results",
+      content: { "application/json": { schema: ImpactCalculationResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/impact/formula",
+  summary: "Get methodology and formulas",
+  responses: { 200: { description: "Formula and assumptions documentation" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community",
+  summary: "Create a community",
+  security: [{ bearerAuth: [] }],
+  responses: {
+    201: {
+      description: "Community created",
+      content: { "application/json": { schema: CommunityDtoSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community/join",
+  summary: "Join community via join code",
+  security: [{ bearerAuth: [] }],
+  request: { body: { content: { "application/json": { schema: JoinCommunityRequestSchema } } } },
+  responses: { 200: { description: "Joined community" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community/{id}/leave",
+  summary: "Leave community",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 204: { description: "Left community" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/community/{id}/stats",
+  summary: "Get k-anonymized community aggregates",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  responses: {
+    200: {
+      description: "Aggregates",
+      content: { "application/json": { schema: CommunityAggregatesDtoSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/community/{id}/pledges",
+  summary: "List community pledges",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 200: { description: "Pledge list" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community/{id}/pledges",
+  summary: "Create community pledge",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  request: { body: { content: { "application/json": { schema: CreatePledgeRequestSchema } } } },
+  responses: { 201: { description: "Pledge created" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community/pledges/{pledgeId}/participate",
+  summary: "Join community pledge",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "pledgeId", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 200: { description: "Pledged" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community/{id}/advisories",
+  summary: "Draft community advisory",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  request: {
+    body: { content: { "application/json": { schema: CreateAdvisoryDraftRequestSchema } } },
+  },
+  responses: { 201: { description: "Advisory drafted" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/community/{id}/advisories/{advId}/approve",
+  summary: "Approve community advisory",
+  security: [{ bearerAuth: [] }],
+  parameters: [
+    { name: "id", in: "path", required: true, schema: { type: "string" } },
+    { name: "advId", in: "path", required: true, schema: { type: "string" } },
+  ],
+  responses: { 200: { description: "Advisory approved" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/community/{id}/advisories",
+  summary: "List community advisories",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "id", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 200: { description: "Advisories list" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/alerts/preference",
+  summary: "Get alert preferences",
+  security: [{ bearerAuth: [] }],
+  responses: {
+    200: {
+      description: "Alert preference",
+      content: { "application/json": { schema: AlertPreferenceDtoSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "put",
+  path: "/api/v1/alerts/preference",
+  summary: "Update alert preferences",
+  security: [{ bearerAuth: [] }],
+  request: { body: { content: { "application/json": { schema: AlertPreferenceDtoSchema } } } },
+  responses: { 200: { description: "Updated" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/alerts/evaluate",
+  summary: "Evaluate smog alerts",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Evaluation results" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/alerts/{alertId}/acknowledge",
+  summary: "Acknowledge smog alert",
+  security: [{ bearerAuth: [] }],
+  parameters: [{ name: "alertId", in: "path", required: true, schema: { type: "string" } }],
+  responses: { 200: { description: "Acknowledged" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/alerts/outbox",
+  summary: "List outbox items for household",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Outbox item list" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/analytics/audit",
+  summary: "Get immutable audit trail",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Audit trail" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/analytics/breathe-score",
+  summary: "Get current Breathe Score",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Breathe score breakdown" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/analytics/ledger",
+  summary: "Get weekly impact ledger",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Impact ledger" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/demo/scenario",
+  summary: "Demo: Switch air quality scenario",
+  request: { body: { content: { "application/json": { schema: DemoScenarioRequestSchema } } } },
+  responses: { 200: { description: "Scenario switched" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/demo/time-travel",
+  summary: "Demo: Time travel",
+  request: { body: { content: { "application/json": { schema: DemoTimeTravelRequestSchema } } } },
+  responses: { 200: { description: "Clock adjusted" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/demo/trigger-severe",
+  summary: "Demo: Trigger severe smog event",
+  responses: { 200: { description: "Triggered" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/demo/trigger-grace-timeout",
+  summary: "Demo: Trigger grace timeout and escalation",
+  responses: { 200: { description: "Escalated" } },
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/api/v1/demo/personas",
+  summary: "Demo: Get quick login persona list",
+  responses: { 200: { description: "Persona list" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/internal/outbox/process",
+  summary: "Internal: Process transactional outbox",
+  responses: { 200: { description: "Processed" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/internal/alerts/evaluate",
+  summary: "Internal: Evaluate alerts across households",
+  responses: { 200: { description: "Evaluated" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/internal/demo/reset",
+  summary: "Internal: Reset demo state",
+  responses: { 200: { description: "Reset" } },
 });
 
 const generator = new OpenApiGeneratorV3(registry.definitions);

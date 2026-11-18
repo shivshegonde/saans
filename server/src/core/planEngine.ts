@@ -36,15 +36,10 @@ export interface ActionCard {
   knowledgeIds: string[];
 }
 
-export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
-  const cards: ActionCard[] = [];
-  const isSevere = ctx.currentAqi >= 401;
-  const isPoorOrWorse = ctx.currentAqi >= 201;
-  const hasSensitiveMember =
+function addIndoorRules(ctx: HouseholdContext, cards: ActionCard[], isPoorOrWorse: boolean): void {
+  const hasSensitive =
     ctx.hasChild || ctx.hasElder || ctx.hasRespiratoryCondition || ctx.hasPregnancy;
-
-  // P1: Sensitive group outdoor restriction
-  if (hasSensitiveMember && isPoorOrWorse) {
+  if (hasSensitive && isPoorOrWorse) {
     cards.push({
       id: "action-p1-sensitive-indoor",
       ruleId: "P1",
@@ -62,7 +57,6 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     });
   }
 
-  // P2: Ventilation window
   if (ctx.bestVentilationWindow) {
     cards.push({
       id: "action-p2-ventilation-timing",
@@ -97,7 +91,6 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     });
   }
 
-  // P3: Purifier pre-running & night filtration
   cards.push({
     id: "action-p3-purifier-bedroom",
     ruleId: "P3",
@@ -114,7 +107,45 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     knowledgeIds: ["indoor-purifier-night", "purifier-cadr-sizing"],
   });
 
-  // P4: Mask guidance
+  cards.push({
+    id: "action-p6-cooking-ventilation",
+    ruleId: "P6",
+    slot: "Evening",
+    headline: "Run kitchen exhaust or chimney with kitchen door closed",
+    why: "Frying and tadka generate rapid PM2.5 peaks up to 400 µg/m³. Exhaust creates negative pressure, preventing smoke from spreading to living areas.",
+    impact: {
+      health: "Prevents indoor kitchen smoke from raising living area PM2.5 by > 150 µg/m³",
+      city: "Clean cooking practices minimize domestic emission footprint",
+    },
+    effort: "low",
+    costBand: "free",
+    evidenceLevel: "strong",
+    knowledgeIds: ["cooking-indoor-smoke", "clean-cooking-lpg-induction"],
+  });
+
+  cards.push({
+    id: "action-p7-cleaning-wet-mop",
+    ruleId: "P7",
+    slot: "Morning",
+    headline: "Use wet mopping or HEPA vacuum; avoid dry brooming",
+    why: "Dry sweeping with a standard jhadu resuspends settled toxic particulates and heavy metals into the breathing zone for hours.",
+    impact: {
+      health: "Prevents resuspension of 5,000 µg/h of fine floor dust",
+      city: "Zero chemical emissions",
+    },
+    effort: "low",
+    costBand: "free",
+    evidenceLevel: "strong",
+    knowledgeIds: ["indoor-wet-mopping", "dust-resuspension"],
+  });
+}
+
+function addOutdoorCommuteRules(
+  ctx: HouseholdContext,
+  cards: ActionCard[],
+  isSevere: boolean,
+  isPoorOrWorse: boolean,
+): void {
   if (isPoorOrWorse) {
     cards.push({
       id: "action-p4-mask-n95",
@@ -133,7 +164,6 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     });
   }
 
-  // P5: Commute alternative (Metro / Bus / WFH, no cycling in severe air)
   cards.push({
     id: "action-p5-commute-metro",
     ruleId: "P5",
@@ -154,42 +184,13 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     evidenceLevel: "strong",
     knowledgeIds: ["sustainable-metro-commute", "cardio-smog-tradeoff"],
   });
+}
 
-  // P6: Cooking exhaust & clean fuels
-  cards.push({
-    id: "action-p6-cooking-ventilation",
-    ruleId: "P6",
-    slot: "Evening",
-    headline: "Run kitchen exhaust or chimney with kitchen door closed",
-    why: "Frying and tadka generate rapid PM2.5 peaks up to 400 µg/m³. Exhaust creates negative pressure, preventing smoke from spreading to living areas.",
-    impact: {
-      health: "Prevents indoor kitchen smoke from raising living area PM2.5 by > 150 µg/m³",
-      city: "Clean cooking practices minimize domestic emission footprint",
-    },
-    effort: "low",
-    costBand: "free",
-    evidenceLevel: "strong",
-    knowledgeIds: ["cooking-indoor-smoke", "clean-cooking-lpg-induction"],
-  });
-
-  // P7: Wet mopping instead of dry sweeping
-  cards.push({
-    id: "action-p7-cleaning-wet-mop",
-    ruleId: "P7",
-    slot: "Morning",
-    headline: "Use wet mopping or HEPA vacuum; avoid dry brooming",
-    why: "Dry sweeping with a standard jhadu resuspends settled toxic particulates and heavy metals into the breathing zone for hours.",
-    impact: {
-      health: "Prevents resuspension of 5,000 µg/h of fine floor dust",
-      city: "Zero chemical emissions",
-    },
-    effort: "low",
-    costBand: "free",
-    evidenceLevel: "strong",
-    knowledgeIds: ["indoor-wet-mopping", "dust-resuspension"],
-  });
-
-  // P8: Community leaf burning avoidance & anti-idling
+function addCivicAndSevereRules(
+  ctx: HouseholdContext,
+  cards: ActionCard[],
+  isSevere: boolean,
+): void {
   cards.push({
     id: "action-p8-civic-anti-burning",
     ruleId: "P8",
@@ -206,7 +207,6 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     knowledgeIds: ["civic-anti-burning", "vehicle-idling-schools"],
   });
 
-  // P9: Older adults walk timing
   if (ctx.hasElder) {
     cards.push({
       id: "action-p9-elder-walk-timing",
@@ -225,7 +225,6 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
     });
   }
 
-  // P10: Severe emergency advisory
   if (isSevere) {
     cards.push({
       id: "action-p10-severe-smog-lockdown",
@@ -243,6 +242,16 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
       knowledgeIds: ["severe-smog-protocol", "grap-city-measures"],
     });
   }
+}
+
+export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
+  const cards: ActionCard[] = [];
+  const isSevere = ctx.currentAqi >= 401;
+  const isPoorOrWorse = ctx.currentAqi >= 201;
+
+  addIndoorRules(ctx, cards, isPoorOrWorse);
+  addOutdoorCommuteRules(ctx, cards, isSevere, isPoorOrWorse);
+  addCivicAndSevereRules(ctx, cards, isSevere);
 
   return cards;
 }

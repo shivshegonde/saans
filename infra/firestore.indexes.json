@@ -1,0 +1,63 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "memberships",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "actionLogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "householdId", "order": "ASCENDING" },
+        { "fieldPath": "date", "order": "ASCENDING" },
+        { "fieldPath": "memberId", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "alerts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "householdId", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "scheduledFor", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "outbox",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "scheduledFor", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "auditLog",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "tenantId", "order": "ASCENDING" },
+        { "fieldPath": "at", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "pledges",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "communityId", "order": "ASCENDING" },
+        { "fieldPath": "deadline", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "ledger",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "householdId", "order": "ASCENDING" },
+        { "fieldPath": "weekStart", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

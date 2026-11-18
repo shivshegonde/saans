@@ -50,6 +50,12 @@
       }
     },
     {
+      "files": ["server/scripts/**/*.ts", "shared/src/**/*.ts"],
+      "rules": {
+        "max-lines": "off"
+      }
+    },
+    {
       "files": ["**/*.test.ts", "**/*.spec.ts"],
       "rules": {
         "max-lines": "off",

@@ -111,11 +111,15 @@ export function simulateIndoorAir(
 /**
  * Sizes an air purifier according to ANSI/AHAM AC-1 standard (target 4.5 Air Changes per Hour).
  */
-export function sizePurifier(areaM2: number, ceilingHeightM = 2.8, currentCadrM3h = 0): PurifierSizingResult {
+export function sizePurifier(
+  areaM2: number,
+  ceilingHeightM = 2.8,
+  currentCadrM3h = 0,
+): PurifierSizingResult {
   const volumeM3 = areaM2 * ceilingHeightM;
   const targetAch = 4.5; // AHAM recommendation for wildfire/smog conditions
   const requiredCadr = Math.round(volumeM3 * targetAch);
-  const effectiveAch = volumeM3 > 0 ? Number(((currentCadrM3h) / volumeM3).toFixed(1)) : 0;
+  const effectiveAch = volumeM3 > 0 ? Number((currentCadrM3h / volumeM3).toFixed(1)) : 0;
 
   let rating: "Under-sized" | "Adequate" | "Optimal" = "Adequate";
   let recommendation = "";
@@ -141,6 +145,21 @@ export function sizePurifier(areaM2: number, ceilingHeightM = 2.8, currentCadrM3
   };
 }
 
+function findLowest2HourWindow(hours: Array<{ timeIso: string; pm25: number }>) {
+  let minAvg = Infinity;
+  let bestIdx = 0;
+  for (let i = 0; i < hours.length - 1; i++) {
+    const p1 = hours[i]?.pm25 ?? 0;
+    const p2 = hours[i + 1]?.pm25 ?? 0;
+    const avg = (p1 + p2) / 2;
+    if (avg < minAvg) {
+      minAvg = avg;
+      bestIdx = i;
+    }
+  }
+  return { minAvg, bestIdx };
+}
+
 /**
  * Finds the cleanest 2-hour window in the forecast for room ventilation.
  */
@@ -158,17 +177,7 @@ export function findBestVentilationWindow(
     };
   }
 
-  let minAvg = Infinity;
-  let bestIdx = 0;
-
-  for (let i = 0; i < forecastHours.length - 1; i++) {
-    const avg = ((forecastHours[i]?.pm25 ?? 0) + (forecastHours[i + 1]?.pm25 ?? 0)) / 2;
-    if (avg < minAvg) {
-      minAvg = avg;
-      bestIdx = i;
-    }
-  }
-
+  const { minAvg, bestIdx } = findLowest2HourWindow(forecastHours);
   const start = forecastHours[bestIdx]?.timeIso ?? "";
   const end = forecastHours[bestIdx + 1]?.timeIso ?? "";
   const minOutdoor = Math.round(minAvg);

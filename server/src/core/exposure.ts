@@ -75,10 +75,7 @@ const MASK_EFFICIENCIES: Record<MaskType, { point: number; min: number; max: num
   n95_ffp2: { point: 0.88, min: 0.8, max: 0.95 }, // Well-fitted certified respirator
 };
 
-export function calculateInhaledDose(
-  ageGroup: AgeGroup,
-  slots: ExposureSlot[],
-): InhaledDoseResult {
+export function calculateInhaledDose(ageGroup: AgeGroup, slots: ExposureSlot[]): InhaledDoseResult {
   let totalPoint = 0;
   let totalMin = 0;
   let totalMax = 0;

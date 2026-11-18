@@ -78,10 +78,7 @@ const DOMAIN_KEYWORDS = [
   "hacks",
 ];
 
-export function runPreModelSafetyCheck(
-  userInput: string,
-  countryCode = "IN",
-): SafetyCheckResult {
+export function runPreModelSafetyCheck(userInput: string, countryCode = "IN"): SafetyCheckResult {
   const text = userInput.trim();
 
   // 1. Emergency Symptom Interceptor

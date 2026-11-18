@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { calculateNaqi, computeSubIndex, getCategoryFromNaqi, computeUsEpaAqi } from "../src/core/aqi.js";
+import {
+  calculateNaqi,
+  computeSubIndex,
+  getCategoryFromNaqi,
+  computeUsEpaAqi,
+} from "../src/core/aqi.js";
 
 describe("CPCB NAQI Calculations (aqi.cpcb.test)", () => {
   it("verifies CPCB PM2.5 breakpoint sub-indices across all bands", () => {
