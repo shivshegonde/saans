@@ -62,11 +62,11 @@ export const PlanView: React.FC<PlanViewProps> = ({ plan, isLoading }) => {
   return (
     <div className="space-y-8">
       {/* Plan Header */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-emerald-600" aria-hidden="true" />
-            <h2 className="text-xl font-bold text-slate-900">Today's Action Plan</h2>
+            <Sparkles className="w-5 h-5 text-emerald-600 flex-shrink-0" aria-hidden="true" />
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900">Today's Action Plan</h2>
           </div>
           <p className="text-xs text-slate-500 mt-1">
             Rules P1–P10 prioritized for current NAQI: {plan.naqiCategory} ({plan.currentAqi} AQI)
@@ -76,7 +76,7 @@ export const PlanView: React.FC<PlanViewProps> = ({ plan, isLoading }) => {
         <a
           href="/api/v1/plan/calendar.ics"
           download="saans-daily-plan.ics"
-          className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 flex items-center gap-2 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          className="min-h-[44px] px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold text-xs hover:bg-emerald-700 flex items-center justify-center gap-2 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full sm:w-auto"
         >
           <Calendar className="w-4 h-4" aria-hidden="true" />
           <span>Export All to Calendar (.ics)</span>

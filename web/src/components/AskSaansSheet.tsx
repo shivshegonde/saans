@@ -240,7 +240,7 @@ export const AskSaansSheet: React.FC<AskSaansSheetProps> = ({ isOpen, onClose })
             e.preventDefault();
             handleSend();
           }}
-          className="p-3 border-t border-slate-200 flex items-center gap-2 bg-white"
+          className="p-3 border-t border-slate-200 flex items-center gap-2 bg-white safe-area-inset-bottom"
         >
           <label htmlFor="ask-input" className="sr-only">
             Ask Saans a question
@@ -251,12 +251,12 @@ export const AskSaansSheet: React.FC<AskSaansSheetProps> = ({ isOpen, onClose })
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask about smog, purifiers, or health..."
-            className="flex-1 text-xs rounded-xl border border-slate-200 p-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="flex-1 min-h-[44px] text-xs rounded-xl border border-slate-200 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           />
           <button
             type="submit"
             disabled={!input.trim()}
-            className="p-2.5 rounded-xl bg-emerald-600 text-white disabled:opacity-40 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="min-w-[44px] min-h-[44px] rounded-xl bg-emerald-600 text-white disabled:opacity-40 hover:bg-emerald-700 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-500 flex-shrink-0"
             aria-label="Send message to Saans"
           >
             <Send className="w-4 h-4" aria-hidden="true" />

@@ -102,7 +102,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({ isOpen, onClose,
       aria-labelledby="share-card-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
     >
-      <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+      <div className="bg-white rounded-3xl max-w-lg w-full p-4 sm:p-6 shadow-2xl border border-slate-200 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2">
             <Share2 className="w-5 h-5 text-emerald-600" aria-hidden="true" />
@@ -135,11 +135,11 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({ isOpen, onClose,
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 pt-2">
           <button
             type="button"
             onClick={handleCopyLink}
-            className="px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="min-h-[44px] px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500"
           >
             {copied ? (
               <>
@@ -155,7 +155,7 @@ export const ShareCardModal: React.FC<ShareCardModalProps> = ({ isOpen, onClose,
             <a
               href={downloadUrl}
               download={`saans-air-${new Date().toISOString().split("T")[0]}.png`}
-              className="px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 flex items-center gap-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="min-h-[44px] px-4 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 flex items-center justify-center gap-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 text-center"
             >
               <Download className="w-4 h-4" aria-hidden="true" />
               <span>Download PNG for WhatsApp</span>

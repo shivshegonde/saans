@@ -96,13 +96,17 @@ export const ActionCardItem: React.FC<ActionCardItemProps> = ({ action, onToggle
           aria-label={
             completed ? `Mark ${action.title} as incomplete` : `Mark ${action.title} as completed`
           }
-          className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-transform focus:outline-none focus:ring-2 focus:ring-emerald-500 mt-0.5 ${
-            completed
-              ? "bg-emerald-600 text-white border-emerald-600 scale-105"
-              : "border-slate-300 hover:border-emerald-500 text-transparent"
-          } ${animating ? "animate-bounce" : ""}`}
+          className="flex-shrink-0 min-w-[44px] min-h-[44px] -ml-2 -mt-1 rounded-full flex items-center justify-center transition-transform focus:outline-none focus:ring-2 focus:ring-emerald-500"
         >
-          <CheckCircle2 className="w-5 h-5 fill-current" aria-hidden="true" />
+          <div
+            className={`w-7 h-7 rounded-full border flex items-center justify-center transition-all ${
+              completed
+                ? "bg-emerald-600 text-white border-emerald-600 scale-105"
+                : "border-slate-300 hover:border-emerald-500 text-transparent"
+            } ${animating ? "animate-bounce" : ""}`}
+          >
+            <CheckCircle2 className="w-4 h-4 fill-current" aria-hidden="true" />
+          </div>
         </button>
 
         <div className="flex-1 min-w-0">

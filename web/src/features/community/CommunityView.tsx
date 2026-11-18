@@ -62,18 +62,18 @@ export const CommunityView: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <ShieldAlert className="w-5 h-5 text-emerald-600" aria-hidden="true" />
-            <h2 className="text-xl font-bold text-slate-900">{communityName}</h2>
+            <ShieldAlert className="w-5 h-5 text-emerald-600 flex-shrink-0" aria-hidden="true" />
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900">{communityName}</h2>
           </div>
           <p className="text-xs text-slate-500 mt-1">
             Community-driven clean air action, collective pledges, and local RWA coordination.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           <label htmlFor="join-code-input" className="sr-only">
             Community Join Code
           </label>
@@ -83,7 +83,7 @@ export const CommunityView: React.FC = () => {
             placeholder="Enter Join Code"
             value={joinCode}
             onChange={(e) => setJoinCode(e.target.value)}
-            className="px-3 py-1.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 w-36 uppercase font-mono"
+            className="flex-1 sm:w-36 px-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase font-mono min-h-[40px]"
           />
           <button
             type="button"
@@ -93,7 +93,7 @@ export const CommunityView: React.FC = () => {
                 setJoinCode("");
               }
             }}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[40px] flex-shrink-0"
           >
             Join
           </button>

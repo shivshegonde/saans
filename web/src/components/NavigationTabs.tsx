@@ -84,9 +84,13 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({ activeTab, onSel
       {/* Mobile Bottom Fixed Tab Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 shadow-lg px-2 py-1"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur border-t border-slate-200 shadow-lg px-1 py-1 safe-area-inset-bottom"
       >
-        <div role="tablist" aria-label="Mobile Sections" className="grid grid-cols-6 gap-1">
+        <div
+          role="tablist"
+          aria-label="Mobile Sections"
+          className="grid grid-cols-6 gap-0.5 sm:gap-1"
+        >
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
@@ -97,14 +101,16 @@ export const NavigationTabs: React.FC<NavigationTabsProps> = ({ activeTab, onSel
                 aria-selected={isActive}
                 aria-controls={`panel-${tab.id}`}
                 onClick={() => onSelectTab(tab.id)}
-                className={`min-h-[48px] py-1.5 px-0.5 rounded-lg flex flex-col items-center justify-center gap-0.5 text-[10px] font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                className={`min-h-[48px] py-1 px-0.5 rounded-lg flex flex-col items-center justify-center gap-0.5 text-[9px] sm:text-[10px] font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                   isActive
                     ? "text-emerald-700 bg-emerald-50"
                     : "text-slate-500 hover:text-slate-900"
                 }`}
               >
                 {tab.icon}
-                <span className="truncate max-w-[52px]">{tab.label}</span>
+                <span className="truncate max-w-[48px] sm:max-w-[54px] text-center leading-none">
+                  {tab.label}
+                </span>
               </button>
             );
           })}

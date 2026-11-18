@@ -65,14 +65,16 @@ export const FamilyView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Family Header */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex items-center justify-between">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center flex-shrink-0">
             <Users className="w-5 h-5" aria-hidden="true" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-900">Family Health & Activity Advisory</h2>
-            <p className="text-xs text-slate-500">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 leading-tight">
+              Family Health & Activity Advisory
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
               Personalized guidance tailored to age groups, sensitivity flags, and daily school
               runs.
             </p>

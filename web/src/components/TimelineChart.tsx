@@ -61,7 +61,7 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({ data, isLoading })
   return (
     <section
       aria-label="72-Hour Air Quality Timeline"
-      className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4"
+      className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs space-y-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -108,7 +108,7 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({ data, isLoading })
         <div
           role="status"
           aria-live="polite"
-          className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between text-xs font-medium text-slate-700"
+          className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs font-medium text-slate-700"
         >
           <span>
             Selected Time: <strong className="text-slate-900">{selectedPoint.time}</strong>

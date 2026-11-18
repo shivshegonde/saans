@@ -141,10 +141,10 @@ export const ImpactLabView: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-emerald-600" aria-hidden="true" />
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-emerald-600 flex-shrink-0" aria-hidden="true" />
             Impact Lab
           </h2>
           <p className="text-xs text-slate-500 mt-1">
@@ -152,17 +152,17 @@ export const ImpactLabView: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-start">
           <div
             role="group"
             aria-label="Impact Perspective Lens"
-            className="inline-flex rounded-xl p-1 bg-slate-100 border border-slate-200"
+            className="inline-flex rounded-xl p-1 bg-slate-100 border border-slate-200 flex-1 sm:flex-none justify-center"
           >
             <button
               type="button"
               onClick={() => setLens("family")}
               aria-pressed={lens === "family"}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 flex-1 sm:flex-none ${
                 lens === "family"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
@@ -174,7 +174,7 @@ export const ImpactLabView: React.FC = () => {
               type="button"
               onClick={() => setLens("city")}
               aria-pressed={lens === "city"}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`min-h-[38px] px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 flex-1 sm:flex-none ${
                 lens === "city"
                   ? "bg-white text-slate-900 shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
@@ -187,7 +187,7 @@ export const ImpactLabView: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowDrawer(true)}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="min-h-[40px] min-w-[40px] p-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-emerald-500 flex-shrink-0"
             aria-label="Open 'How we calculated this' documentation"
           >
             <HelpCircle className="w-4 h-4" aria-hidden="true" />

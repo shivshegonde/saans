@@ -13,8 +13,16 @@
   --color-severe: #8e1b3a;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
   line-height: 1.5 !important;
   overflow-wrap: break-word;
   font-family:
@@ -23,6 +31,19 @@ body {
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
+}
+
+/* Touch manipulation optimization for mobile */
+button,
+a,
+input,
+select {
+  touch-action: manipulation;
+}
+
+/* Safe area support for iOS home indicator */
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0.25rem);
 }
 
 /* Tabular numerals for AQI data metrics */

@@ -80,7 +80,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-slate-50/60 text-slate-900 pb-16 md:pb-0">
+    <div className="min-h-screen flex flex-col justify-between bg-slate-50/60 text-slate-900 pb-20 md:pb-6">
       <SkipLink />
 
       <JudgeDemoBar
@@ -108,12 +108,12 @@ export function App() {
       <main
         id="main-content"
         tabIndex={-1}
-        className="max-w-6xl mx-auto px-4 py-6 flex-1 w-full space-y-6 outline-none"
+        className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 flex-1 w-full space-y-4 sm:space-y-6 outline-none"
       >
         {airError && (
           <div
             role="alert"
-            className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-3"
+            className="p-3.5 sm:p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 flex items-start gap-3"
           >
             <ShieldAlert
               className="w-5 h-5 flex-shrink-0 text-rose-600 mt-0.5"
@@ -144,10 +144,10 @@ export function App() {
         <button
           type="button"
           onClick={() => setIsAskSaansOpen(true)}
-          className="fixed bottom-20 md:bottom-8 right-5 z-40 px-4 py-3 rounded-full bg-emerald-600 text-white font-bold text-xs shadow-xl hover:bg-emerald-700 flex items-center gap-2 border-2 border-white focus:outline-none focus:ring-4 focus:ring-emerald-400 transition-transform hover:scale-105"
+          className="fixed bottom-16 sm:bottom-20 md:bottom-8 right-3.5 sm:right-5 z-40 min-h-[44px] px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-full bg-emerald-600 text-white font-bold text-xs shadow-xl hover:bg-emerald-700 flex items-center gap-2 border-2 border-white focus:outline-none focus:ring-4 focus:ring-emerald-400 transition-transform hover:scale-105"
           aria-label="Open Ask Saans AI assistant dialog"
         >
-          <MessageSquare className="w-4 h-4" aria-hidden="true" />
+          <MessageSquare className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
           <span className="hidden sm:inline">Ask Saans</span>
         </button>
       </aside>

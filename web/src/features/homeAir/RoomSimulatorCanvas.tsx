@@ -86,8 +86,17 @@ export const RoomSimulatorCanvas: React.FC<RoomSimulatorCanvasProps> = ({ outdoo
       animId = requestAnimationFrame(render);
     };
 
+    const handleResize = () => {
+      if (!canvas || !canvas.parentElement) return;
+      canvas.width = canvas.parentElement.clientWidth;
+    };
+    window.addEventListener("resize", handleResize);
+
     render();
-    return () => cancelAnimationFrame(animId);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+    };
   }, [indoorPm25, prefersReducedMotion, forceStaticView, purifierOn]);
 
   const cleanPercent = Math.max(0, Math.round(((outdoorPm25 - indoorPm25) / outdoorPm25) * 100));
@@ -95,7 +104,7 @@ export const RoomSimulatorCanvas: React.FC<RoomSimulatorCanvasProps> = ({ outdoo
   return (
     <section
       aria-label="Room Physics Air Simulator"
-      className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4"
+      className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs space-y-4"
     >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
@@ -145,42 +154,42 @@ export const RoomSimulatorCanvas: React.FC<RoomSimulatorCanvasProps> = ({ outdoo
         <button
           type="button"
           onClick={() => setWindowOpen(!windowOpen)}
-          className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+          className={`min-h-[44px] px-3 py-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
             windowOpen
               ? "bg-sky-500 text-white border-sky-600"
               : "bg-slate-100 text-slate-700 border-slate-200"
           }`}
           aria-pressed={windowOpen}
         >
-          <Wind className="w-3.5 h-3.5" aria-hidden="true" />
+          <Wind className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
           <span>Window: {windowOpen ? "OPEN (2.5 ACH)" : "CLOSED (0.4 ACH)"}</span>
         </button>
 
         <button
           type="button"
           onClick={() => setPurifierOn(!purifierOn)}
-          className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+          className={`min-h-[44px] px-3 py-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
             purifierOn
               ? "bg-emerald-600 text-white border-emerald-700"
               : "bg-slate-100 text-slate-700 border-slate-200"
           }`}
           aria-pressed={purifierOn}
         >
-          <Shield className="w-3.5 h-3.5" aria-hidden="true" />
+          <Shield className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
           <span>HEPA Purifier: {purifierOn ? "ON (250 m³/h)" : "OFF"}</span>
         </button>
 
         <button
           type="button"
           onClick={() => setCookingActive(!cookingActive)}
-          className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+          className={`min-h-[44px] px-3 py-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
             cookingActive
               ? "bg-orange-500 text-white border-orange-600"
               : "bg-slate-100 text-slate-700 border-slate-200"
           }`}
           aria-pressed={cookingActive}
         >
-          <Flame className="w-3.5 h-3.5" aria-hidden="true" />
+          <Flame className="w-3.5 h-3.5 flex-shrink-0" aria-hidden="true" />
           <span>Cooking: {cookingActive ? "ACTIVE (+15 mg/h)" : "IDLE"}</span>
         </button>
       </div>

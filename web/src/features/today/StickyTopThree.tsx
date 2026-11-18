@@ -17,14 +17,16 @@ export const StickyTopThree: React.FC<StickyTopThreeProps> = ({ topActions, onAc
       aria-label="Top 3 actions for today"
       className="p-4 rounded-3xl bg-emerald-900/90 text-white shadow-md border border-emerald-700/60 backdrop-blur"
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping" />
-          <h2 className="text-sm font-bold uppercase tracking-wider text-emerald-200">
+          <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-ping flex-shrink-0" />
+          <h2 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-200">
             3 Things That Matter Most Today
           </h2>
         </div>
-        <span className="text-xs text-emerald-300 font-medium">Prioritized for peak smog</span>
+        <span className="text-[11px] sm:text-xs text-emerald-300 font-medium">
+          Prioritized for peak smog
+        </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

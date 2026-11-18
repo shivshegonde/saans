@@ -8,8 +8,8 @@ import {
   Mail,
   ChevronDown,
   ChevronUp,
-  X,
 } from "lucide-react";
+import { OutboxInspectorModal } from "./OutboxInspectorModal";
 
 interface JudgeDemoBarProps {
   onScenarioChange?: (scenario: string) => void;
@@ -28,7 +28,12 @@ export const JudgeDemoBar: React.FC<JudgeDemoBarProps> = ({
   currentPersona = "Riya (Owner)",
   currentScenario = "Severe",
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
   const [showInspector, setShowInspector] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -87,13 +92,17 @@ export const JudgeDemoBar: React.FC<JudgeDemoBarProps> = ({
         aria-label="Judge Evaluation Demo Bar"
         className="bg-slate-900 text-white border-b border-slate-800 text-xs z-30 transition-all shadow-md"
       >
-        <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded font-black text-[10px] tracking-wider uppercase bg-amber-400 text-black">
-              Judge Demo Bar (FR-20)
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="px-1.5 sm:px-2 py-0.5 rounded font-black text-[9px] sm:text-[10px] tracking-wider uppercase bg-amber-400 text-black">
+              Demo (FR-20)
             </span>
-            <span className="hidden sm:inline text-slate-400 font-mono text-[11px]">
-              Persona: <strong className="text-white">{currentPersona}</strong> | Scenario:{" "}
+            <span className="text-slate-400 font-mono text-[10px] sm:text-[11px]">
+              <span className="hidden sm:inline">
+                Persona: <strong className="text-white">{currentPersona.split(" ")[0]}</strong>{" "}
+                |{" "}
+              </span>
+              <span className="text-slate-400">Scenario: </span>
               <strong className="text-emerald-400">{currentScenario}</strong>
             </span>
           </div>
@@ -102,16 +111,16 @@ export const JudgeDemoBar: React.FC<JudgeDemoBarProps> = ({
             <button
               type="button"
               onClick={() => setShowInspector(true)}
-              className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1 focus:outline-none focus:ring-1 focus:ring-amber-400"
+              className="px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[11px] sm:text-xs font-semibold flex items-center gap-1 focus:outline-none focus:ring-1 focus:ring-amber-400 min-h-[32px]"
             >
-              <Mail className="w-3.5 h-3.5 text-amber-400" aria-hidden="true" />
-              <span>Outbox Inspector</span>
+              <Mail className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" aria-hidden="true" />
+              <span className="hidden xs:inline">Outbox</span>
             </button>
 
             <button
               type="button"
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-1 rounded text-slate-400 hover:text-white focus:outline-none focus:ring-1 focus:ring-amber-400"
+              className="p-1 sm:p-1.5 rounded text-slate-400 hover:text-white focus:outline-none focus:ring-1 focus:ring-amber-400 min-h-[32px] min-w-[32px] flex items-center justify-center"
               aria-label={isCollapsed ? "Expand Judge Demo Bar" : "Collapse Judge Demo Bar"}
             >
               {isCollapsed ? (
@@ -237,82 +246,7 @@ export const JudgeDemoBar: React.FC<JudgeDemoBarProps> = ({
       </aside>
 
       {/* Outbox Inspector Modal */}
-      {showInspector && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="inspector-title"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs"
-        >
-          <div className="bg-slate-900 text-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto p-6 shadow-2xl border border-slate-700 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <div className="flex items-center gap-2">
-                <Mail className="w-5 h-5 text-amber-400" aria-hidden="true" />
-                <h3 id="inspector-title" className="text-base font-bold">
-                  Transactional Outbox & Event Inspector (FR-20)
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowInspector(false)}
-                className="p-1 rounded-full text-slate-400 hover:text-white focus:outline-none focus:ring-1 focus:ring-amber-400"
-                aria-label="Close Outbox Inspector"
-              >
-                <X className="w-5 h-5" aria-hidden="true" />
-              </button>
-            </div>
-
-            <p className="text-xs text-slate-400">
-              Real transactional outbox items written atomically with domain events. Guarded against
-              double dispatch via in-process mutex and lease lock.
-            </p>
-
-            <div className="space-y-3 font-mono text-xs">
-              <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5">
-                <div className="flex justify-between items-center text-[11px]">
-                  <span className="text-emerald-400 font-bold">STATUS: DISPATCHED</span>
-                  <span className="text-slate-500">Attempts: 1/5 • Channel: EMAIL</span>
-                </div>
-                <p className="font-bold text-slate-200">
-                  Subject: Severe Smog Advisory — Delhi NCR AQI 380
-                </p>
-                <p className="text-slate-400 text-[11px]">
-                  Recipient: riya@example.com (Household Owner)
-                </p>
-                <p className="text-slate-500 text-[10px]">
-                  Idempotency Key: h_riya123_alert_forecast_peak_1700000000
-                </p>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5">
-                <div className="flex justify-between items-center text-[11px]">
-                  <span className="text-amber-400 font-bold">STATUS: PENDING (ESCALATED)</span>
-                  <span className="text-slate-500">Attempts: 0/5 • Channel: SMS / PUSH</span>
-                </div>
-                <p className="font-bold text-slate-200">
-                  Subject: Co-Guardian Escalation: Dadaji Morning Walk Alert Unacknowledged
-                </p>
-                <p className="text-slate-400 text-[11px]">
-                  Recipient: amit@example.com (Consenting Co-Guardian)
-                </p>
-                <p className="text-slate-500 text-[10px]">
-                  Idempotency Key: h_riya123_alert_escalation_grace_1700001800
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-2 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setShowInspector(false)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white"
-              >
-                Close Inspector
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <OutboxInspectorModal isOpen={showInspector} onClose={() => setShowInspector(false)} />
     </>
   );
 };

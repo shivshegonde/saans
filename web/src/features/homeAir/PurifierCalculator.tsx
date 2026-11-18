@@ -17,7 +17,7 @@ export const PurifierCalculator: React.FC = () => {
   return (
     <section
       aria-label="Air Purifier CADR Sizing Calculator"
-      className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4"
+      className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-xs space-y-4"
     >
       <div className="flex items-center gap-2">
         <Calculator className="w-5 h-5 text-emerald-600" aria-hidden="true" />
@@ -86,14 +86,14 @@ export const PurifierCalculator: React.FC = () => {
       </div>
 
       {/* Sizing Output Box */}
-      <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-wrap items-center justify-between gap-4">
+      <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <span className="text-xs uppercase font-bold tracking-wider text-emerald-800">
             Recommended Clean Air Delivery Rate (CADR)
           </span>
-          <div className="text-3xl font-extrabold text-emerald-900 tabular-nums mt-0.5">
+          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-900 tabular-nums mt-0.5">
             {requiredCadrM3h} m³/h{" "}
-            <span className="text-base font-semibold text-emerald-700">
+            <span className="text-sm sm:text-base font-semibold text-emerald-700">
               ({requiredCadrCfm} CFM)
             </span>
           </div>
