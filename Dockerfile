@@ -22,8 +22,8 @@ COPY server/ ./server/
 COPY web/ ./web/
 COPY docs/ ./docs/
 
-# Build all packages
-RUN npm run build
+# Build packages in dependency order
+RUN npm run build --workspace=shared && npm run build --workspace=server && npm run build --workspace=web
 
 # Stage 2: Production runtime
 FROM node:22-alpine AS runner
