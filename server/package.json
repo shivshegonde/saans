@@ -1,0 +1,48 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -b",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --testTimeout=5000",
+    "test:coverage": "vitest run --coverage --testTimeout=5000",
+    "openapi": "tsx scripts/generate-openapi.ts",
+    "clean": "rimraf dist coverage"
+  },
+  "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^7.3.0",
+    "@google-cloud/firestore": "^7.11.0",
+    "@google-cloud/secret-manager": "^5.6.0",
+    "@google/genai": "^0.3.1",
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "nodemailer": "^6.9.16",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "shared": "*",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.7",
+    "@types/nodemailer": "^6.4.17",
+    "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "fast-check": "^3.23.2",
+    "pino-pretty": "^13.0.0",
+    "rimraf": "^6.0.1",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

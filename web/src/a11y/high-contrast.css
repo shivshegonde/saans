@@ -1,0 +1,35 @@
+/* High Contrast Mode Stylesheet - Mandated in §10 */
+html[data-contrast="high"] body {
+  background: #000000;
+  color: #ffffff;
+}
+
+html[data-contrast="high"] [class*="bg-slate-9"],
+html[data-contrast="high"] [class*="bg-gray-9"] {
+  background-color: #0b0f17 !important;
+}
+
+html[data-contrast="high"] [class*="text-slate-9"],
+html[data-contrast="high"] [class*="text-gray-9"],
+html[data-contrast="high"] [class*="text-slate-8"],
+html[data-contrast="high"] [class*="text-gray-8"],
+html[data-contrast="high"] h1,
+html[data-contrast="high"] h2,
+html[data-contrast="high"] h3 {
+  color: #ffffff !important;
+}
+
+html[data-contrast="high"] [class*="text-slate-5"],
+html[data-contrast="high"] [class*="text-slate-6"],
+html[data-contrast="high"] [class*="text-gray-5"],
+html[data-contrast="high"] [class*="text-gray-6"] {
+  color: #fef08a !important;
+}
+
+html[data-contrast="high"] input,
+html[data-contrast="high"] select,
+html[data-contrast="high"] textarea {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #facc15 !important;
+}

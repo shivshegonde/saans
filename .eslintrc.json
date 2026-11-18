@@ -1,0 +1,60 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "coverage",
+    "node_modules",
+    "**/*.d.ts",
+    "**/*.js",
+    "**/*.mjs"
+  ],
+  "env": {
+    "node": true,
+    "es2022": true,
+    "browser": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "complexity": ["error", 12],
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }]
+  },
+  "overrides": [
+    {
+      "files": ["server/src/routes/**/*.ts"],
+      "rules": {
+        "max-lines": ["error", { "max": 250, "skipBlankLines": true, "skipComments": true }]
+      }
+    },
+    {
+      "files": ["server/src/core/**/*.ts"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              "../adapters/*",
+              "../routes/*",
+              "../middleware/*",
+              "express",
+              "@google/genai",
+              "@google-cloud/*"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.test.ts", "**/*.spec.ts"],
+      "rules": {
+        "max-lines": "off",
+        "max-lines-per-function": "off"
+      }
+    }
+  ]
+}

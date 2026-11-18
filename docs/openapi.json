@@ -1,0 +1,655 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Saans API",
+    "version": "1.0.0",
+    "description": "Urban Air Quality Assistant API with deterministic models and grounded GenAI."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Current environment"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "Token",
+        "description": "Opaque 256-bit bearer session token"
+      }
+    },
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["pass"]
+          },
+          "uptimeSeconds": {
+            "type": "number"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": ["status", "uptimeSeconds", "timestamp", "version"]
+      },
+      "ReadyResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "checks": {
+            "type": "object",
+            "properties": {
+              "database": {
+                "type": "string",
+                "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+              },
+              "airQualityProvider": {
+                "type": "string",
+                "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+              },
+              "aiService": {
+                "type": "string",
+                "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+              }
+            },
+            "required": ["database", "airQualityProvider", "aiService"]
+          }
+        },
+        "required": ["status", "timestamp", "checks"]
+      },
+      "AirNowResponse": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            },
+            "required": ["name", "lat", "lng"]
+          },
+          "aqi": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "category": {
+            "type": "string",
+            "enum": ["Good", "Satisfactory", "Moderate", "Poor", "Very Poor", "Severe"]
+          },
+          "dominantPollutant": {
+            "type": "string"
+          },
+          "whoMultiple": {
+            "type": "number",
+            "minimum": 0
+          },
+          "pollutants": {
+            "type": "object",
+            "properties": {
+              "pm25": {
+                "type": "number",
+                "minimum": 0
+              },
+              "pm10": {
+                "type": "number",
+                "minimum": 0
+              },
+              "no2": {
+                "type": "number",
+                "minimum": 0
+              },
+              "so2": {
+                "type": "number",
+                "minimum": 0
+              },
+              "co": {
+                "type": "number",
+                "minimum": 0
+              },
+              "o3": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": ["pm25"]
+          },
+          "summaryHeadline": {
+            "type": "string"
+          },
+          "smogDrivers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "explanation": {
+                  "type": "string"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": ["low", "moderate", "high"]
+                }
+              },
+              "required": ["id", "name", "explanation", "severity"]
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "source": {
+                "type": "string"
+              },
+              "fetchedAt": {
+                "type": "string"
+              },
+              "isStale": {
+                "type": "boolean"
+              }
+            },
+            "required": ["source", "fetchedAt", "isStale"]
+          }
+        },
+        "required": [
+          "location",
+          "aqi",
+          "category",
+          "dominantPollutant",
+          "whoMultiple",
+          "pollutants",
+          "summaryHeadline",
+          "smogDrivers",
+          "provenance"
+        ]
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "about:blank"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string"
+          },
+          "invalidParams": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": ["name", "reason"]
+            }
+          }
+        },
+        "required": ["title", "status", "detail", "correlationId"]
+      },
+      "UserRegisterRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 2
+          },
+          "householdName": {
+            "type": "string",
+            "minLength": 2
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            },
+            "required": ["name", "lat", "lng"]
+          }
+        },
+        "required": ["email", "password", "displayName", "householdName", "location"]
+      },
+      "UserLoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "AuthSessionResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "displayName": {
+                "type": "string"
+              }
+            },
+            "required": ["id", "email", "displayName"]
+          },
+          "household": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string",
+                "enum": ["OWNER", "MEMBER"]
+              },
+              "scopes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["id", "name", "role", "scopes"]
+          }
+        },
+        "required": ["token", "user", "household"]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Liveness probe",
+        "responses": {
+          "200": {
+            "description": "Service is live",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["pass"]
+                    },
+                    "uptimeSeconds": {
+                      "type": "number"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["status", "uptimeSeconds", "timestamp", "version"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ready": {
+      "get": {
+        "summary": "Readiness probe",
+        "responses": {
+          "200": {
+            "description": "Service dependencies connected",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "checks": {
+                      "type": "object",
+                      "properties": {
+                        "database": {
+                          "type": "string",
+                          "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+                        },
+                        "airQualityProvider": {
+                          "type": "string",
+                          "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+                        },
+                        "aiService": {
+                          "type": "string",
+                          "enum": ["CONNECTED", "DEGRADED", "DOWN"]
+                        }
+                      },
+                      "required": ["database", "airQualityProvider", "aiService"]
+                    }
+                  },
+                  "required": ["status", "timestamp", "checks"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/air/now": {
+      "get": {
+        "summary": "Current air quality, NAQI, and smog drivers",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 28.6139
+            }
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 77.209
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "Delhi-NCR"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Live air conditions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "lat": {
+                          "type": "number"
+                        },
+                        "lng": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["name", "lat", "lng"]
+                    },
+                    "aqi": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "category": {
+                      "type": "string",
+                      "enum": ["Good", "Satisfactory", "Moderate", "Poor", "Very Poor", "Severe"]
+                    },
+                    "dominantPollutant": {
+                      "type": "string"
+                    },
+                    "whoMultiple": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "pollutants": {
+                      "type": "object",
+                      "properties": {
+                        "pm25": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "pm10": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "no2": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "so2": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "co": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "o3": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": ["pm25"]
+                    },
+                    "summaryHeadline": {
+                      "type": "string"
+                    },
+                    "smogDrivers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "explanation": {
+                            "type": "string"
+                          },
+                          "severity": {
+                            "type": "string",
+                            "enum": ["low", "moderate", "high"]
+                          }
+                        },
+                        "required": ["id", "name", "explanation", "severity"]
+                      }
+                    },
+                    "provenance": {
+                      "type": "object",
+                      "properties": {
+                        "source": {
+                          "type": "string"
+                        },
+                        "fetchedAt": {
+                          "type": "string"
+                        },
+                        "isStale": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": ["source", "fetchedAt", "isStale"]
+                    }
+                  },
+                  "required": [
+                    "location",
+                    "aqi",
+                    "category",
+                    "dominantPollutant",
+                    "whoMultiple",
+                    "pollutants",
+                    "summaryHeadline",
+                    "smogDrivers",
+                    "provenance"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error response",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "default": "about:blank"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "instance": {
+                      "type": "string"
+                    },
+                    "correlationId": {
+                      "type": "string"
+                    },
+                    "invalidParams": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "reason": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["name", "reason"]
+                      }
+                    }
+                  },
+                  "required": ["title", "status", "detail", "correlationId"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/air/forecast": {
+      "get": {
+        "summary": "Hourly air quality forecast up to 72 hours",
+        "parameters": [
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 28.6139
+            }
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "default": 77.209
+            }
+          },
+          {
+            "name": "hours",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 72
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Air forecast data"
+          }
+        }
+      }
+    }
+  }
+}
