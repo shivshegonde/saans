@@ -13,9 +13,9 @@
     }
   },
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc -b --force",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.3.0",

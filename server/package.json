@@ -6,7 +6,7 @@
   "main": "./dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -b",
+    "build": "tsc -b --force",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --testTimeout=5000",
     "test:coverage": "vitest run --coverage --testTimeout=5000",

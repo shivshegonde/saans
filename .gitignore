@@ -22,6 +22,7 @@ donotpush/
 # Testing and coverage
 coverage/
 *.lcov
+*.tsbuildinfo
 test-results/
 playwright-report/
 blob-report/
