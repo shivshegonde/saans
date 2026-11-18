@@ -6,7 +6,7 @@ This script walks through the core capabilities of **Saans** in 3 minutes, demon
 
 ## Step 1: Living Sky & Scenario Switcher (0:00 – 0:30)
 
-1. Open the application in your browser (Live URL: `https://saans-f7szv3ptra-el.a.run.app` or `http://localhost:8080`).
+1. Open the application in your browser (Live URL: `https://saans-205781654913.asia-south1.run.app` or `http://localhost:8080`).
 2. Notice the **Living Sky Hero**: displays real-time AQI, NAQI category badge, dominant pollutant (PM2.5), WHO multiple, and primary smog drivers.
 3. In the **Judge Demo Bar** at the bottom of the screen, click the **"Severe"** scenario button:
    - The sky instantly transitions to a deep crimson/purple smog palette.

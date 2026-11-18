@@ -2,7 +2,7 @@
 
 > **One-Line Pitch:** A deterministic, privacy-first environmental health assistant that turns winter smog forecasts into personalized, evidence-grounded daily action plans — separating family exposure from city emissions while enforcing strict safety guardrails and $k$-anonymity.
 
-- **Live URL:** [https://saans-f7szv3ptra-el.a.run.app](https://saans-f7szv3ptra-el.a.run.app)
+- **Live URL:** [https://saans-205781654913.asia-south1.run.app](https://saans-205781654913.asia-south1.run.app)
 - **Local Dev Server:** `http://localhost:8080`
 - **Cloud Run Service:** `saans` in `asia-south1` (GCP Project: `ai-builder-sql-copilot`)
 - **Synthetic Demo Personas (Quick Login via Judge Demo Bar):**
