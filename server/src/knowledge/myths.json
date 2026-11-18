@@ -1,0 +1,212 @@
+[
+  {
+    "id": "myth-houseplants-clean-air",
+    "category": "myth",
+    "title": "Houseplants Clean Indoor Room Air During Smog Season",
+    "appliesWhen": "Common viral forwarded claim about snake plants, areca palms, or money plants",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Potted plants do not improve indoor air quality: a review and analysis of reported VOC removal rates",
+          "organisation": "Journal of Exposure Science & Environmental Epidemiology / Nature",
+          "year": 2020,
+          "url": "https://doi.org/10.1038/s41370-019-0175-9"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "The 1989 NASA Clean Air Study used sealed 1 m³ Plexiglas chambers. In real residential rooms with natural air exchange (0.5–2 h⁻¹), it requires 10–100 plants per square meter to equal the particulate and VOC removal of a standard low-end mechanical HEPA purifier. Houseplants have zero measurable effect on indoor PM2.5."
+  },
+  {
+    "id": "myth-ozone-generators-cleaners",
+    "category": "myth",
+    "title": "Ozone Generators and Electronic Air Cleaners Sanitize Smoggy Air",
+    "appliesWhen": "Commercial marketing of ozone-producing devices for home purification",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Ozone Generators that are Sold as Air Cleaners",
+          "organisation": "US Environmental Protection Agency (EPA)",
+          "year": 2022,
+          "url": "https://www.epa.gov/indoor-air-quality-iaq/ozone-generators-are-sold-air-cleaners"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "Ozone does not remove particulate matter (PM2.5). Furthermore, ozone is a potent lung irritant that damages mucosal membranes, exacerbates asthma, and reacts with indoor terpenes to create secondary toxic formaldehyde and ultrafine aerosols."
+  },
+  {
+    "id": "myth-cloth-mask-sufficient",
+    "category": "myth",
+    "title": "A Cloth Mask or Handkerchief Provides Good Protection Against Smog",
+    "appliesWhen": "Commuters wearing single-layer cotton handkerchiefs or surgical masks in severe smog",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Filter performance of cloth masks and surgical masks against particulate matter",
+          "organisation": "Annals of Work Exposures and Health",
+          "year": 2021,
+          "url": "https://doi.org/10.1093/annweh/wxaa143"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "Cotton fabric pore size is 50–100 µm, while smog particles of concern are PM2.5 (≤ 2.5 µm). Typical cloth masks filter only 10–20% of sub-micron particles, and surgical masks leak heavily around the nose and cheeks. Only certified, well-sealed N95/FFP2 respirators provide > 85% real-world protection."
+  },
+  {
+    "id": "myth-steam-inhalation-detox",
+    "category": "myth",
+    "title": "Inhaling Hot Steam Detoxifies Lungs from Inhaled Particulate Matter",
+    "appliesWhen": "Common home remedy advice circulating during winter smog",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Steam inhalation in respiratory tract hygiene: clinical efficacy and thermal burn risks",
+          "organisation": "British Medical Journal (BMJ)",
+          "year": 2021,
+          "url": "https://doi.org/10.1136/bmj.n891"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "Inhaled PM2.5 penetrates into deep alveoli and crosses the alveolar-capillary barrier into the bloodstream. Steam condenses in the upper trachea and nasal passages; it cannot physically reach deep alveolar lung tissue or dissolve inorganic particles like elemental carbon, sulfates, or silica, and carries accidental scald burn risks."
+  },
+  {
+    "id": "myth-purifiers-cause-lazy-lungs",
+    "category": "myth",
+    "title": "Using Air Purifiers Indoors Weakens Natural Immunity / Creates 'Lazy Lungs'",
+    "appliesWhen": "Hesitancy to run purifiers due to fear of losing natural resistance",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Cardiopulmonary benefits of HEPA filtration during wildfire and urban air pollution",
+          "organisation": "American Thoracic Society",
+          "year": 2020,
+          "url": "https://www.thoracic.org"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "The human respiratory system has no physiological mechanism that benefits from chronic toxic particulate exposure. Inhaled PM2.5 causes continuous systemic vascular inflammation, oxidative stress, and macrophage cell death. Purified air rests the bronchial mucosa, allowing natural cilia to repair."
+  },
+  {
+    "id": "myth-ionizers-without-filters",
+    "category": "myth",
+    "title": "Filterless Ionizers Clean Rooms Better Than HEPA Purifiers",
+    "appliesWhen": "Commercial promotion of filterless ionic breeze devices",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Air cleaning technologies: An evaluation of ionizers and bipolar ionization",
+          "organisation": "Indoor Air",
+          "year": 2021,
+          "url": "https://doi.org/10.1111/ina.12879"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "Ionizers impart an electrical charge to airborne particles, causing them to deposit on nearby walls and furniture rather than collecting them in a sealed filter. Walking or air currents re-suspend these charged particles, and many ionic devices generate ozone as a toxic byproduct."
+  },
+  {
+    "id": "myth-early-morning-air-always-pure",
+    "category": "myth",
+    "title": "Early Morning Air (Brahma Muhurta) Is Always the Purest for Outdoor Breathing",
+    "appliesWhen": "Traditional habit of 5:30–6:30 AM outdoor morning walks",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Diurnal boundary layer dynamics and pollutant trapping in northern India",
+          "organisation": "CPCB / Indian Meteorological Department (IMD)",
+          "year": 2021,
+          "url": "https://cpcb.nic.in"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "While true in pristine rural or forest settings, in urban plains during winter, nocturnal radiation cooling creates a shallow surface inversion layer (100–200m). Trapped nocturnal truck emissions, biomass burning, and cold stillness make 5:00 AM – 8:00 AM the most particulate-dense and dangerous hours of the entire day."
+  },
+  {
+    "id": "myth-jaggery-cleanses-lungs",
+    "category": "myth",
+    "title": "Eating Jaggery (Gur) After Smog Exposure Neutralizes Inhaled Toxins",
+    "appliesWhen": "Widespread popular folklore in North India recommending daily jaggery for pollution",
+    "effort": "low",
+    "costBand": "₹",
+    "evidence": {
+      "level": "limited",
+      "sources": [
+        {
+          "title": "Nutritional interventions and airborne particulate toxicity",
+          "organisation": "Indian Journal of Medical Research",
+          "year": 2018,
+          "url": "https://www.ijmr.org.in"
+        }
+      ]
+    },
+    "verdict": "partly",
+    "effectModel": "Jaggery passes through the digestive tract (esophagus and stomach), whereas smog particles enter the respiratory tract (bronchi and alveoli). While jaggery contains antioxidants and soothing minerals that may alleviate mild throat irritation, it cannot remove or neutralize particles deposited in the lungs or bloodstream."
+  },
+  {
+    "id": "myth-closing-ac-recirculation",
+    "category": "myth",
+    "title": "Running Car AC with Fresh Air Mode Cleans Cabin Smog",
+    "appliesWhen": "Commuter vehicle AC settings during highway smog",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "In-cabin air quality and ventilation settings in heavy traffic",
+          "organisation": "Aerosol and Air Quality Research",
+          "year": 2019,
+          "url": "https://doi.org/10.4209/aaqr.2019.04.0178"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "Setting car ventilation to 'Fresh Air' draws contaminated outdoor roadway exhaust directly into the vehicle cabin. Switching to 'Recirculation' mode reduces in-cabin PM2.5 concentrations by 70–85% within 5 minutes when using standard vehicle cabin filters."
+  },
+  {
+    "id": "myth-ac-heats-air-purifier",
+    "category": "myth",
+    "title": "Air Purifiers Need to Be Turned Off When Air Conditioners or Heaters Run",
+    "appliesWhen": "Operating HVAC cooling or heating alongside air filtration",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Simultaneous operation of residential HVAC and portable air cleaners",
+          "organisation": "Indoor Air",
+          "year": 2020,
+          "url": "https://doi.org/10.1111/ina.12658"
+        }
+      ]
+    },
+    "verdict": "unsupported",
+    "effectModel": "Air purifiers work purely on mechanical airflow and filtration; they operate synergistically with space heating or cooling. AC air handlers help distribute air across the room, speeding up the purifier's effective Clean Air Delivery Rate."
+  }
+]

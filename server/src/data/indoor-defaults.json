@@ -1,0 +1,55 @@
+{
+  "penetrationFactor": {
+    "default": 0.8,
+    "min": 0.6,
+    "max": 0.95,
+    "citation": "Thatcher & Layton (1995), Chen & Zhao (2012) Review of relationship between indoor and outdoor particles."
+  },
+  "airExchangeRateH": {
+    "closed": {
+      "default": 0.4,
+      "min": 0.2,
+      "max": 0.8,
+      "citation": "ASHRAE Standard 62.2 / Howard-Reed et al. (2002) Air change rates in residential buildings."
+    },
+    "open": {
+      "default": 2.5,
+      "min": 1.5,
+      "max": 4.5,
+      "citation": "Wallace et al. (2002) Continuous measurements of air change rates in residences."
+    }
+  },
+  "depositionRateH": {
+    "default": 0.25,
+    "min": 0.15,
+    "max": 0.4,
+    "citation": "Nazaroff (2004) Indoor particle dynamics, Atmospheric Environment 38(17)."
+  },
+  "sourcesUgPerHour": {
+    "none": { "default": 0, "min": 0, "max": 0, "citation": "Baseline without emission" },
+    "cooking": {
+      "default": 12000,
+      "min": 6000,
+      "max": 25000,
+      "citation": "He et al. (2004) Contribution of cooking tasks to indoor PM concentrations."
+    },
+    "incense": {
+      "default": 8000,
+      "min": 4000,
+      "max": 15000,
+      "citation": "Lin et al. (2008) Particulate matter emission factors from incense burning."
+    },
+    "mosquitoCoil": {
+      "default": 10000,
+      "min": 5000,
+      "max": 18000,
+      "citation": "Liu et al. (2003) Emission factors of fine particles from burning mosquito coils."
+    },
+    "drySweeping": {
+      "default": 5000,
+      "min": 2000,
+      "max": 10000,
+      "citation": "Ferro et al. (2004) Indoor dust resuspension rates during human activities."
+    }
+  }
+}

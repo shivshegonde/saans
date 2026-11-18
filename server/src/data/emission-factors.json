@@ -1,0 +1,78 @@
+{
+  "transportPerPassengerKm": {
+    "petrol_car": {
+      "co2eG": { "value": 170.0, "uncertaintyPct": 10, "citation": "ARAI (2020) Emission Factors for Indian In-Use Vehicles" },
+      "pm25G": { "value": 0.025, "uncertaintyPct": 15, "citation": "CPCB / TERI (2020) Source apportionment" },
+      "noxG": { "value": 0.25, "uncertaintyPct": 15, "citation": "ARAI (2020)" }
+    },
+    "diesel_car": {
+      "co2eG": { "value": 160.0, "uncertaintyPct": 10, "citation": "ARAI (2020)" },
+      "pm25G": { "value": 0.085, "uncertaintyPct": 20, "citation": "CPCB (2020) High particulate emission factor from light-duty diesel" },
+      "noxG": { "value": 0.65, "uncertaintyPct": 15, "citation": "ARAI (2020)" }
+    },
+    "two_wheeler_petrol": {
+      "co2eG": { "value": 45.0, "uncertaintyPct": 10, "citation": "TERI (2021) Urban mobility emission audit" },
+      "pm25G": { "value": 0.04, "uncertaintyPct": 15, "citation": "TERI (2021)" },
+      "noxG": { "value": 0.18, "uncertaintyPct": 15, "citation": "TERI (2021)" }
+    },
+    "auto_rickshaw_cng": {
+      "co2eG": { "value": 65.0, "uncertaintyPct": 15, "citation": "TERI (2021)" },
+      "pm25G": { "value": 0.012, "uncertaintyPct": 20, "citation": "CPCB (2020)" },
+      "noxG": { "value": 0.2, "uncertaintyPct": 15, "citation": "CPCB (2020)" }
+    },
+    "cng_bus": {
+      "co2eG": { "value": 35.0, "uncertaintyPct": 15, "citation": "CSE India (2020) Commuter bus occupancy analysis" },
+      "pm25G": { "value": 0.006, "uncertaintyPct": 25, "citation": "CSE India (2020)" },
+      "noxG": { "value": 0.12, "uncertaintyPct": 20, "citation": "CSE India (2020)" }
+    },
+    "electric_metro": {
+      "co2eG": { "value": 18.0, "uncertaintyPct": 10, "citation": "DMRC Sustainability Report (2022) / CEA Grid factor" },
+      "pm25G": { "value": 0.001, "uncertaintyPct": 10, "citation": "DMRC (2022)" },
+      "noxG": { "value": 0.01, "uncertaintyPct": 10, "citation": "DMRC (2022)" }
+    },
+    "electric_vehicle": {
+      "co2eG": { "value": 45.0, "uncertaintyPct": 15, "citation": "Central Electricity Authority (2023) CO2 Baseline Database" },
+      "pm25G": { "value": 0.002, "uncertaintyPct": 15, "citation": "Non-exhaust brake/tire wear proxy" },
+      "noxG": { "value": 0.02, "uncertaintyPct": 15, "citation": "Power sector conversion" }
+    },
+    "carpool_2person": {
+      "co2eG": { "value": 85.0, "uncertaintyPct": 10, "citation": "Halved single-occupancy petrol car" },
+      "pm25G": { "value": 0.012, "uncertaintyPct": 15, "citation": "Halved single-occupancy petrol car" },
+      "noxG": { "value": 0.12, "uncertaintyPct": 15, "citation": "Halved single-occupancy petrol car" }
+    },
+    "cycling": {
+      "co2eG": { "value": 0.0, "uncertaintyPct": 0, "citation": "Active transport zero tailpipe" },
+      "pm25G": { "value": 0.0, "uncertaintyPct": 0, "citation": "Active transport zero tailpipe" },
+      "noxG": { "value": 0.0, "uncertaintyPct": 0, "citation": "Active transport zero tailpipe" }
+    },
+    "walking": {
+      "co2eG": { "value": 0.0, "uncertaintyPct": 0, "citation": "Zero tailpipe" },
+      "pm25G": { "value": 0.0, "uncertaintyPct": 0, "citation": "Zero tailpipe" },
+      "noxG": { "value": 0.0, "uncertaintyPct": 0, "citation": "Zero tailpipe" }
+    }
+  },
+  "cookingPerMeal": {
+    "biomass": {
+      "co2eG": { "value": 1200.0, "uncertaintyPct": 25, "citation": "WHO Indoor Air Quality Guidelines (2014)" },
+      "pm25G": { "value": 25.0, "uncertaintyPct": 30, "citation": "WHO (2014) Clean cooking transition data" },
+      "noxG": { "value": 1.8, "uncertaintyPct": 25, "citation": "WHO (2014)" }
+    },
+    "lpg": {
+      "co2eG": { "value": 380.0, "uncertaintyPct": 10, "citation": "TERI (2021) Domestic fuel consumption study" },
+      "pm25G": { "value": 0.15, "uncertaintyPct": 20, "citation": "TERI (2021)" },
+      "noxG": { "value": 0.35, "uncertaintyPct": 15, "citation": "TERI (2021)" }
+    },
+    "induction_electric": {
+      "co2eG": { "value": 210.0, "uncertaintyPct": 15, "citation": "CEA (2023) grid intensity for 0.4 kWh/meal" },
+      "pm25G": { "value": 0.02, "uncertaintyPct": 20, "citation": "Clean household cooking" },
+      "noxG": { "value": 0.05, "uncertaintyPct": 15, "citation": "Power sector conversion" }
+    }
+  },
+  "wasteBurningPerKg": {
+    "leaf_and_biomass": {
+      "co2eG": { "value": 1450.0, "uncertaintyPct": 20, "citation": "CPCB / IIT Kanpur (2018) Open biomass burning study" },
+      "pm25G": { "value": 18.5, "uncertaintyPct": 25, "citation": "CPCB / IIT Kanpur (2018)" },
+      "noxG": { "value": 3.2, "uncertaintyPct": 20, "citation": "CPCB (2018)" }
+    }
+  }
+}

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "routine-afternoon-walks",
+    "category": "routine",
+    "title": "Shift Outdoor Walks to Early Afternoon",
+    "appliesWhen": "Winter smog season when early morning AQI is in Poor or Severe bands",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Diurnal variations of surface PM2.5 in Delhi NCR",
+          "organisation": "IITM SAFAR / Ministry of Earth Sciences",
+          "year": 2021,
+          "url": "https://safar.tropmet.res.in"
+        }
+      ]
+    },
+    "effectModel": "Avoids 40–60% higher surface particulate exposure caused by overnight thermal inversion traps between 6 AM and 9 AM."
+  },
+  {
+    "id": "routine-indoor-school-pe",
+    "category": "routine",
+    "title": "Substitute Outdoor Physical Education with Indoor Activities",
+    "appliesWhen": "CPCB NAQI >= 201 (Poor, Very Poor, or Severe)",
+    "effort": "medium",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Health effects of physical exertion in polluted air among school children",
+          "organisation": "World Health Organization (WHO)",
+          "year": 2021,
+          "url": "https://www.who.int/publications/i/item/9789240034228"
+        }
+      ]
+    },
+    "effectModel": "Children inhale 2–3 times more air per unit body weight during heavy exertion; moving PE indoors avoids acute bronchospasm."
+  },
+  {
+    "id": "routine-wfh-severe-smog",
+    "category": "routine",
+    "title": "Work From Home During GRAP Stage III/IV Smog Alerts",
+    "appliesWhen": "Citywide AQI crosses 400 (Severe)",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Graded Response Action Plan (GRAP) for Delhi-NCR",
+          "organisation": "Commission for Air Quality Management (CAQM)",
+          "year": 2023,
+          "url": "https://caqm.nic.in"
+        }
+      ]
+    },
+    "effectModel": "Eliminates commuter road transit exposure and reduces city traffic congestion by ~15%."
+  },
+  {
+    "id": "routine-staggered-commute",
+    "category": "routine",
+    "title": "Stagger Commute to Avoid Peak Traffic Inversion Hours",
+    "appliesWhen": "Daily road commute during November–January smog months",
+    "effort": "medium",
+    "costBand": "free",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Commuter exposure in urban transit environments",
+          "organisation": "Centre for Science and Environment (CSE India)",
+          "year": 2020,
+          "url": "https://www.cseindia.org"
+        }
+      ]
+    },
+    "effectModel": "Traveling after 10 AM avoids stagnant vehicular tailpipe plumes trapped by early morning boundary layer compression."
+  },
+  {
+    "id": "routine-nighttime-air-purification",
+    "category": "routine",
+    "title": "Pre-Filter Bedroom Air 30 Minutes Before Sleeping",
+    "appliesWhen": "Indoor PM2.5 exceeds 15 µg/m³",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Residential air filtration and nocturnal cardiopulmonary biomarkers",
+          "organisation": "American Journal of Respiratory and Critical Care Medicine",
+          "year": 2020,
+          "url": "https://doi.org/10.1164/rccm.201912-2374OC"
+        }
+      ]
+    },
+    "effectModel": "Reduces nocturnal inhaled particulate dose by 75–85%, improving sleep architecture and morning blood pressure."
+  },
+  {
+    "id": "routine-nasal-saline-rinse",
+    "category": "routine",
+    "title": "Gentle Isotonic Saline Rinse After High-Smog Exposure",
+    "appliesWhen": "Unavoidable outdoor exposure in Very Poor or Severe air",
+    "effort": "low",
+    "costBand": "₹",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Saline nasal irrigation in allergic rhinitis and particulate clearance",
+          "organisation": "Cochrane Database of Systematic Reviews",
+          "year": 2018,
+          "url": "https://doi.org/10.1002/14651858.CD012597.pub2"
+        }
+      ]
+    },
+    "effectModel": "Mechanically flushes coarse particles and inflammatory mediators from upper nasal mucosa without chemical side effects."
+  },
+  {
+    "id": "routine-hydration-mucociliary",
+    "category": "routine",
+    "title": "Maintain Adequate Daily Hydration for Mucociliary Escalator",
+    "appliesWhen": "High dry-smog winter conditions",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Airway surface liquid regulation and mucociliary clearance",
+          "organisation": "Physiological Reviews",
+          "year": 2019,
+          "url": "https://doi.org/10.1152/physrev.00030.2018"
+        }
+      ]
+    },
+    "effectModel": "Prevents dehydration of respiratory tract mucus, supporting natural bronchial particle expulsion."
+  },
+  {
+    "id": "routine-anti-idling-school-pickup",
+    "category": "routine",
+    "title": "Turn Off Vehicle Engines in School Zones",
+    "appliesWhen": "Parent and carpool school pick-up / drop-off zones",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Idle reduction campaigns at school zones and local particulate concentrations",
+          "organisation": "US EPA Clean School Bus Program",
+          "year": 2021,
+          "url": "https://www.epa.gov/cleanschoolbus"
+        }
+      ]
+    },
+    "effectModel": "Cuts localized toxic ground-level benzene, NOx, and PM2.5 concentrations at school gates by up to 30%."
+  },
+  {
+    "id": "routine-window-sealing-overnight",
+    "category": "routine",
+    "title": "Ensure Window Latches and Weather Stripping Are Engaged Overnight",
+    "appliesWhen": "Nighttime outdoor AQI > 300",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Infiltration of ambient PM2.5 into residential buildings",
+          "organisation": "Building and Environment",
+          "year": 2019,
+          "url": "https://doi.org/10.1016/j.buildenv.2019.04.015"
+        }
+      ]
+    },
+    "effectModel": "Reduces infiltration air exchange rate from 0.8 h⁻¹ to 0.35 h⁻¹, halving nighttime indoor particulate penetration."
+  },
+  {
+    "id": "routine-elder-indoor-exercises",
+    "category": "routine",
+    "title": "Replace Morning Jog with Indoor Yoga / Resistance Bands for Seniors",
+    "appliesWhen": "Morning outdoor AQI > 200 (Poor or worse)",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Exercise in air pollution and cardiovascular risk in older adults",
+          "organisation": "The Lancet Planetary Health",
+          "year": 2017,
+          "url": "https://doi.org/10.1016/S2542-5196(17)30164-9"
+        }
+      ]
+    },
+    "effectModel": "Avoids exercise-induced vasoconstriction and blood pressure spikes associated with exercising in cold, particulate-dense morning air."
+  }
+]

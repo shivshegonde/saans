@@ -22,7 +22,7 @@
     "check:size": "node server/scripts/check-router-sizes.js",
     "openapi": "npm run openapi --workspace=server",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run check:size && npm run test:coverage && npm run build",
-    "start": "node server/dist/server.js",
+    "start": "node server/dist/src/server.js",
     "dev:server": "npm run dev --workspace=server",
     "dev:web": "npm run dev --workspace=web"
   },

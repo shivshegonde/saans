@@ -25,10 +25,18 @@ export function createApp(c = container) {
   app.use(createRootRouter(c));
 
   // Serve SPA frontend in production
-  const staticPath = path.resolve(__dirname, "../../web/dist");
-  if (fs.existsSync(staticPath)) {
+  const candidateStaticPaths = [
+    path.resolve(process.cwd(), "web/dist"),
+    path.resolve(__dirname, "../../../web/dist"),
+    path.resolve(__dirname, "../../web/dist"),
+  ];
+  const staticPath = candidateStaticPaths.find((p) => fs.existsSync(p));
+  if (staticPath) {
     app.use(express.static(staticPath, { maxAge: "1d" }));
-    app.get("*", (_req, res) => {
+    app.get("*", (req, res, next) => {
+      if (req.path.startsWith("/api") || req.path === "/health" || req.path === "/ready") {
+        return next();
+      }
       res.sendFile(path.join(staticPath, "index.html"));
     });
   }

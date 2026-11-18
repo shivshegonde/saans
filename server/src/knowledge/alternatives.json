@@ -1,0 +1,202 @@
+[
+  {
+    "id": "alt-electric-metro-transit",
+    "category": "alternative",
+    "title": "Electric Metro Rail vs Single-Occupancy Petrol Car",
+    "appliesWhen": "Daily urban commute within metro transit corridors",
+    "effort": "medium",
+    "costBand": "₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "GHG and air pollutant emissions from urban passenger transport in India",
+          "organisation": "Delhi Metro Rail Corporation / ARAI",
+          "year": 2022,
+          "url": "https://www.delhimetrorail.com"
+        }
+      ]
+    },
+    "effectModel": "Avoids ~152g CO2e, 0.024g PM2.5, and 0.24g NOx per passenger-km while reducing commuter inhaled toxic exposure by 60%."
+  },
+  {
+    "id": "alt-cng-electric-bus-rapid",
+    "category": "alternative",
+    "title": "CNG / Electric Bus vs Two-Wheeler Motorbike",
+    "appliesWhen": "Commuter travel on high-frequency arterial bus corridors",
+    "effort": "medium",
+    "costBand": "₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Emissions audit of 2-wheelers vs public buses in Delhi-NCR",
+          "organisation": "Centre for Science and Environment (CSE India)",
+          "year": 2021,
+          "url": "https://www.cseindia.org"
+        }
+      ]
+    },
+    "effectModel": "Avoids 0.034g PM2.5 per passenger-km compared to older 2-stroke/4-stroke carbureted two-wheelers in stop-and-go traffic."
+  },
+  {
+    "id": "alt-induction-cooking",
+    "category": "alternative",
+    "title": "Induction Cooktop vs Traditional LPG / Biomass",
+    "appliesWhen": "Domestic kitchen stove upgrade",
+    "effort": "low",
+    "costBand": "₹₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Indoor air quality and energy efficiency of electric induction cooking",
+          "organisation": "Environmental Health Perspectives",
+          "year": 2022,
+          "url": "https://doi.org/10.1289/EHP10695"
+        }
+      ]
+    },
+    "effectModel": "Eliminates unburned methane leakage and gas combustion NOx emissions (cuts indoor NO2 by > 75%), with zero indoor particulate emissions."
+  },
+  {
+    "id": "alt-organic-waste-composting",
+    "category": "alternative",
+    "title": "Aerobic Composting vs Open Garden Waste Burning",
+    "appliesWhen": "RWA, residential society, or garden seasonal leaf clearing",
+    "effort": "medium",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Evaluation of open waste burning in Indian cities and composting alternatives",
+          "organisation": "CPCB / National Environmental Engineering Research Institute (NEERI)",
+          "year": 2019,
+          "url": "https://cpcb.nic.in"
+        }
+      ]
+    },
+    "effectModel": "Avoids 18.5g PM2.5, 3.2g NOx, and 1.45 kg CO2e per 1 kg dry leaves composted instead of burned in open pits."
+  },
+  {
+    "id": "alt-carpool-rideshare",
+    "category": "alternative",
+    "title": "2-Person Carpooling vs Solo Driving",
+    "appliesWhen": "Regular office commute corridors without direct metro link",
+    "effort": "medium",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Mobility management and carpooling emissions benefits",
+          "organisation": "TERI Energy and Resources Institute",
+          "year": 2020,
+          "url": "https://www.teriin.org"
+        }
+      ]
+    },
+    "effectModel": "Halves per-person vehicular emissions (avoids 85g CO2e/km and reduces total traffic congestion)."
+  },
+  {
+    "id": "alt-electric-radiant-heater",
+    "category": "alternative",
+    "title": "Oil-Filled Radiant Electric Heater vs Open Biomass/Wood Space Heating",
+    "appliesWhen": "Winter nighttime space heating for guard booths and households",
+    "effort": "low",
+    "costBand": "₹₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Low-temperature open biomass space heating during North Indian winters",
+          "organisation": "IIT Kanpur / Department of Science & Technology",
+          "year": 2021,
+          "url": "https://www.iitk.ac.in"
+        }
+      ]
+    },
+    "effectModel": "Eliminates ground-level carbon monoxide and extreme localized particulate plumes emitted by open wood brazier fires."
+  },
+  {
+    "id": "alt-electric-scooter-ev",
+    "category": "alternative",
+    "title": "Battery Electric Two-Wheeler vs Petrol Scooter",
+    "appliesWhen": "Short intra-city urban commuting (< 15 km)",
+    "effort": "medium",
+    "costBand": "₹₹₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Lifecycle emissions of electric two-wheelers in India",
+          "organisation": "International Council on Clean Transportation (ICCT)",
+          "year": 2021,
+          "url": "https://theicct.org"
+        }
+      ]
+    },
+    "effectModel": "Zero tailpipe emissions; lifecycle CO2e reduced by 35–45% even under current Indian grid electricity generation mix."
+  },
+  {
+    "id": "alt-online-grocery-delivery",
+    "category": "alternative",
+    "title": "Consolidated Electric Delivery vs Individual Car Shopping Trips",
+    "appliesWhen": "Weekly household grocery procurement during smog waves",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Last-mile consolidated freight vs personal vehicle grocery shopping",
+          "organisation": "Transportation Research Part D",
+          "year": 2020,
+          "url": "https://doi.org/10.1016/j.trd.2020.102388"
+        }
+      ]
+    },
+    "effectModel": "Consolidated van routing reduces total vehicle-kilometers traveled by ~60% across the neighborhood."
+  },
+  {
+    "id": "alt-electric-leaf-shredder",
+    "category": "alternative",
+    "title": "Mechanical Leaf Shredding and Mulching vs Disposal Burning",
+    "appliesWhen": "Residential society horticulture and landscaping maintenance",
+    "effort": "medium",
+    "costBand": "₹₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Horticultural waste mulching and soil moisture retention",
+          "organisation": "Indian Council of Agricultural Research (ICAR)",
+          "year": 2019,
+          "url": "https://icar.org.in"
+        }
+      ]
+    },
+    "effectModel": "Converts horticultural waste into moisture-retaining organic ground cover, returning nitrogen to soil with zero atmospheric combustion."
+  },
+  {
+    "id": "alt-active-transit-fair-weather",
+    "category": "alternative",
+    "title": "Bicycle Commute During Clean / Moderate Weather Windows",
+    "appliesWhen": "AQI < 100 (Good or Satisfactory air quality)",
+    "effort": "high",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Health benefits of active travel vs pollution risks",
+          "organisation": "Preventive Medicine",
+          "year": 2016,
+          "url": "https://doi.org/10.1016/j.ypmed.2016.02.002"
+        }
+      ]
+    },
+    "effectModel": "Physical activity benefits vastly outweigh pollution risks when PM2.5 < 60 µg/m³; zero emissions generated."
+  }
+]

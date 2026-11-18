@@ -1,0 +1,202 @@
+[
+  {
+    "id": "hack-purifier-central-placement",
+    "category": "indoor_hack",
+    "title": "Position Air Purifier in Central Breathing Zone, Away From Corners",
+    "appliesWhen": "Operating any portable HEPA room air cleaner",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Air distribution and placement optimization for portable air cleaners",
+          "organisation": "ASHRAE Journal",
+          "year": 2021,
+          "url": "https://www.ashrae.org"
+        }
+      ]
+    },
+    "effectModel": "Avoids corner air stagnation and short-circuiting, increasing effective room air mixing efficiency by ~25%."
+  },
+  {
+    "id": "hack-diy-corsi-rosenthal-box",
+    "category": "indoor_hack",
+    "title": "Build a Corsi-Rosenthal Box Air Cleaner",
+    "appliesWhen": "High room volume requiring high CADR on an economical budget",
+    "effort": "medium",
+    "costBand": "₹₹",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Characterizing the performance of Corsi-Rosenthal boxes",
+          "organisation": "UC Davis / Aerosol Science and Technology",
+          "year": 2022,
+          "url": "https://doi.org/10.1080/02786826.2022.2054674"
+        }
+      ]
+    },
+    "effectModel": "Delivers CADR > 400 m³/h at ~70% lower upfront equipment cost than commercial multi-stage purifiers."
+  },
+  {
+    "id": "hack-wet-mopping-hepa",
+    "category": "indoor_hack",
+    "title": "Wet Mop Floors Instead of Dry Brooming (Jhadu)",
+    "appliesWhen": "Daily domestic cleaning routine",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Human activities and dust resuspension rates in residential indoor environments",
+          "organisation": "Atmospheric Environment",
+          "year": 2004,
+          "url": "https://doi.org/10.1016/j.atmosenv.2003.11.026"
+        }
+      ]
+    },
+    "effectModel": "Prevents resuspension of 5,000 µg/h of fine particulate matter, lead, and road dust settled on floor surfaces."
+  },
+  {
+    "id": "hack-kitchen-negative-pressure",
+    "category": "indoor_hack",
+    "title": "Close Kitchen Door and Engage Exhaust During Cooking",
+    "appliesWhen": "Frying, grilling, or high-temperature oil cooking",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Cooking-generated particles in residential indoor environments",
+          "organisation": "Indoor Air",
+          "year": 2011,
+          "url": "https://doi.org/10.1111/j.1600-0668.2011.00728.x"
+        }
+      ]
+    },
+    "effectModel": "Creates negative pressure in the kitchen, preventing ultrafine lipid aerosol plumes from migrating into living/sleeping quarters."
+  },
+  {
+    "id": "hack-avoid-incense-coils",
+    "category": "indoor_hack",
+    "title": "Substitute Incense Sticks (Agarbatti) and Mosquito Coils During Winter",
+    "appliesWhen": "Severe outdoor smog episodes",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Emission of fine particles and carcinogenic polycyclic aromatic hydrocarbons from incense burning",
+          "organisation": "Bulletin of Environmental Contamination and Toxicology",
+          "year": 2008,
+          "url": "https://doi.org/10.1007/s00128-008-9475-4"
+        }
+      ]
+    },
+    "effectModel": "Burning 1 incense stick emits 8,000–12,000 µg of PM2.5, which can spike bedroom concentrations above 250 µg/m³ in under 30 minutes."
+  },
+  {
+    "id": "hack-door-bottom-draught-excluder",
+    "category": "indoor_hack",
+    "title": "Install Door-Bottom Draught Excluders / Sweeps",
+    "appliesWhen": "Main entry doors facing outdoor corridors or stairwells",
+    "effort": "low",
+    "costBand": "₹",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Air leakage and infiltration control in multi-family residential buildings",
+          "organisation": "Energy and Buildings",
+          "year": 2018,
+          "url": "https://doi.org/10.1016/j.enbuild.2018.06.024"
+        }
+      ]
+    },
+    "effectModel": "Seals the 10–20 mm gap at the door base, cutting infiltration airflow from unconditioned hallways by 40%."
+  },
+  {
+    "id": "hack-purifier-continuous-low-mode",
+    "category": "indoor_hack",
+    "title": "Run Purifier on Continuous Low/Auto Rather Than On/Off Cycles",
+    "appliesWhen": "Sealed room during sustained multi-day smog episodes",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Operational strategies for portable air cleaners in residential settings",
+          "organisation": "Building and Environment",
+          "year": 2020,
+          "url": "https://doi.org/10.1016/j.buildenv.2020.106884"
+        }
+      ]
+    },
+    "effectModel": "Maintains low baseline PM2.5 steady-state; turning off purifiers causes indoor levels to re-equilibrate with outdoor infiltration within 45–60 minutes."
+  },
+  {
+    "id": "hack-ac-blower-filtration-wrap",
+    "category": "indoor_hack",
+    "title": "Attach Certified PM2.5 Filter Mesh to Split-AC Indoor Units",
+    "appliesWhen": "Households without dedicated standalone air purifiers",
+    "effort": "low",
+    "costBand": "₹",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Field evaluation of retrofit electrostatically charged filters in residential air handlers",
+          "organisation": "Atmospheric Environment",
+          "year": 2017,
+          "url": "https://doi.org/10.1016/j.atmosenv.2017.03.011"
+        }
+      ]
+    },
+    "effectModel": "Leverages the existing 400–600 m³/h AC fan to filter ~50–65% of recirculating PM2.5 without motor strain."
+  },
+  {
+    "id": "hack-vacuum-exhaust-hepa",
+    "category": "indoor_hack",
+    "title": "Ensure Vacuum Cleaners Use Sealed HEPA Exhaust Filters",
+    "appliesWhen": "Vacuum cleaning carpets and rugs",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "strong",
+      "sources": [
+        {
+          "title": "Particle emissions from vacuum cleaners",
+          "organisation": "Environmental Science & Technology",
+          "year": 2012,
+          "url": "https://doi.org/10.1021/es202946w"
+        }
+      ]
+    },
+    "effectModel": "Non-HEPA vacuums act as aerosol generators, capturing coarse lint but blowing sub-micron dust directly into the air."
+  },
+  {
+    "id": "hack-bathroom-exhaust-backdraft-damper",
+    "category": "indoor_hack",
+    "title": "Check Bathroom Gravity Louvers & Backdraft Dampers",
+    "appliesWhen": "Exhaust ducts connected to shared building ventilation shafts",
+    "effort": "low",
+    "costBand": "free",
+    "evidence": {
+      "level": "moderate",
+      "sources": [
+        {
+          "title": "Cross-contamination in residential ventilation shafts",
+          "organisation": "Indoor and Built Environment",
+          "year": 2016,
+          "url": "https://doi.org/10.1177/1420326X15598821"
+        }
+      ]
+    },
+    "effectModel": "Prevents cold, particulate-laden outdoor air from back-drafting through passive vents when exhaust fans are off."
+  }
+]
