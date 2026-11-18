@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Saans",
+    "subtitle": "Urban Air Quality Assistant",
+    "disclaimer": "General environmental guidance only; not medical advice.",
+    "skipToContent": "Skip to main content"
+  },
+  "nav": {
+    "today": "Today",
+    "plan": "Plan",
+    "impact": "Impact Lab",
+    "homeAir": "Home Air",
+    "community": "Community",
+    "family": "Family",
+    "askSaans": "Ask Saans"
+  },
+  "a11y": {
+    "highContrast": "High Contrast",
+    "highContrastOn": "High Contrast: ON",
+    "fontScale": "Font Size",
+    "theme": "Theme"
+  },
+  "air": {
+    "liveAir": "Live Air Quality",
+    "naqi": "NAQI",
+    "whoGuideline": "×{{count}} WHO guideline",
+    "dominantPollutant": "Dominant",
+    "smogDrivers": "Atmospheric Smog Drivers",
+    "timeline": "72-Hour Air Quality Forecast",
+    "bestWindow": "Best Outdoor / Ventilation Window",
+    "dataTableToggle": "View as data table",
+    "graphToggle": "View as visual chart"
+  },
+  "plan": {
+    "title": "Today's Plan",
+    "topThree": "3 Things That Matter Most Today",
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening",
+    "night": "Night",
+    "why": "Why this matters",
+    "addToCalendar": "Add to Calendar",
+    "markDone": "Done",
+    "healthImpact": "Health Impact",
+    "cityImpact": "City Impact"
+  },
+  "impact": {
+    "title": "Impact Lab",
+    "familyLens": "My Family",
+    "cityLens": "My City",
+    "howCalculated": "How we calculated this",
+    "addToLedger": "Add to My Ledger",
+    "savedDose": "Avoided Inhaled Dose",
+    "avoidedEmissions": "Avoided Emissions"
+  },
+  "homeAir": {
+    "title": "Home Air & Room Simulator",
+    "roomSimulator": "Room Physics Simulator",
+    "purifierCalculator": "Purifier CADR Sizing",
+    "hacksLibrary": "Clean Air Hacks Library",
+    "filterFree": "Free",
+    "filterBudget": "Under ₹500",
+    "filterQuick": "5 Minutes"
+  },
+  "community": {
+    "title": "Community Air Action",
+    "joinCode": "Community Join Code",
+    "join": "Join",
+    "pledges": "Collective Smog Pledges",
+    "adminDashboard": "RWA Admin Dashboard",
+    "anonymityNotice": "Privacy Invariant: Metrics displayed require k ≥ 5 participating households."
+  },
+  "demo": {
+    "title": "Judge Demo Bar",
+    "timeTravel": "Time Travel",
+    "scenario": "Scenario",
+    "personas": "Switch Persona",
+    "triggerSevere": "Trigger Severe Smog",
+    "triggerGrace": "Trigger Grace Timeout",
+    "inspector": "Outbox Inspector"
+  }
+}

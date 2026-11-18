@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "श्वास (Saans)",
+    "subtitle": "शहरी हवा गुणवत्ता सहाय्यक",
+    "disclaimer": "केवळ सामान्य पर्यावरणीय मार्गदर्शन; वैद्यकीय सल्ला नाही.",
+    "skipToContent": "मुख्य मजकुराकडे जा"
+  },
+  "nav": {
+    "today": "आज",
+    "plan": "कृती आराखडा",
+    "impact": "प्रभाव लॅब",
+    "homeAir": "घरातील हवा",
+    "community": "समुदाय",
+    "family": "कुटुंब",
+    "askSaans": "साँसला विचारा"
+  },
+  "a11y": {
+    "highContrast": "उच्च कॉन्ट्रास्ट",
+    "highContrastOn": "उच्च कॉन्ट्रास्ट: चालू",
+    "fontScale": "फॉन्ट आकार",
+    "theme": "थीम"
+  },
+  "air": {
+    "liveAir": "थेट हवेची गुणवत्ता",
+    "naqi": "राष्ट्रीय हवा गुणवत्ता निर्देशांक",
+    "whoGuideline": "WHO मानकाच्या ×{{count}} पट",
+    "dominantPollutant": "प्रमुख प्रदूषक",
+    "smogDrivers": "धुक्याचे वातावरणीय घटक",
+    "timeline": "72-तासांचा हवा अंदाज",
+    "bestWindow": "उत्तम बाहेरील / वायुविजन वेळ",
+    "dataTableToggle": "तक्ता स्वरूपात पहा",
+    "graphToggle": "आलेख स्वरूपात पहा"
+  },
+  "plan": {
+    "title": "आजची कार्ययोजना",
+    "topThree": "आजच्या सर्वात महत्त्वाच्या ३ गोष्टी",
+    "morning": "सकाळ",
+    "afternoon": "दुपार",
+    "evening": "संध्याकाळ",
+    "night": "रात्र",
+    "why": "हे का महत्त्वाचे आहे",
+    "addToCalendar": "कॅलेंडरमध्ये जोडा",
+    "markDone": "पूर्ण",
+    "healthImpact": "आरोग्य प्रभाव",
+    "cityImpact": "शहर प्रभाव"
+  },
+  "impact": {
+    "title": "प्रभाव लॅब",
+    "familyLens": "माझे कुटुंब",
+    "cityLens": "माझे शहर",
+    "howCalculated": "आम्ही हे कसे मोजले",
+    "addToLedger": "माझ्या नोंदवहीत जोडा",
+    "savedDose": "टाळलेली श्वसन मात्रा",
+    "avoidedEmissions": "टाळलेले कार्बन उत्सर्जन"
+  },
+  "homeAir": {
+    "title": "घरातील हवा आणि कक्ष सिम्युलेटर",
+    "roomSimulator": "खोलीचे भौतिक सिम्युलेटर",
+    "purifierCalculator": "प्युरिफायर CADR आकार कॅल्क्युलेटर",
+    "hacksLibrary": "स्वच्छ हवेच्या क्लृप्त्या",
+    "filterFree": "मोफत",
+    "filterBudget": "₹५०० च्या आत",
+    "filterQuick": "५ मिनिटे"
+  },
+  "community": {
+    "title": "सामुदायिक हवा कृती",
+    "joinCode": "समुदाय कोड टाका",
+    "join": "सहभागी व्हा",
+    "pledges": "सामूहिक स्मॉग संकल्प",
+    "adminDashboard": "आरडब्ल्यूए ॲडमिन डॅशबोर्ड",
+    "anonymityNotice": "गोपनीयता नियम: सरासरी मेट्रिक्स दाखवण्यासाठी किमान ५ कुटुंबांचा (k ≥ 5) डेटा आवश्यक आहे."
+  },
+  "demo": {
+    "title": "जज डेमो बार",
+    "timeTravel": "टाइम ट्रॅव्हल",
+    "scenario": "परिस्थिती",
+    "personas": "व्यक्ती बदला",
+    "triggerSevere": "तीव्र स्मॉग सुरू करा",
+    "triggerGrace": "ग्रेस मुदत ट्रिगर करा",
+    "inspector": "आउटबॉक्स तपासक"
+  }
+}

@@ -20,5 +20,14 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "clsx", "tailwind-merge"],
+          charts: ["recharts"],
+          i18n: ["i18next", "react-i18next"],
+        },
+      },
+    },
   },
 });

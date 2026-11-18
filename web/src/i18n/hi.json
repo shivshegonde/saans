@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "साँस (Saans)",
+    "subtitle": "शहरी वायु गुणवत्ता सहायक",
+    "disclaimer": "केवल सामान्य पर्यावरणीय मार्गदर्शन; चिकित्सकीय सलाह नहीं।",
+    "skipToContent": "मुख्य सामग्री पर जाएँ"
+  },
+  "nav": {
+    "today": "आज",
+    "plan": "योजना",
+    "impact": "प्रभाव लैब",
+    "homeAir": "घरेलू हवा",
+    "community": "समुदाय",
+    "family": "परिवार",
+    "askSaans": "साँस से पूछें"
+  },
+  "a11y": {
+    "highContrast": "उच्च कंट्रास्ट",
+    "highContrastOn": "उच्च कंट्रास्ट: चालू",
+    "fontScale": "अक्षर आकार",
+    "theme": "थीम"
+  },
+  "air": {
+    "liveAir": "लाइव वायु गुणवत्ता",
+    "naqi": "राष्ट्रीय वायु गुणवत्ता सूचकांक",
+    "whoGuideline": "WHO मानक से ×{{count}} गुना",
+    "dominantPollutant": "प्रमुख प्रदूषक",
+    "smogDrivers": "धुंध के वातावरणीय कारक",
+    "timeline": "72-घंटे का वायु पूर्वानुमान",
+    "bestWindow": "सर्वोत्तम बाहरी / वेंटिलेशन समय",
+    "dataTableToggle": "डेटा तालिका के रूप में देखें",
+    "graphToggle": "ग्राफ के रूप में देखें"
+  },
+  "plan": {
+    "title": "आज की कार्ययोजना",
+    "topThree": "आज के 3 सबसे महत्वपूर्ण कदम",
+    "morning": "सुबह",
+    "afternoon": "दोपहर",
+    "evening": "शाम",
+    "night": "रात",
+    "why": "यह क्यों महत्वपूर्ण है",
+    "addToCalendar": "कैलेंडर में जोड़ें",
+    "markDone": "संपन्न",
+    "healthImpact": "स्वास्थ्य प्रभाव",
+    "cityImpact": "शहर प्रभाव"
+  },
+  "impact": {
+    "title": "प्रभाव लैब",
+    "familyLens": "मेरा परिवार",
+    "cityLens": "मेरा शहर",
+    "howCalculated": "हमने यह कैसे गणना की",
+    "addToLedger": "मेरे बहीखाते में जोड़ें",
+    "savedDose": "बचाई गई साँस की खुराक",
+    "avoidedEmissions": "घटाया गया कार्बन उत्सर्जन"
+  },
+  "homeAir": {
+    "title": "घरेलू वायु व कक्ष सिम्युलेटर",
+    "roomSimulator": "कमरे का भौतिकी सिम्युलेटर",
+    "purifierCalculator": "प्यूरीफायर CADR आकार कैलकुलेटर",
+    "hacksLibrary": "स्वच्छ हवा उपाय संग्रह",
+    "filterFree": "मुफ़्त",
+    "filterBudget": "₹500 के भीतर",
+    "filterQuick": "5 मिनट"
+  },
+  "community": {
+    "title": "सामुदायिक वायु पहल",
+    "joinCode": "समुदाय कोड दर्ज करें",
+    "join": "शामिल हों",
+    "pledges": "सामूहिक स्मॉग संकल्प",
+    "adminDashboard": "आरडब्ल्यूए एडमिन डैशबोर्ड",
+    "anonymityNotice": "गोपनीयता नियम: मेट्रिक्स के लिए न्यूनतम 5 घरों (k ≥ 5) का डेटा आवश्यक है।"
+  },
+  "demo": {
+    "title": "जज डेमो बार",
+    "timeTravel": "समय यात्रा",
+    "scenario": "परिदृश्य",
+    "personas": "पात्र बदलें",
+    "triggerSevere": "गंभीर स्मॉग चालू करें",
+    "triggerGrace": "ग्रेस टाइमआउट ट्रिगर करें",
+    "inspector": "आउटबॉक्स इंस्पेक्टर"
+  }
+}
