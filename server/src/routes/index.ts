@@ -11,6 +11,7 @@ import { createAlertsRouter } from "./alerts.routes.js";
 import { createAnalyticsRouter } from "./analytics.routes.js";
 import { createDemoRouter } from "./demo.routes.js";
 import { createInternalRouter } from "./internal.routes.js";
+import { createAiRouter } from "./ai.routes.js";
 
 export function createRootRouter(c: Container): Router {
   const router = Router();
@@ -29,6 +30,7 @@ export function createRootRouter(c: Container): Router {
   apiV1.use("/alerts", createAlertsRouter(c));
   apiV1.use("/analytics", createAnalyticsRouter(c));
   apiV1.use("/demo", createDemoRouter(c));
+  apiV1.use("/ai", createAiRouter(c));
 
   router.use("/api/v1", apiV1);
 

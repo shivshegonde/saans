@@ -1386,6 +1386,290 @@
           }
         },
         "required": ["minutes"]
+      },
+      "AskSaansRequest": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "conversationId": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string",
+            "enum": ["en", "hi", "mr"],
+            "default": "en"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number"
+              },
+              "lng": {
+                "type": "number"
+              }
+            },
+            "required": ["lat", "lng"]
+          }
+        },
+        "required": ["message"]
+      },
+      "AskSaansResponse": {
+        "type": "object",
+        "properties": {
+          "reply": {
+            "type": "string"
+          },
+          "safety": {
+            "type": "object",
+            "properties": {
+              "isEmergency": {
+                "type": "boolean"
+              },
+              "wasIntercepted": {
+                "type": "boolean"
+              },
+              "emergencyNumber": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": ["isEmergency", "wasIntercepted"]
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "organisation": {
+                  "type": "string"
+                },
+                "year": {
+                  "type": "number"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "title", "organisation"]
+            }
+          },
+          "proposalCard": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "actionType": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": {
+                  "nullable": true
+                }
+              }
+            },
+            "required": ["id", "actionType", "title", "payload"]
+          },
+          "aiBadge": {
+            "type": "string"
+          }
+        },
+        "required": ["reply", "safety", "citations", "aiBadge"]
+      },
+      "MythCheckRequest": {
+        "type": "object",
+        "properties": {
+          "claim": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 500
+          },
+          "language": {
+            "type": "string",
+            "enum": ["en", "hi", "mr"],
+            "default": "en"
+          }
+        },
+        "required": ["claim"]
+      },
+      "MythCheckResponse": {
+        "type": "object",
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": ["supported", "partly_supported", "unsupported", "no_evidence_found"]
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "citations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "organisation": {
+                  "type": "string"
+                },
+                "year": {
+                  "type": "number"
+                },
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": ["id", "title", "organisation"]
+            }
+          },
+          "caveats": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["claim", "verdict", "explanation", "citations", "caveats"]
+      },
+      "DraftAdvisoryRequest": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "targetAudience": {
+            "type": "string",
+            "default": "residents"
+          },
+          "language": {
+            "type": "string",
+            "enum": ["en", "hi", "mr"],
+            "default": "en"
+          }
+        },
+        "required": ["topic"]
+      },
+      "DraftAdvisoryResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "requiresApproval": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": ["title", "body"]
+      },
+      "DraftComplaintRequest": {
+        "type": "object",
+        "properties": {
+          "violationType": {
+            "type": "string",
+            "enum": ["biomass_burning", "unpaved_dust", "diesel_generator", "construction"]
+          },
+          "location": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 200
+          },
+          "language": {
+            "type": "string",
+            "enum": ["en", "hi", "mr"],
+            "default": "en"
+          }
+        },
+        "required": ["violationType", "location"]
+      },
+      "DraftComplaintResponse": {
+        "type": "object",
+        "properties": {
+          "authority": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "legalActCited": {
+            "type": "string"
+          }
+        },
+        "required": ["authority", "subject", "body", "legalActCited"]
+      },
+      "CitationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "organisation": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "title", "organisation"]
+      },
+      "ProposalCard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "actionType": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          }
+        },
+        "required": ["id", "actionType", "title", "payload"]
       }
     },
     "parameters": {}
@@ -3478,6 +3762,328 @@
         "responses": {
           "200": {
             "description": "Reset"
+          }
+        }
+      }
+    },
+    "/api/v1/ai/ask": {
+      "post": {
+        "summary": "Ask Saans: Grounded AI assistant with safety interceptor and number validation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000
+                  },
+                  "conversationId": {
+                    "type": "string"
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": ["en", "hi", "mr"],
+                    "default": "en"
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["lat", "lng"]
+                  }
+                },
+                "required": ["message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "AI response with citations and proposal cards",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reply": {
+                      "type": "string"
+                    },
+                    "safety": {
+                      "type": "object",
+                      "properties": {
+                        "isEmergency": {
+                          "type": "boolean"
+                        },
+                        "wasIntercepted": {
+                          "type": "boolean"
+                        },
+                        "emergencyNumber": {
+                          "type": "string"
+                        },
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["isEmergency", "wasIntercepted"]
+                    },
+                    "citations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "organisation": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "number"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id", "title", "organisation"]
+                      }
+                    },
+                    "proposalCard": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "actionType": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "payload": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "nullable": true
+                          }
+                        }
+                      },
+                      "required": ["id", "actionType", "title", "payload"]
+                    },
+                    "aiBadge": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["reply", "safety", "citations", "aiBadge"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ai/myth-check": {
+      "post": {
+        "summary": "Air quality myth checker grounded in curated knowledge base",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "claim": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 500
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": ["en", "hi", "mr"],
+                    "default": "en"
+                  }
+                },
+                "required": ["claim"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Myth check verdict and citations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "claim": {
+                      "type": "string"
+                    },
+                    "verdict": {
+                      "type": "string",
+                      "enum": ["supported", "partly_supported", "unsupported", "no_evidence_found"]
+                    },
+                    "explanation": {
+                      "type": "string"
+                    },
+                    "citations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "organisation": {
+                            "type": "string"
+                          },
+                          "year": {
+                            "type": "number"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        },
+                        "required": ["id", "title", "organisation"]
+                      }
+                    },
+                    "caveats": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": ["claim", "verdict", "explanation", "citations", "caveats"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ai/draft-advisory": {
+      "post": {
+        "summary": "Draft community air advisory for RWA admins",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "topic": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  },
+                  "targetAudience": {
+                    "type": "string",
+                    "default": "residents"
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": ["en", "hi", "mr"],
+                    "default": "en"
+                  }
+                },
+                "required": ["topic"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Draft advisory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    },
+                    "requiresApproval": {
+                      "type": "boolean",
+                      "default": true
+                    }
+                  },
+                  "required": ["title", "body"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ai/draft-complaint": {
+      "post": {
+        "summary": "Draft civic violation complaint citing Air Act 1981",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "violationType": {
+                    "type": "string",
+                    "enum": ["biomass_burning", "unpaved_dust", "diesel_generator", "construction"]
+                  },
+                  "location": {
+                    "type": "string",
+                    "minLength": 3,
+                    "maxLength": 200
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": ["en", "hi", "mr"],
+                    "default": "en"
+                  }
+                },
+                "required": ["violationType", "location"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Draft legal complaint",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authority": {
+                      "type": "string"
+                    },
+                    "subject": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "string"
+                    },
+                    "legalActCited": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["authority", "subject", "body", "legalActCited"]
+                }
+              }
+            }
           }
         }
       }

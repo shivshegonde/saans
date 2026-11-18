@@ -512,3 +512,113 @@ export const DemoTimeTravelRequestSchema = z.object({
 });
 
 export type DemoTimeTravelRequest = z.infer<typeof DemoTimeTravelRequestSchema>;
+
+/**
+ * GenAI contracts: Ask Saans, Myth Check, Drafting Tools.
+ */
+export const AskSaansRequestSchema = z.object({
+  message: z.string().min(1).max(1000),
+  conversationId: z.string().optional(),
+  language: z.enum(["en", "hi", "mr"]).default("en"),
+  location: z
+    .object({
+      lat: z.number(),
+      lng: z.number(),
+    })
+    .optional(),
+});
+
+export type AskSaansRequest = z.infer<typeof AskSaansRequestSchema>;
+
+export const CitationDtoSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  organisation: z.string(),
+  year: z.number().optional(),
+  url: z.string().optional(),
+});
+
+export type CitationDto = z.infer<typeof CitationDtoSchema>;
+
+export const ProposalCardSchema = z.object({
+  id: z.string(),
+  actionType: z.string(),
+  title: z.string(),
+  payload: z.record(z.unknown()),
+});
+
+export type ProposalCard = z.infer<typeof ProposalCardSchema>;
+
+export const AskSaansResponseSchema = z.object({
+  reply: z.string(),
+  safety: z.object({
+    isEmergency: z.boolean(),
+    wasIntercepted: z.boolean(),
+    emergencyNumber: z.string().optional(),
+    reason: z.string().optional(),
+  }),
+  citations: z.array(CitationDtoSchema),
+  proposalCard: ProposalCardSchema.optional(),
+  aiBadge: z.string(),
+});
+
+export type AskSaansResponse = z.infer<typeof AskSaansResponseSchema>;
+
+export const MythVerdictEnum = z.enum([
+  "supported",
+  "partly_supported",
+  "unsupported",
+  "no_evidence_found",
+]);
+
+export type MythVerdict = z.infer<typeof MythVerdictEnum>;
+
+export const MythCheckRequestSchema = z.object({
+  claim: z.string().min(3).max(500),
+  language: z.enum(["en", "hi", "mr"]).default("en"),
+});
+
+export type MythCheckRequest = z.infer<typeof MythCheckRequestSchema>;
+
+export const MythCheckResponseSchema = z.object({
+  claim: z.string(),
+  verdict: MythVerdictEnum,
+  explanation: z.string(),
+  citations: z.array(CitationDtoSchema),
+  caveats: z.array(z.string()),
+});
+
+export type MythCheckResponse = z.infer<typeof MythCheckResponseSchema>;
+
+export const DraftAdvisoryRequestSchema = z.object({
+  topic: z.string().min(3).max(200),
+  targetAudience: z.string().default("residents"),
+  language: z.enum(["en", "hi", "mr"]).default("en"),
+});
+
+export type DraftAdvisoryRequest = z.infer<typeof DraftAdvisoryRequestSchema>;
+
+export const DraftAdvisoryResponseSchema = z.object({
+  title: z.string(),
+  body: z.string(),
+  requiresApproval: z.boolean().default(true),
+});
+
+export type DraftAdvisoryResponse = z.infer<typeof DraftAdvisoryResponseSchema>;
+
+export const DraftComplaintRequestSchema = z.object({
+  violationType: z.enum(["biomass_burning", "unpaved_dust", "diesel_generator", "construction"]),
+  location: z.string().min(3).max(200),
+  language: z.enum(["en", "hi", "mr"]).default("en"),
+});
+
+export type DraftComplaintRequest = z.infer<typeof DraftComplaintRequestSchema>;
+
+export const DraftComplaintResponseSchema = z.object({
+  authority: z.string(),
+  subject: z.string(),
+  body: z.string(),
+  legalActCited: z.string(),
+});
+
+export type DraftComplaintResponse = z.infer<typeof DraftComplaintResponseSchema>;

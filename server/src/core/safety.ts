@@ -20,25 +20,28 @@ export interface SafetyCheckResult {
 // Emergency medical triggers requiring immediate 112 escalation
 const EMERGENCY_PATTERNS = [
   /\b(chest pain|heart attack|angina)\b/i,
-  /\b(severe breathlessness|cannot breathe|struggling to breathe|can't breathe|gasping for air)\b/i,
+  /\b(severe breathlessness|cannot breathe|struggling to breathe|can't breathe|gasping( for air)?)\b/i,
   /\b(blue lips|cyanosis|blue fingernails)\b/i,
-  /\b(fainted|fainting|unconscious|loss of consciousness|passed out)\b/i,
+  /\b(fainted|fainting|unconscious|loss of consciousness|passed out|collapsed)\b/i,
   /\b(coughing (up )?blood|hemoptysis)\b/i,
   /\b(child (is )?struggling to breathe|child turning blue)\b/i,
   /\b(suicide|self[- ]harm|kill myself)\b/i,
+  /\b(asthma attack|rescue inhaler not working)\b/i,
+  /\b(choking|chocking|stridor)\b/i,
 ];
 
 // Adversarial prompt injection signatures
 const INJECTION_PATTERNS = [
-  /\b(ignore (all )?(previous|prior) (instructions|prompts|rules))\b/i,
+  /\b(ignore (all )?(previous|prior|system) (instructions|prompts|rules|prompt))\b/i,
   /\b(disregard (the )?(system|above) (prompt|instructions))\b/i,
-  /\b(you are now (in )?(DAN|unrestricted|god) mode)\b/i,
-  /\b(system prompt (leak|reveal|dump))\b/i,
-  /\b(jailbreak|bypass security checks)\b/i,
+  /\b(you are now (in )?(DAN|unrestricted|god) mode|stands for do anything now)\b/i,
+  /\b(system prompt (leak|reveal|dump)|reveal your system prompt)\b/i,
+  /\b(jailbreak|bypass (safety|security) (filters|checks)?)\b/i,
   /<script\b[^>]*>([\s\S]*?)<\/script>/i,
+  /\b(drop table|drop database|select\s+.*\s+from|union\s+select)\b/i,
 ];
 
-// Allowed domain vocabulary for out-of-scope detection
+// Allowed domain vocabulary for out-of-scope detection (including multilingual Hindi & Marathi terms)
 const DOMAIN_KEYWORDS = [
   "air",
   "aqi",
@@ -76,6 +79,25 @@ const DOMAIN_KEYWORDS = [
   "leaves",
   "burning",
   "hacks",
+  "plan",
+  "routine",
+  "action",
+  "forecast",
+  "हवा",
+  "वायु",
+  "प्रदूषण",
+  "सैर",
+  "धूर",
+  "खिडक्या",
+  "प्यूरीफायर",
+  "मास्क",
+  "धुआं",
+  "सांस",
+  "स्मॉग",
+  "कमरे",
+  "कमरा",
+  "स्वच्छ",
+  "मौसम",
 ];
 
 export function runPreModelSafetyCheck(userInput: string, countryCode = "IN"): SafetyCheckResult {
@@ -107,11 +129,11 @@ export function runPreModelSafetyCheck(userInput: string, countryCode = "IN"): S
   }
 
   // 3. Out-of-Scope Topic Redirect
-  // If text is longer than 5 words and shares zero domain terms
+  // If text is 4 or more words and shares zero domain terms
   const lower = text.toLowerCase();
   const words = lower.split(/\s+/).filter((w) => w.length > 2);
 
-  if (words.length >= 6) {
+  if (words.length >= 4) {
     const hasDomainTerm = DOMAIN_KEYWORDS.some((kw) => lower.includes(kw));
     if (!hasDomainTerm) {
       return {
@@ -127,5 +149,39 @@ export function runPreModelSafetyCheck(userInput: string, countryCode = "IN"): S
     allowed: true,
     action: "PASS",
     sanitizedInput: text,
+  };
+}
+
+export interface InputSafetyInspection {
+  safe: boolean;
+  category?: "emergency" | "injection" | "out_of_scope";
+  reason?: string;
+  emergencyNumber?: string;
+}
+
+export function inspectInputSafety(userInput: string): InputSafetyInspection {
+  const result = runPreModelSafetyCheck(userInput);
+  if (result.allowed) {
+    return { safe: true };
+  }
+  if (result.action === "EMERGENCY_INTERCEPT") {
+    return {
+      safe: false,
+      category: "emergency",
+      reason: result.message,
+      emergencyNumber: result.emergencyPhone ?? "112",
+    };
+  }
+  if (result.action === "INJECTION_BLOCKED") {
+    return {
+      safe: false,
+      category: "injection",
+      reason: result.message,
+    };
+  }
+  return {
+    safe: false,
+    category: "out_of_scope",
+    reason: result.message,
   };
 }

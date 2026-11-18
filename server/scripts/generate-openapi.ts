@@ -39,6 +39,16 @@ import {
   AuditLogEntrySchema,
   DemoScenarioRequestSchema,
   DemoTimeTravelRequestSchema,
+  AskSaansRequestSchema,
+  AskSaansResponseSchema,
+  MythCheckRequestSchema,
+  MythCheckResponseSchema,
+  DraftAdvisoryRequestSchema,
+  DraftAdvisoryResponseSchema,
+  DraftComplaintRequestSchema,
+  DraftComplaintResponseSchema,
+  CitationDtoSchema,
+  ProposalCardSchema,
 } from "shared";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -84,6 +94,16 @@ registry.register("OutboxItemDto", OutboxItemDtoSchema);
 registry.register("AuditLogEntry", AuditLogEntrySchema);
 registry.register("DemoScenarioRequest", DemoScenarioRequestSchema);
 registry.register("DemoTimeTravelRequest", DemoTimeTravelRequestSchema);
+registry.register("AskSaansRequest", AskSaansRequestSchema);
+registry.register("AskSaansResponse", AskSaansResponseSchema);
+registry.register("MythCheckRequest", MythCheckRequestSchema);
+registry.register("MythCheckResponse", MythCheckResponseSchema);
+registry.register("DraftAdvisoryRequest", DraftAdvisoryRequestSchema);
+registry.register("DraftAdvisoryResponse", DraftAdvisoryResponseSchema);
+registry.register("DraftComplaintRequest", DraftComplaintRequestSchema);
+registry.register("DraftComplaintResponse", DraftComplaintResponseSchema);
+registry.register("CitationDto", CitationDtoSchema);
+registry.register("ProposalCard", ProposalCardSchema);
 
 // Endpoints
 registry.registerPath({
@@ -559,6 +579,58 @@ registry.registerPath({
   path: "/internal/demo/reset",
   summary: "Internal: Reset demo state",
   responses: { 200: { description: "Reset" } },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/ai/ask",
+  summary: "Ask Saans: Grounded AI assistant with safety interceptor and number validation",
+  request: { body: { content: { "application/json": { schema: AskSaansRequestSchema } } } },
+  responses: {
+    200: {
+      description: "AI response with citations and proposal cards",
+      content: { "application/json": { schema: AskSaansResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/ai/myth-check",
+  summary: "Air quality myth checker grounded in curated knowledge base",
+  request: { body: { content: { "application/json": { schema: MythCheckRequestSchema } } } },
+  responses: {
+    200: {
+      description: "Myth check verdict and citations",
+      content: { "application/json": { schema: MythCheckResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/ai/draft-advisory",
+  summary: "Draft community air advisory for RWA admins",
+  request: { body: { content: { "application/json": { schema: DraftAdvisoryRequestSchema } } } },
+  responses: {
+    200: {
+      description: "Draft advisory",
+      content: { "application/json": { schema: DraftAdvisoryResponseSchema } },
+    },
+  },
+});
+
+registry.registerPath({
+  method: "post",
+  path: "/api/v1/ai/draft-complaint",
+  summary: "Draft civic violation complaint citing Air Act 1981",
+  request: { body: { content: { "application/json": { schema: DraftComplaintRequestSchema } } } },
+  responses: {
+    200: {
+      description: "Draft legal complaint",
+      content: { "application/json": { schema: DraftComplaintResponseSchema } },
+    },
+  },
 });
 
 const generator = new OpenApiGeneratorV3(registry.definitions);
