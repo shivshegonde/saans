@@ -3,7 +3,6 @@
 FROM node:22-bookworm-slim AS builder
 
 WORKDIR /app
-ENV NODE_OPTIONS="--stack-size=4096"
 
 # Copy root configs and package definitions
 COPY package*.json tsconfig.base.json .eslintrc.json .prettierrc ./
