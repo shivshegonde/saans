@@ -10,9 +10,60 @@ import {
   InvitationScopeType,
 } from "shared";
 
+function extractStepUpPassword(req: Request): string | undefined {
+  const b = (req.body ?? {}) as Record<string, unknown>;
+  const queryPass =
+    typeof req.query["stepUpPassword"] === "string" ? req.query["stepUpPassword"] : undefined;
+  return (
+    (req.headers["x-step-up-password"] as string | undefined) ??
+    (typeof b.password === "string" ? b.password : undefined) ??
+    (typeof b.stepUpPassword === "string" ? b.stepUpPassword : undefined) ??
+    queryPass
+  );
+}
+
+function verifyConfirmation(req: Request): void {
+  const confirmHeader = req.headers["x-confirm-action"];
+  const b = (req.body ?? {}) as Record<string, unknown>;
+  const queryConfirm = req.query["confirmAction"] === "true";
+  if (confirmHeader !== "true" && b.confirmAction !== true && !queryConfirm) {
+    throw new ValidationError(
+      "Sensitive operation requires confirmation header 'x-confirm-action: true' or body field 'confirmAction: true'",
+    );
+  }
+}
+
 export function createHouseholdRouter(c: Container): Router {
   const router = Router();
   const auth = createAuthMiddleware(c.authService);
+
+  // Export household data (Sensitive operation: requires step-up password and confirmation)
+  router.all(
+    "/export",
+    auth,
+    requirePermission("READ"),
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        verifyConfirmation(req);
+        const stepUpPassword = extractStepUpPassword(req);
+        if (!stepUpPassword) {
+          throw new ValidationError(
+            "Step-up password confirmation required in 'x-step-up-password' header or 'stepUpPassword' field",
+          );
+        }
+
+        const data = await c.householdService.exportHouseholdData(
+          req.household!.id,
+          req.user!.id,
+          req.correlationId,
+          stepUpPassword,
+        );
+        res.status(200).json(data);
+      } catch (err) {
+        next(err);
+      }
+    },
+  );
 
   // Join invitation (authenticated user)
   router.post(
@@ -74,23 +125,11 @@ export function createHouseholdRouter(c: Container): Router {
     requirePermission("DELETE"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const confirmHeader = req.headers["x-confirm-action"];
-        const b = (req.body ?? {}) as Record<string, unknown>;
-        const confirmBody = b.confirmAction;
-        if (confirmHeader !== "true" && confirmBody !== true) {
-          throw new ValidationError(
-            "Sensitive operation requires confirmation header 'x-confirm-action: true' or body field 'confirmAction: true'",
-          );
-        }
-
-        const stepUpPassword =
-          (req.headers["x-step-up-password"] as string | undefined) ??
-          (typeof b.password === "string" ? b.password : undefined) ??
-          (typeof b.stepUpPassword === "string" ? b.stepUpPassword : undefined);
-
+        verifyConfirmation(req);
+        const stepUpPassword = extractStepUpPassword(req);
         if (!stepUpPassword) {
           throw new ValidationError(
-            "Step-up password confirmation required in 'x-step-up-password' header or 'stepUpPassword' body field",
+            "Step-up password confirmation required in 'x-step-up-password' header or 'stepUpPassword' field",
           );
         }
 

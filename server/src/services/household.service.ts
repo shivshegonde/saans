@@ -118,4 +118,53 @@ export class HouseholdService {
       status: m.status,
     }));
   }
+
+  async exportHouseholdData(
+    householdId: string,
+    requestingUserId: string,
+    correlationId = "system",
+    stepUpPassword?: string,
+  ): Promise<Record<string, unknown>> {
+    const mem = await this.householdRepo.getMembership(householdId, requestingUserId);
+    if (!mem || mem.status !== "ACTIVE" || !mem.scopes.includes("READ")) {
+      throw new ForbiddenError("Access denied");
+    }
+
+    if (stepUpPassword !== undefined) {
+      const user = await this.householdRepo.getUserById(requestingUserId);
+      if (!user || !verifyScryptPassword(stepUpPassword, user.passwordHash)) {
+        throw new AuthenticationError("Invalid step-up password confirmation");
+      }
+    }
+
+    const current = await this.householdRepo.getHousehold(householdId);
+    if (!current) throw new NotFoundError("Household not found");
+
+    const members = await this.householdRepo.listMemberships(householdId);
+    const alertPref = await this.householdRepo.getAlertPreference(householdId);
+
+    await this.auditRepo.append({
+      tenantId: householdId,
+      actorId: requestingUserId,
+      action: "HOUSEHOLD_DATA_EXPORT",
+      entityType: "HOUSEHOLD",
+      entityId: householdId,
+      beforeSnapshot: null,
+      afterSnapshot: null,
+      correlationId,
+      at: this.clock.now().toISOString(),
+    });
+
+    return {
+      exportedAt: this.clock.now().toISOString(),
+      household: current,
+      members: members.map((m) => ({
+        userId: m.userId,
+        role: m.role,
+        scopes: m.scopes,
+        status: m.status,
+      })),
+      alertPreference: alertPref,
+    };
+  }
 }

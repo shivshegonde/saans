@@ -151,8 +151,8 @@ The codebase strictly adheres to the five SOLID design principles across all lay
 
 3. **Liskov Substitution Principle (LSP)**:
    - Derived implementations can be substituted for their abstractions without breaking callers or altering system invariants:
+     - **Repository Implementations & Contract Suite (`server/src/repositories/ports/`, verified in `server/tests/repository.contract.test.ts`)**: A single parameterized contract test suite runs identically against `MemoryHouseholdRepository` and `FirestoreHouseholdRepository`, guaranteeing identical invariants, mutations, and return types across development, CI, and GCP Cloud Run environments.
      - **Clocks (`server/src/core/ports/clock.ts`)**: `SystemClock` (production) and `FakeClock` (testing and time-travel judging) are 100% interchangeable across all services and core engines.
-     - **Repository Implementations (`server/src/repositories/ports/`)**: `MemoryHouseholdRepo` and `FirestoreHouseholdRepo` satisfy the exact same TypeScript contracts, invariants, and return types. Automated tests run against memory repositories in CI and swap to Firestore in production with zero behavioral discrepancy.
      - **Air Quality Providers (`server/src/core/ports/airProvider.ts`)**: `OpenMeteoProvider` and `ScenarioProvider` both conform to the `AirQualityProvider` contract, allowing seamless fallback during network outages.
 
 4. **Interface Segregation Principle (ISP)**:

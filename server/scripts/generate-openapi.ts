@@ -203,6 +203,14 @@ registry.registerPath({
 });
 
 registry.registerPath({
+  method: "post",
+  path: "/api/v1/household/export",
+  summary: "Export household data archive (requires step-up password and confirmation)",
+  security: [{ bearerAuth: [] }],
+  responses: { 200: { description: "Household data export archive" } },
+});
+
+registry.registerPath({
   method: "get",
   path: "/api/v1/household/members",
   summary: "List household members",

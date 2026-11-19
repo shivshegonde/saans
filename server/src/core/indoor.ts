@@ -56,6 +56,17 @@ export interface VentilationWindow {
   reason: string;
 }
 
+const SOURCE_STRENGTH_MAP: Record<string, number> = {
+  cooking: 12000,
+  incense: 8000,
+  mosquitoCoil: 10000,
+  drySweeping: 5000,
+};
+
+function getSourceStrength(source?: string): number {
+  return source ? (SOURCE_STRENGTH_MAP[source] ?? 0) : 0;
+}
+
 /**
  * Computes steady-state and transient indoor PM2.5 from room parameters and outdoor levels.
  */
@@ -73,11 +84,7 @@ export function simulateIndoorAir(
   const Q = Math.max(0, room.purifierCadrM3h); // CADR in m³/h
 
   // Indoor source strength S in µg/h
-  let S = 0;
-  if (room.activeSource === "cooking") S = 12000;
-  else if (room.activeSource === "incense") S = 8000;
-  else if (room.activeSource === "mosquitoCoil") S = 10000;
-  else if (room.activeSource === "drySweeping") S = 5000;
+  const S = getSourceStrength(room.activeSource);
 
   // Total removal rate lambda = a + k + Q/V
   const lambda = a + k + Q / volumeM3;

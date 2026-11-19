@@ -38,27 +38,32 @@ export const COLD_TEMPERATURE_THRESHOLD_C = 15.0;
 /** Boundary mixing layer below 400m compresses pollutant volume vertically */
 export const SHALLOW_MIXING_HEIGHT_M = 400.0;
 
+function getWindDriver(windSpeedKmh: number): SmogDriver | null {
+  if (windSpeedKmh <= STAGNANT_WIND_THRESHOLD_KMH) {
+    return {
+      id: "stagnant-wind",
+      name: "Stagnant winds",
+      explanation: `Winds are calm (${windSpeedKmh} km/h), preventing horizontal ventilation and dispersion of localized emissions.`,
+      severity: "high",
+    };
+  }
+  if (windSpeedKmh <= LIGHT_WIND_THRESHOLD_KMH) {
+    return {
+      id: "light-breeze",
+      name: "Light breeze",
+      explanation: `Wind speed is modest (${windSpeedKmh} km/h), providing only partial dispersion of urban pollutants.`,
+      severity: "moderate",
+    };
+  }
+  return null;
+}
+
 export function classifySmogDrivers(weather: WeatherConditions): SmogDriver[] {
   const drivers: SmogDriver[] = [];
 
-  // 1. Wind speed analysis
-  if (weather.windSpeedKmh <= STAGNANT_WIND_THRESHOLD_KMH) {
-    drivers.push({
-      id: "stagnant-wind",
-      name: "Stagnant winds",
-      explanation: `Winds are calm (${weather.windSpeedKmh} km/h), preventing horizontal ventilation and dispersion of localized emissions.`,
-      severity: "high",
-    });
-  } else if (weather.windSpeedKmh <= LIGHT_WIND_THRESHOLD_KMH) {
-    drivers.push({
-      id: "light-breeze",
-      name: "Light breeze",
-      explanation: `Wind speed is modest (${weather.windSpeedKmh} km/h), providing only partial dispersion of urban pollutants.`,
-      severity: "moderate",
-    });
-  }
+  const windDriver = getWindDriver(weather.windSpeedKmh);
+  if (windDriver) drivers.push(windDriver);
 
-  // 2. Thermal inversion / Temperature analysis
   if (weather.temperatureC <= COLD_TEMPERATURE_THRESHOLD_C) {
     drivers.push({
       id: "thermal-inversion",
@@ -68,7 +73,6 @@ export function classifySmogDrivers(weather: WeatherConditions): SmogDriver[] {
     });
   }
 
-  // 3. Humidity / Secondary aerosol formation
   if (weather.humidityPct >= HIGH_HUMIDITY_THRESHOLD_PCT) {
     drivers.push({
       id: "high-humidity",
@@ -78,7 +82,6 @@ export function classifySmogDrivers(weather: WeatherConditions): SmogDriver[] {
     });
   }
 
-  // 4. Mixing layer height (if available from provider)
   if (
     weather.mixingLayerHeightM !== undefined &&
     weather.mixingLayerHeightM <= SHALLOW_MIXING_HEIGHT_M
@@ -91,7 +94,6 @@ export function classifySmogDrivers(weather: WeatherConditions): SmogDriver[] {
     });
   }
 
-  // If conditions are good and dispersive
   if (drivers.length === 0) {
     drivers.push({
       id: "dispersive-atmosphere",

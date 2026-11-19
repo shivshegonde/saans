@@ -21,14 +21,19 @@
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
-    "complexity": ["error", 12],
+    "complexity": ["error", 10],
+    "max-lines-per-function": [
+      "error",
+      { "max": 50, "skipBlankLines": true, "skipComments": true }
+    ],
     "no-console": ["warn", { "allow": ["warn", "error", "info"] }]
   },
   "overrides": [
     {
       "files": ["server/src/routes/**/*.ts"],
       "rules": {
-        "max-lines": ["error", { "max": 250, "skipBlankLines": true, "skipComments": true }]
+        "max-lines": ["error", { "max": 250, "skipBlankLines": true, "skipComments": true }],
+        "max-lines-per-function": "off"
       }
     },
     {
@@ -50,16 +55,35 @@
       }
     },
     {
-      "files": ["server/scripts/**/*.ts", "shared/src/**/*.ts"],
+      "files": [
+        "server/src/services/**/*.ts",
+        "server/src/adapters/**/*.ts",
+        "server/src/ai/**/*.ts"
+      ],
       "rules": {
-        "max-lines": "off"
+        "max-lines-per-function": "off",
+        "complexity": "off"
       }
     },
     {
-      "files": ["**/*.test.ts", "**/*.spec.ts"],
+      "files": [
+        "server/scripts/**/*.ts",
+        "shared/src/**/*.ts",
+        "web/src/**/*.tsx",
+        "web/src/**/*.ts"
+      ],
       "rules": {
         "max-lines": "off",
-        "max-lines-per-function": "off"
+        "max-lines-per-function": "off",
+        "complexity": "off"
+      }
+    },
+    {
+      "files": ["**/*.test.ts", "**/*.spec.ts", "**/*.test.tsx", "**/*.spec.tsx"],
+      "rules": {
+        "max-lines": "off",
+        "max-lines-per-function": "off",
+        "complexity": "off"
       }
     }
   ]

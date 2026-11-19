@@ -20,6 +20,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,json,md,css}\"",
     "typecheck": "npm run typecheck --workspace=shared && npm run typecheck --workspace=server && npm run typecheck --workspace=web",
     "check:size": "node server/scripts/check-router-sizes.js",
+    "metrics": "node scripts/collect-metrics.js",
     "openapi": "npm run openapi --workspace=server",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run check:size && npm run test:coverage && npm run test:web && npm run build",
     "start": "node server/dist/src/server.js",

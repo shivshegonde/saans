@@ -36,7 +36,11 @@ export interface ActionCard {
   knowledgeIds: string[];
 }
 
-function addIndoorRules(ctx: HouseholdContext, cards: ActionCard[], isPoorOrWorse: boolean): void {
+function addSensitiveRule(
+  ctx: HouseholdContext,
+  cards: ActionCard[],
+  isPoorOrWorse: boolean,
+): void {
   const hasSensitive =
     ctx.hasChild || ctx.hasElder || ctx.hasRespiratoryCondition || ctx.hasPregnancy;
   if (hasSensitive && isPoorOrWorse) {
@@ -56,7 +60,9 @@ function addIndoorRules(ctx: HouseholdContext, cards: ActionCard[], isPoorOrWors
       knowledgeIds: ["routine-indoor-play", "sensitive-vulnerability"],
     });
   }
+}
 
+function addVentilationRule(ctx: HouseholdContext, cards: ActionCard[]): void {
   if (ctx.bestVentilationWindow) {
     cards.push({
       id: "action-p2-ventilation-timing",
@@ -90,7 +96,9 @@ function addIndoorRules(ctx: HouseholdContext, cards: ActionCard[], isPoorOrWors
       knowledgeIds: ["indoor-sealing"],
     });
   }
+}
 
+function addHouseholdLivingRules(ctx: HouseholdContext, cards: ActionCard[]): void {
   cards.push({
     id: "action-p3-purifier-bedroom",
     ruleId: "P3",
@@ -186,11 +194,7 @@ function addOutdoorCommuteRules(
   });
 }
 
-function addCivicAndSevereRules(
-  ctx: HouseholdContext,
-  cards: ActionCard[],
-  isSevere: boolean,
-): void {
+function addCivicRules(cards: ActionCard[]): void {
   cards.push({
     id: "action-p8-civic-anti-burning",
     ruleId: "P8",
@@ -206,7 +210,13 @@ function addCivicAndSevereRules(
     evidenceLevel: "strong",
     knowledgeIds: ["civic-anti-burning", "vehicle-idling-schools"],
   });
+}
 
+function addElderAndSevereRules(
+  ctx: HouseholdContext,
+  cards: ActionCard[],
+  isSevere: boolean,
+): void {
   if (ctx.hasElder) {
     cards.push({
       id: "action-p9-elder-walk-timing",
@@ -249,9 +259,12 @@ export function buildDailyPlan(ctx: HouseholdContext): ActionCard[] {
   const isSevere = ctx.currentAqi >= 401;
   const isPoorOrWorse = ctx.currentAqi >= 201;
 
-  addIndoorRules(ctx, cards, isPoorOrWorse);
+  addSensitiveRule(ctx, cards, isPoorOrWorse);
+  addVentilationRule(ctx, cards);
+  addHouseholdLivingRules(ctx, cards);
   addOutdoorCommuteRules(ctx, cards, isSevere, isPoorOrWorse);
-  addCivicAndSevereRules(ctx, cards, isSevere);
+  addCivicRules(cards);
+  addElderAndSevereRules(ctx, cards, isSevere);
 
   return cards;
 }

@@ -75,4 +75,39 @@ describe("Sensitive Operation Protection (Section 9 Security & Privacy)", () => 
 
     expect([401, 403]).toContain(followUp.status);
   });
+
+  it("rejects household data export without confirmation and step-up password", async () => {
+    const noConfirm = await request(app)
+      .post("/api/v1/household/export")
+      .set("Authorization", `Bearer ${ownerToken}`)
+      .send({ stepUpPassword: "OwnerSecPassword123!" });
+    expect(noConfirm.status).toBe(400);
+
+    const noPassword = await request(app)
+      .post("/api/v1/household/export")
+      .set("Authorization", `Bearer ${ownerToken}`)
+      .set("x-confirm-action", "true")
+      .send({});
+    expect(noPassword.status).toBe(400);
+
+    const wrongPassword = await request(app)
+      .post("/api/v1/household/export")
+      .set("Authorization", `Bearer ${ownerToken}`)
+      .set("x-confirm-action", "true")
+      .send({ stepUpPassword: "WrongPassword999!" });
+    expect(wrongPassword.status).toBe(401);
+  });
+
+  it("successfully exports full household data with valid step-up confirmation", async () => {
+    const res = await request(app)
+      .post("/api/v1/household/export")
+      .set("Authorization", `Bearer ${ownerToken}`)
+      .set("x-confirm-action", "true")
+      .send({ stepUpPassword: "OwnerSecPassword123!" });
+
+    expect(res.status).toBe(200);
+    expect(res.body.household.name).toBe("Security Test Household");
+    expect(res.body.exportedAt).toBeDefined();
+    expect(Array.isArray(res.body.members)).toBe(true);
+  });
 });
