@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saans - Demo Video & Technical Overview</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --sky: #0284c7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .badge {
+      font-size: 0.8rem;
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--emerald);
+      border: 1px solid var(--emerald);
+      padding: 2px 10px;
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+    p.subtitle {
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 1.05rem;
+    }
+    .video-wrapper {
+      position: relative;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #334155;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      aspect-ratio: 16 / 9;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+    .meta-card {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+    .meta-card h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .meta-card p {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .chapters {
+      margin-top: 32px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #334155;
+    }
+    .chapters h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      color: var(--emerald);
+    }
+    .chapter-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chapter-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.6);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .chapter-item:hover {
+      background: rgba(16, 185, 129, 0.15);
+    }
+    .time-stamp {
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: var(--amber);
+      font-weight: 700;
+      min-width: 50px;
+    }
+    .chapter-info h4 {
+      font-size: 0.95rem;
+      color: #fff;
+    }
+    .chapter-info p {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .transcript {
+      margin-top: 32px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid #334155;
+    }
+    .transcript h2 {
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      color: var(--sky);
+    }
+    .transcript p {
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>
+        Saans Demo Video
+        <span class="badge">1:42 Min</span>
+      </h1>
+      <p class="subtitle">Code Decides, AI Explains — Environmental Health Companion for North India</p>
+    </header>
+
+    <div class="video-wrapper">
+      <video id="demoVideo" controls preload="metadata" poster="../assets/logo.png">
+        <source src="saans-demo.mp4" type="video/mp4">
+        <source src="saans-demo.webm" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-card">
+        <h3>Duration</h3>
+        <p>1m 42s (101.8s)</p>
+      </div>
+      <div class="meta-card">
+        <h3>Resolution</h3>
+        <p>1280 &times; 720 (720p HD)</p>
+      </div>
+      <div class="meta-card">
+        <h3>Core Principle</h3>
+        <p>Code Decides, AI Explains</p>
+      </div>
+      <div class="meta-card">
+        <h3>Live URL</h3>
+        <p><a href="https://saans-205781654913.asia-south1.run.app" target="_blank" style="color: #38bdf8; text-decoration: none;">Cloud Run Service &rarr;</a></p>
+      </div>
+    </div>
+
+    <section class="chapters">
+      <h2>Video Chapters &amp; Timestamps</h2>
+      <ul class="chapter-list">
+        <li class="chapter-item" onclick="seek(0)">
+          <span class="time-stamp">0:00</span>
+          <div class="chapter-info">
+            <h4>The Problem &amp; Living Sky Overview</h4>
+            <p>North India winter smog crisis, CPCB NAQI breakpoints, Living Sky atmospheric dispersion.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(13)">
+          <span class="time-stamp">0:13</span>
+          <div class="chapter-info">
+            <h4>Judge Demo Bar &amp; System Architecture</h4>
+            <p>Pure TypeScript engines, 100% test coverage, reactive scenario switcher, transactional Outbox pattern.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(27)">
+          <span class="time-stamp">0:27</span>
+          <div class="chapter-info">
+            <h4>72-Hour Atmospheric Timeline</h4>
+            <p>Thermal inversion cycle modeling, interactive scrubbing, midday safe ventilation window detector.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(40)">
+          <span class="time-stamp">0:40</span>
+          <div class="chapter-info">
+            <h4>Personalized Smart Mitigation Plan</h4>
+            <p>Vulnerability-based routines (pediatric asthma, elderly COPD), actionable checklist, iCal calendar export.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(54)">
+          <span class="time-stamp">0:54</span>
+          <div class="chapter-info">
+            <h4>Home Air Mass-Balance Physics Simulator</h4>
+            <p>Continuous differential equations for indoor PM2.5 decay, window/cooking toggles, AHAM 4.8 ACH CADR sizing.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(70)">
+          <span class="time-stamp">1:10</span>
+          <div class="chapter-info">
+            <h4>Impact Lab — Family Exposure vs. City Emissions</h4>
+            <p>Strict separation of health exposure (µg inhaled avoided) from systemic emissions (kg CO2 saved via metro), local ledger.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(84)">
+          <span class="time-stamp">1:24</span>
+          <div class="chapter-info">
+            <h4>Ask Saans AI &amp; Deterministic Emergency Shield</h4>
+            <p>Google Vertex AI Gemini assistant, instant myth debunking with citations, acute respiratory distress 112 emergency routing.</p>
+          </div>
+        </li>
+        <li class="chapter-item" onclick="seek(98)">
+          <span class="time-stamp">1:38</span>
+          <div class="chapter-info">
+            <h4>Accessibility &amp; Closing Summary</h4>
+            <p>WCAG AAA High Contrast mode, mobile responsive touch targets (&ge;44px), privacy-first local storage architecture.</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="transcript">
+      <h2>Spoken Narration Transcript</h2>
+      <p><strong>[0:00 - 0:13]</strong> Every winter across North India, over three hundred million citizens wake up to hazardous smog and alarming red A Q I numbers with zero actionable advice. Welcome to Saans, an environmental health companion built on one core principle: Code Decides, A I Explains.</p>
+      <p><strong>[0:13 - 0:27]</strong> Under the hood, Saans uses pure TypeScript mathematical engines with one hundred percent test coverage. Built with Vite, React, Google Cloud Run, and Firestore, Saans computes real C P C B N A Q I breakpoints and inversion physics without any L L M hallucinations.</p>
+      <p><strong>[0:27 - 0:40]</strong> The Living Sky dynamically mirrors atmospheric dispersion. Our seventy-two hour forecast calculates thermal inversion cycles, identifying the midday window when ventilation is safe.</p>
+      <p><strong>[0:40 - 0:54]</strong> Instead of generic advice, our rule engine generates personalized routines tailored to vulnerable family members, like children with asthma or elderly parents. With a single tap, daily mitigation actions export directly to your phone calendar.</p>
+      <p><strong>[0:54 - 1:10]</strong> In the Home Air Simulator, we solve continuous differential mass-balance physics in real time. Moving the C A D R slider recalculates indoor particle decay to meet the four point eight air-changes-per-hour A H A M standard.</p>
+      <p><strong>[1:10 - 1:24]</strong> In the Impact Lab, Saans strictly separates the Family Exposure Lens from the City Emissions Lens. You see micrograms of inhaled P M two point five prevented, alongside kilograms of C O two saved by taking Delhi Metro.</p>
+      <p><strong>[1:24 - 1:38]</strong> When you ask questions, Google Vertex A I Gemini explains the facts warmly. Our deterministic safety shield catches acute respiratory distress and immediately routes emergencies to one-one-two, while debunking viral myths with scientific citations.</p>
+      <p><strong>[1:38 - 1:42]</strong> Saans: science-grounded, privacy-first, and mobile-ready clean air companion for India.</p>
+    </section>
+
+    <footer>
+      <p>Built for the Hackathon &bull; Saans: Clean Air Decision Intelligence</p>
+    </footer>
+  </div>
+
+  <script>
+    const video = document.getElementById('demoVideo');
+    function seek(seconds) {
+      if (video) {
+        video.currentTime = seconds;
+        video.play();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -21,7 +21,9 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({ data, isLoading })
   const [showTable, setShowTable] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  if (isLoading || !data || !data.series || data.series.length === 0) {
+  const rawList = (data as any)?.series || (data as any)?.hours || [];
+
+  if (isLoading || !data || rawList.length === 0) {
     return (
       <div className="w-full h-72 rounded-3xl bg-slate-100 animate-pulse flex items-center justify-center p-6 text-slate-400 font-medium">
         Loading 72-hour air forecast timeline...
@@ -29,8 +31,8 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({ data, isLoading })
     );
   }
 
-  const series = data.series.slice(0, 72);
-  const bestWindowPoint = series.find((p) => p.isBestWindow);
+  const series = rawList.slice(0, 72);
+  const bestWindowPoint = series.find((p: any) => p.isBestWindow);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") {
@@ -40,19 +42,20 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({ data, isLoading })
     }
   };
 
-  const chartData = series.map((h: ForecastPoint, i: number) => {
-    const d = new Date(h.time);
+  const chartData = series.map((h: any, i: number) => {
+    const rawTime = h.time || h.timeIso;
+    const d = new Date(rawTime);
     const label = isNaN(d.getTime())
-      ? h.time
+      ? rawTime
       : `${d.getDate()}/${d.getMonth() + 1} ${d.getHours()}:00`;
     return {
       index: i,
       time: label,
-      rawTime: h.time,
+      rawTime: rawTime,
       aqi: h.aqi,
       pm25: h.pm25,
       category: h.category,
-      isBestWindow: h.isBestWindow,
+      isBestWindow: !!h.isBestWindow,
     };
   });
 

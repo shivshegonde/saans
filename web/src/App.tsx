@@ -61,22 +61,37 @@ export function App() {
     refetchInterval: 60000,
   });
 
-  const { data: airForecast, isLoading: isForecastLoading } = useQuery<AirForecastResponse>({
+  const {
+    data: airForecast,
+    isLoading: isForecastLoading,
+    refetch: refetchForecast,
+  } = useQuery<AirForecastResponse>({
     queryKey: ["airForecast", currentScenario],
     queryFn: fetchAirForecast,
     refetchInterval: 120000,
   });
 
-  const { data: todayPlan, isLoading: isPlanLoading } = useQuery<TodayPlanResponse>({
-    queryKey: ["todayPlan", currentScenario],
+  const {
+    data: todayPlan,
+    isLoading: isPlanLoading,
+    refetch: refetchPlan,
+  } = useQuery<TodayPlanResponse>({
+    queryKey: ["todayPlan", currentScenario, currentPersona],
     queryFn: () => fetchTodayPlan(),
     refetchInterval: 120000,
   });
 
   const handlePersonaChange = (p: string) => {
     setCurrentPersona(p);
+    refetchPlan();
     if (p.includes("Admin")) setActiveTab("community");
     else if (p.includes("Scoped")) setActiveTab("family");
+  };
+
+  const handleRefreshAll = () => {
+    refetchAir();
+    refetchForecast();
+    refetchPlan();
   };
 
   return (
@@ -88,11 +103,11 @@ export function App() {
         currentScenario={currentScenario}
         onScenarioChange={(s) => {
           setCurrentScenario(s);
-          refetchAir();
+          handleRefreshAll();
         }}
         onPersonaChange={handlePersonaChange}
-        onTimeAdvance={() => refetchAir()}
-        onResetClock={() => refetchAir()}
+        onTimeAdvance={handleRefreshAll}
+        onResetClock={handleRefreshAll}
       />
 
       <Header

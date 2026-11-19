@@ -6,8 +6,16 @@ import {
 } from "shared";
 
 const getAuthHeaders = (): Record<string, string> => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("saans.token") : null;
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  let token = typeof window !== "undefined" ? localStorage.getItem("saans.token") : null;
+  if (!token) {
+    token = "demo-token-riya";
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("saans.token", token);
+      } catch {}
+    }
+  }
+  return { Authorization: `Bearer ${token}` };
 };
 
 export async function fetchAirNow(): Promise<AirNowResponse> {

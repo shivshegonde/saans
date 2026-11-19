@@ -58,6 +58,14 @@ export const JudgeDemoBar: React.FC<JudgeDemoBarProps> = ({
   };
 
   const handlePersona = (p: string) => {
+    let token = "demo-token-riya";
+    if (p.includes("Dadaji")) token = "demo-token-dadaji";
+    else if (p.includes("Admin") || p.includes("Kulkarni")) token = "demo-token-kulkarni";
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("saans.token", token);
+      } catch {}
+    }
     onPersonaChange?.(p);
     showToast(`Switched active persona to: ${p}`);
   };

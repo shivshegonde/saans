@@ -9,6 +9,7 @@ import { container } from "./container.js";
 import { securityHeadersMiddleware } from "./middleware/securityHeaders.js";
 import { errorHandlerMiddleware } from "./middleware/errorHandler.js";
 import { createRootRouter } from "./routes/index.js";
+import { seedDemoData } from "./services/demoSeed.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,6 +24,9 @@ export function createApp(c = container) {
 
   // Mount API & health routes
   app.use(createRootRouter(c));
+
+  // Seed demo household, users and sessions
+  seedDemoData(c).catch((err) => console.warn("Seed error:", err));
 
   // Serve SPA frontend in production
   const candidateStaticPaths = [
