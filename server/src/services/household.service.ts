@@ -1,8 +1,18 @@
+import crypto from "node:crypto";
 import { Clock } from "../core/ports/clock.js";
 import { HouseholdRepository } from "../repositories/ports/householdRepo.js";
 import { AuditRepository } from "../repositories/ports/auditRepo.js";
-import { ForbiddenError, NotFoundError } from "./errors.js";
+import { ForbiddenError, NotFoundError, AuthenticationError } from "./errors.js";
 import { HouseholdProfile, UpdateHouseholdRequest } from "shared";
+
+function verifyScryptPassword(password: string, storedHash: string): boolean {
+  const [salt, key] = storedHash.split(":");
+  if (!salt || !key) return false;
+  const keyBuffer = Buffer.from(key, "hex");
+  const derivedKey = crypto.scryptSync(password, salt, 64);
+  if (keyBuffer.length !== derivedKey.length) return false;
+  return crypto.timingSafeEqual(keyBuffer, derivedKey);
+}
 
 export class HouseholdService {
   constructor(
@@ -58,16 +68,25 @@ export class HouseholdService {
     householdId: string,
     requestingUserId: string,
     correlationId = "system",
+    stepUpPassword?: string,
   ): Promise<void> {
     const mem = await this.householdRepo.getMembership(householdId, requestingUserId);
     if (!mem || mem.status !== "ACTIVE" || mem.role !== "OWNER" || !mem.scopes.includes("DELETE")) {
       throw new ForbiddenError("Only the household owner can delete the household");
     }
 
+    if (stepUpPassword !== undefined) {
+      const user = await this.householdRepo.getUserById(requestingUserId);
+      if (!user || !verifyScryptPassword(stepUpPassword, user.passwordHash)) {
+        throw new AuthenticationError("Invalid step-up password confirmation");
+      }
+    }
+
     const current = await this.householdRepo.getHousehold(householdId);
     if (!current) throw new NotFoundError("Household not found");
 
     await this.householdRepo.deleteHousehold(householdId);
+    await this.householdRepo.deleteHouseholdSessions(householdId);
 
     await this.auditRepo.append({
       tenantId: householdId,

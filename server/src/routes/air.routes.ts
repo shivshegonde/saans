@@ -34,7 +34,9 @@ export function createAirRouter(c: Container): Router {
 
       const forecast = await c.airProvider.getForecast({ lat, lng, name }, hours);
 
-      const rawPoints = (forecast.hours || (forecast as unknown as { series?: unknown[] }).series || []) as Array<{
+      const rawPoints = (forecast.hours ||
+        (forecast as unknown as { series?: unknown[] }).series ||
+        []) as Array<{
         timeIso?: string;
         time?: string;
         aqi: number;

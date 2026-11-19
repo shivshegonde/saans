@@ -12,7 +12,9 @@ const getAuthHeaders = (): Record<string, string> => {
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem("saans.token", token);
-      } catch {}
+      } catch (err) {
+        console.warn("Could not persist session token to localStorage", err);
+      }
     }
   }
   return { Authorization: `Bearer ${token}` };

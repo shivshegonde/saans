@@ -197,7 +197,7 @@ registry.registerPath({
 registry.registerPath({
   method: "delete",
   path: "/api/v1/household",
-  summary: "Delete household and all associated data",
+  summary: "Delete household and all associated data (requires step-up password and confirmation)",
   security: [{ bearerAuth: [] }],
   responses: { 204: { description: "Household deleted" } },
 });

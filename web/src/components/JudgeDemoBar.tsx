@@ -64,7 +64,9 @@ export const JudgeDemoBar: React.FC<JudgeDemoBarProps> = ({
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem("saans.token", token);
-      } catch {}
+      } catch (err) {
+        console.warn("Could not persist persona token to localStorage", err);
+      }
     }
     onPersonaChange?.(p);
     showToast(`Switched active persona to: ${p}`);

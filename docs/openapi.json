@@ -2259,15 +2259,42 @@
         }
       },
       "delete": {
-        "summary": "Delete household and all associated data",
+        "summary": "Delete household and all associated data (requires step-up password and confirmation)",
         "security": [
           {
             "bearerAuth": []
           }
         ],
+        "parameters": [
+          {
+            "name": "x-confirm-action",
+            "in": "header",
+            "required": false,
+            "description": "Explicit confirmation header set to 'true' for sensitive destructive action",
+            "schema": {
+              "type": "string",
+              "enum": ["true"]
+            }
+          },
+          {
+            "name": "x-step-up-password",
+            "in": "header",
+            "required": false,
+            "description": "Step-up password confirmation for re-authentication",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "204": {
             "description": "Household deleted"
+          },
+          "400": {
+            "description": "Missing confirmation header or password"
+          },
+          "401": {
+            "description": "Invalid step-up password"
           }
         }
       }

@@ -127,3 +127,56 @@ All critical events (smog threshold alerts, co-guardian escalations) write to th
 - **Deduplication**: Monotonically assigned `idempotencyKey` prevents duplicate notifications across network retries.
 - **Lease Mutex**: Atomic lease acquisition with `isDispatching` flag prevents concurrent Cloud Scheduler instances from double-sending messages.
 - **Exponential Backoff**: Up to 3 automatic retries with dead-letter queue isolation for persistent failures.
+
+---
+
+## 6. SOLID Principles Verification
+
+The codebase strictly adheres to the five SOLID design principles across all layers:
+
+1. **Single Responsibility Principle (SRP)**:
+   - Each module owns exactly one axis of change.
+   - For example:
+     - `server/src/core/aqi.ts` is responsible solely for CPCB NAQI breakpoint interpolation and WHO ratio math.
+     - `server/src/core/indoor.ts` is responsible solely for mass-balance differential physics.
+     - `server/src/core/safety.ts` is responsible solely for prompt sanitization, emergency symptom triage, and injection rejection.
+     - `server/src/services/auth.service.ts` owns credential hashing and token lifecycle; it delegates storage to repository ports.
+     - Express sub-routers in `server/src/routes/` handle exclusively HTTP request validation and status response mapping (each strictly $< 250$ lines).
+
+2. **Open-Closed Principle (OCP)**:
+   - Core behavior is extensible without modifying existing code through polymorphism and strategy registries:
+     - **Air Quality Providers (`server/src/adapters/providerChain.ts`)**: New weather or municipal air providers (e.g. CPCB CAAQMS, IQAir, proprietary IoT sensors) implement the `AirQualityProvider` port and plug into `ProviderChain` without altering domain math.
+     - **Plan Rules Engine (`server/src/core/planEngine.ts`)**: Rules P1 through P10 are modeled as isolated, prioritized rule evaluators. New municipal or health directives can be added to the evaluation pipeline without refactoring existing rules.
+     - **Impact Calculation Models (`server/src/core/emissions.ts`)**: Emission factors in `server/src/data/emission-factors.json` can be calibrated for new vehicle categories or regional power grids without altering computation logic.
+
+3. **Liskov Substitution Principle (LSP)**:
+   - Derived implementations can be substituted for their abstractions without breaking callers or altering system invariants:
+     - **Clocks (`server/src/core/ports/clock.ts`)**: `SystemClock` (production) and `FakeClock` (testing and time-travel judging) are 100% interchangeable across all services and core engines.
+     - **Repository Implementations (`server/src/repositories/ports/`)**: `MemoryHouseholdRepo` and `FirestoreHouseholdRepo` satisfy the exact same TypeScript contracts, invariants, and return types. Automated tests run against memory repositories in CI and swap to Firestore in production with zero behavioral discrepancy.
+     - **Air Quality Providers (`server/src/core/ports/airProvider.ts`)**: `OpenMeteoProvider` and `ScenarioProvider` both conform to the `AirQualityProvider` contract, allowing seamless fallback during network outages.
+
+4. **Interface Segregation Principle (ISP)**:
+   - Interfaces are fine-grained and purpose-specific, ensuring clients never depend on methods they do not need:
+     - **Repository Ports**: `AuditRepository` defines strictly `append()` and `query()`; it omits mutative methods (`update`, `delete`) to guarantee immutability.
+     - **Clock Port**: Exposes only `now(): Date`, keeping time consumer dependencies minimal.
+     - **Air Provider Port**: Exposes only `getCurrentAndForecast(lat, lon, hours)`, decoupling callers from vendor-specific authentication, raw payload structures, or HTTP specifics.
+     - **User Permissions**: Granular permissions in `shared/src/permissions.ts` segregate capabilities (`household:read`, `household:write`, `community:read`, `community:admin`, `audit:read`, `system:run-tasks`).
+
+5. **Dependency Inversion Principle (DIP)**:
+   - High-level business logic and core mathematical engines never import or depend on low-level database drivers, network clients, or Express web frameworks:
+     - `server/src/core/` has **zero** dependencies on Express, Firestore, Node.js `fs`, or network APIs.
+     - `server/src/services/` depend only on abstractions (`ports`), receiving concrete repository and clock adapters via dependency injection in `server/src/container.ts`.
+     - High-level routes depend on domain service interfaces, not database implementations.
+
+---
+
+## 7. Architectural Decision Records (ADRs)
+
+Detailed records of key architectural decisions are documented in the `docs/adr/` directory:
+
+1. [ADR 0001: Clean Hexagonal Architecture & Monorepo Structure](adr/0001-architecture.md)
+2. [ADR 0002: Google Cloud Platform Managed Services Selection](adr/0002-gcp-services.md)
+3. [ADR 0003: Authentication, Session Management, and Credential Protection](adr/0003-auth-and-sessions.md)
+4. [ADR 0004: Air Quality Impact Models and Data Provenance](adr/0004-impact-models.md)
+5. [ADR 0005: AI Guardrails, Deterministic Interceptors, and Fallback Strategy](adr/0005-ai-guardrails.md)
+6. [ADR 0006: Database Abstraction, Persistence Strategy, and Firestore Integration](adr/0006-database-ports.md)

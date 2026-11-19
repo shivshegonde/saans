@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 import { Container } from "../container.js";
 import { createAuthMiddleware } from "../middleware/auth.js";
 import { requirePermission } from "../middleware/requirePermission.js";
+import { ValidationError } from "../services/errors.js";
 import {
   UpdateHouseholdRequestSchema,
   CreateInvitationRequestSchema,
@@ -73,10 +74,31 @@ export function createHouseholdRouter(c: Container): Router {
     requirePermission("DELETE"),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
+        const confirmHeader = req.headers["x-confirm-action"];
+        const b = (req.body ?? {}) as Record<string, unknown>;
+        const confirmBody = b.confirmAction;
+        if (confirmHeader !== "true" && confirmBody !== true) {
+          throw new ValidationError(
+            "Sensitive operation requires confirmation header 'x-confirm-action: true' or body field 'confirmAction: true'",
+          );
+        }
+
+        const stepUpPassword =
+          (req.headers["x-step-up-password"] as string | undefined) ??
+          (typeof b.password === "string" ? b.password : undefined) ??
+          (typeof b.stepUpPassword === "string" ? b.stepUpPassword : undefined);
+
+        if (!stepUpPassword) {
+          throw new ValidationError(
+            "Step-up password confirmation required in 'x-step-up-password' header or 'stepUpPassword' body field",
+          );
+        }
+
         await c.householdService.deleteHousehold(
           req.household!.id,
           req.user!.id,
           req.correlationId,
+          stepUpPassword,
         );
         res.status(204).send();
       } catch (err) {

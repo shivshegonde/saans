@@ -4,7 +4,7 @@ import { MemoryHouseholdRepository } from "../src/repositories/memory/memoryHous
 import { MemoryAuditRepository } from "../src/repositories/memory/memoryAuditRepo.js";
 import { AuthService } from "../src/services/auth.service.js";
 import { HouseholdService } from "../src/services/household.service.js";
-import { ForbiddenError } from "../src/services/errors.js";
+import { ForbiddenError, AuthenticationError } from "../src/services/errors.js";
 
 describe("HouseholdService (FR-1, FR-19, Domain Invariants)", () => {
   let clock: FakeClock;
@@ -62,8 +62,19 @@ describe("HouseholdService (FR-1, FR-19, Domain Invariants)", () => {
     );
   });
 
-  it("allows owner to delete household and prevents further access", async () => {
-    await householdService.deleteHousehold(householdId, ownerUserId);
+  it("rejects deletion when step-up password is invalid", async () => {
+    await expect(
+      householdService.deleteHousehold(householdId, ownerUserId, "corr-1", "WrongPassword!"),
+    ).rejects.toThrow(AuthenticationError);
+  });
+
+  it("allows owner to delete household with valid step-up password and prevents further access", async () => {
+    await householdService.deleteHousehold(
+      householdId,
+      ownerUserId,
+      "corr-1",
+      "StrongPassword123!",
+    );
     await expect(householdService.getHousehold(householdId, ownerUserId)).rejects.toThrow(
       ForbiddenError,
     );
