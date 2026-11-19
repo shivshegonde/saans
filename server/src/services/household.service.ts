@@ -126,8 +126,8 @@ export class HouseholdService {
     stepUpPassword?: string,
   ): Promise<Record<string, unknown>> {
     const mem = await this.householdRepo.getMembership(householdId, requestingUserId);
-    if (!mem || mem.status !== "ACTIVE" || !mem.scopes.includes("READ")) {
-      throw new ForbiddenError("Access denied");
+    if (!mem || mem.status !== "ACTIVE" || mem.role !== "OWNER") {
+      throw new ForbiddenError("Only household owner can export household data");
     }
 
     if (stepUpPassword !== undefined) {

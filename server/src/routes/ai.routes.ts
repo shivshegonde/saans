@@ -5,13 +5,12 @@ import {
   DraftAdvisoryRequestSchema,
   DraftComplaintRequestSchema,
 } from "shared";
-import { GeminiService } from "../ai/geminiClient.js";
 import { buildCoarsenedFacts } from "../ai/factsBuilder.js";
 import { Container } from "../container.js";
 
 export function createAiRouter(container: Container): Router {
   const router = Router();
-  const aiService = new GeminiService();
+  const aiService = container.aiClient;
 
   router.post("/ask", async (req: Request, res: Response, next) => {
     try {

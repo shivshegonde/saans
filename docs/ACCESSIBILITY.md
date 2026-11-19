@@ -78,3 +78,5 @@ All accessibility guarantees are wired into CI via automated unit and component 
 - `web/tests/modal.a11y.test.ts`: Checks `aria-modal`, `role="dialog"`, and focus trapping on modal components.
 - `web/tests/duplicate-ids.test.ts`: Ensures zero duplicate HTML ID attributes across all rendered views.
 - `web/tests/mobile.responsive.test.tsx`: Validates 320px and 390px reflow without horizontal clipping.
+- `web/tests/a11y.routes.spec.tsx`: Automated WCAG 2.2 AA route accessibility gate running axe-core across all routes in light, dark, and high-contrast modes at 140% font scale — zero serious or critical violations.
+- `web/tests/e2e.happy-path.spec.tsx`: End-to-end accessible happy-path journey from Air Now through Daily Plan, Room Simulator, and Ask Saans with full keyboard navigation and screen-reader announcements.

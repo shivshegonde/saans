@@ -10,6 +10,7 @@ import {
   CitationDto,
 } from "shared";
 import { inspectInputSafety } from "../core/safety.js";
+import { AiClient } from "../core/ports/aiClient.js";
 import { CoarsenedFactsPayload } from "./factsBuilder.js";
 import { searchKnowledge, getAllKnowledgeIds, toCitationDto, KnowledgeEntry } from "./retrieval.js";
 import { validateAiOutput } from "./validators.js";
@@ -22,7 +23,7 @@ export interface AiServiceConfig {
   forceModelOutage?: boolean;
 }
 
-export class GeminiService {
+export class GeminiService implements AiClient {
   private config: AiServiceConfig;
 
   constructor(config: AiServiceConfig = {}) {

@@ -132,41 +132,42 @@ All critical events (smog threshold alerts, co-guardian escalations) write to th
 
 ## 6. SOLID Principles Verification
 
-The codebase strictly adheres to the five SOLID design principles across all layers:
+The codebase strictly adheres to the five SOLID design principles across all layers, made visible with direct file links:
 
 1. **Single Responsibility Principle (SRP)**:
-   - Each module owns exactly one axis of change.
-   - For example:
-     - `server/src/core/aqi.ts` is responsible solely for CPCB NAQI breakpoint interpolation and WHO ratio math.
-     - `server/src/core/indoor.ts` is responsible solely for mass-balance differential physics.
-     - `server/src/core/safety.ts` is responsible solely for prompt sanitization, emergency symptom triage, and injection rejection.
-     - `server/src/services/auth.service.ts` owns credential hashing and token lifecycle; it delegates storage to repository ports.
-     - Express sub-routers in `server/src/routes/` handle exclusively HTTP request validation and status response mapping (each strictly $< 250$ lines).
+   - **Routes parse/validate/respond**: Express sub-routers in [`server/src/routes/`](../server/src/routes/) handle exclusively HTTP request validation and status response mapping (each strictly $< 250$ lines, checked via [`server/scripts/check-router-sizes.js`](../server/scripts/check-router-sizes.js)).
+   - **Services hold business rules**: Application services in [`server/src/services/`](../server/src/services/) (e.g. [`auth.service.ts`](../server/src/services/auth.service.ts), [`household.service.ts`](../server/src/services/household.service.ts), [`plan.service.ts`](../server/src/services/plan.service.ts), [`community.service.ts`](../server/src/services/community.service.ts)) coordinate domain logic without HTTP or DB awareness.
+   - **Repositories persist**: Ports and adapters in [`server/src/repositories/`](../server/src/repositories/) isolate storage mechanics.
+   - **Engines compute**: Pure mathematical calculation engines in [`server/src/core/`](../server/src/core/) ([`aqi.ts`](../server/src/core/aqi.ts), [`indoor.ts`](../server/src/core/indoor.ts), [`exposure.ts`](../server/src/core/exposure.ts), [`emissions.ts`](../server/src/core/emissions.ts), [`planEngine.ts`](../server/src/core/planEngine.ts), [`safety.ts`](../server/src/core/safety.ts)) are 100% pure functions with zero I/O and zero framework dependencies.
 
 2. **Open-Closed Principle (OCP)**:
-   - Core behavior is extensible without modifying existing code through polymorphism and strategy registries:
-     - **Air Quality Providers (`server/src/adapters/providerChain.ts`)**: New weather or municipal air providers (e.g. CPCB CAAQMS, IQAir, proprietary IoT sensors) implement the `AirQualityProvider` port and plug into `ProviderChain` without altering domain math.
-     - **Plan Rules Engine (`server/src/core/planEngine.ts`)**: Rules P1 through P10 are modeled as isolated, prioritized rule evaluators. New municipal or health directives can be added to the evaluation pipeline without refactoring existing rules.
-     - **Impact Calculation Models (`server/src/core/emissions.ts`)**: Emission factors in `server/src/data/emission-factors.json` can be calibrated for new vehicle categories or regional power grids without altering computation logic.
+   - Core behavior is extensible without modifying existing callers through polymorphism, port interfaces, and strategy registries:
+     - **Air Quality Providers ([`server/src/adapters/providerChain.ts`](../server/src/adapters/providerChain.ts))**: New weather or municipal air providers implement the [`AirQualityProvider`](../server/src/core/ports/airProvider.ts) port and plug into `ProviderChain` without modifying callers or domain math.
+     - **Repositories**: New storage backends plug in by implementing repository ports without modifying services.
+     - **Plan Rules Engine ([`server/src/core/planEngine.ts`](../server/src/core/planEngine.ts))**: Rules P1 through P10 are modeled as isolated, prioritized rule evaluators; new municipal directives can be added to the evaluation pipeline without refactoring existing rules.
+     - **Impact Calculation Models ([`server/src/core/emissions.ts`](../server/src/core/emissions.ts))**: Emission factors in [`server/src/data/emission-factors.json`](../server/src/data/emission-factors.json) can be calibrated for new vehicle categories or regional grids without altering computation logic.
 
 3. **Liskov Substitution Principle (LSP)**:
    - Derived implementations can be substituted for their abstractions without breaking callers or altering system invariants:
-     - **Repository Implementations & Contract Suite (`server/src/repositories/ports/`, verified in `server/tests/repository.contract.test.ts`)**: A single parameterized contract test suite runs identically against `MemoryHouseholdRepository` and `FirestoreHouseholdRepository`, guaranteeing identical invariants, mutations, and return types across development, CI, and GCP Cloud Run environments.
-     - **Clocks (`server/src/core/ports/clock.ts`)**: `SystemClock` (production) and `FakeClock` (testing and time-travel judging) are 100% interchangeable across all services and core engines.
-     - **Air Quality Providers (`server/src/core/ports/airProvider.ts`)**: `OpenMeteoProvider` and `ScenarioProvider` both conform to the `AirQualityProvider` contract, allowing seamless fallback during network outages.
+     - **One Contract Test Suite runs against both memory and Firestore repositories**: [`server/tests/repository.contract.test.ts`](../server/tests/repository.contract.test.ts) runs 8 parameterized contract tests identically against [`MemoryHouseholdRepository`](../server/src/repositories/memory/memoryHouseholdRepo.ts) and [`FirestoreHouseholdRepository`](../server/src/repositories/firestore/firestoreHouseholdRepo.ts), guaranteeing identical invariants, mutations, and return types across dev, CI, and Cloud Run environments.
+     - **Interchangeable Clocks**: [`SystemClock`](../server/src/adapters/systemClock.ts) (production) and [`FakeClock`](../server/src/adapters/fakeClock.ts) (testing and time-travel judging) are 100% interchangeable across all services and core engines.
+     - **Interchangeable Air Providers**: [`OpenMeteoProvider`](../server/src/adapters/openMeteoProvider.ts) and [`ScenarioProvider`](../server/src/adapters/scenarioProvider.ts) both conform to the [`AirQualityProvider`](../server/src/core/ports/airProvider.ts) contract.
 
 4. **Interface Segregation Principle (ISP)**:
-   - Interfaces are fine-grained and purpose-specific, ensuring clients never depend on methods they do not need:
-     - **Repository Ports**: `AuditRepository` defines strictly `append()` and `query()`; it omits mutative methods (`update`, `delete`) to guarantee immutability.
-     - **Clock Port**: Exposes only `now(): Date`, keeping time consumer dependencies minimal.
-     - **Air Provider Port**: Exposes only `getCurrentAndForecast(lat, lon, hours)`, decoupling callers from vendor-specific authentication, raw payload structures, or HTTP specifics.
-     - **User Permissions**: Granular permissions in `shared/src/permissions.ts` segregate capabilities (`household:read`, `household:write`, `community:read`, `community:admin`, `audit:read`, `system:run-tasks`).
+   - Interfaces are small, fine-grained, and purpose-specific, ensuring clients never depend on methods they do not need:
+     - [`Clock`](../server/src/core/ports/clock.ts): Exposes only `now(): Date`, keeping time consumer dependencies minimal.
+     - [`AirQualityProvider`](../server/src/core/ports/airProvider.ts): Exposes only `getCurrent(loc)` and `getForecast(loc, hours)`.
+     - [`HouseholdRepository`](../server/src/repositories/ports/householdRepo.ts): Focused on household profiles, memberships, and session lifecycle.
+     - [`AuditRepository`](../server/src/repositories/ports/auditRepo.ts) with append-only API: Defines strictly `append()` and `list()`; omits mutative methods (`update`, `delete`) to compile-time guarantee audit immutability.
+     - [`OutboxRepository`](../server/src/repositories/ports/outboxRepo.ts): Focused on queueing, transactional leasing (`acquireDispatchLock`), and batch status updates.
+     - [`EmailSender`](../server/src/core/ports/emailSender.ts): Minimal single-method port `send(to, subject, body): Promise<boolean>`.
+     - [`AiClient`](../server/src/core/ports/aiClient.ts): Decoupled port for generative features (`askSaans`, `mythCheck`, `draftAdvisory`, `draftComplaint`).
 
 5. **Dependency Inversion Principle (DIP)**:
-   - High-level business logic and core mathematical engines never import or depend on low-level database drivers, network clients, or Express web frameworks:
-     - `server/src/core/` has **zero** dependencies on Express, Firestore, Node.js `fs`, or network APIs.
-     - `server/src/services/` depend only on abstractions (`ports`), receiving concrete repository and clock adapters via dependency injection in `server/src/container.ts`.
-     - High-level routes depend on domain service interfaces, not database implementations.
+   - Services depend strictly on ports; [`server/src/container.ts`](../server/src/container.ts) is the single composition root that wires concrete adapters:
+     - [`server/src/core/`](../server/src/core/) has **zero** dependencies on Express, Firestore, Node.js `fs`, or external SDKs.
+     - [`server/src/services/`](../server/src/services/) depend only on abstractions ([`ports`](../server/src/core/ports/)), receiving concrete repository, provider, email, and clock adapters via dependency injection.
+     - Express routes depend on domain services and ports wired via [`container.ts`](../server/src/container.ts), never instantiating low-level adapters directly.
 
 ---
 

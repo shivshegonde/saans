@@ -549,6 +549,25 @@ export const ProposalCardSchema = z.object({
 
 export type ProposalCard = z.infer<typeof ProposalCardSchema>;
 
+export const CoarsenedFactsPayloadSchema = z.object({
+  aqi: z.number(),
+  category: z.string(),
+  dominantPollutant: z.string(),
+  pm25: z.number(),
+  whoMultiple: z.number(),
+  smogDrivers: z.array(z.string()),
+  coarsenedLocation: z.object({
+    name: z.string(),
+    approxLat: z.number(),
+    approxLng: z.number(),
+  }),
+  sensitiveGroups: z.array(z.string()),
+  hasPurifier: z.boolean(),
+  timestampIso: z.string(),
+});
+
+export type CoarsenedFactsPayload = z.infer<typeof CoarsenedFactsPayloadSchema>;
+
 export const AskSaansResponseSchema = z.object({
   reply: z.string(),
   safety: z.object({

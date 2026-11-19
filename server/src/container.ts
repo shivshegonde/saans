@@ -30,9 +30,14 @@ import { PlanService } from "./services/plan.service.js";
 import { ImpactService } from "./services/impact.service.js";
 import { CommunityService } from "./services/community.service.js";
 import { AlertService } from "./services/alert.service.js";
-import { OutboxService, EmailSender, ConsoleEmailSender } from "./services/outbox.service.js";
+import { OutboxService, ConsoleEmailSender } from "./services/outbox.service.js";
 import { AuditService } from "./services/audit.service.js";
 import { DemoService } from "./services/demo.service.js";
+import type { EmailSender } from "./core/ports/emailSender.js";
+import type { AiClient } from "./core/ports/aiClient.js";
+import { GeminiService } from "./ai/geminiClient.js";
+
+export type { EmailSender, AiClient };
 
 export interface Container {
   clock: Clock;
@@ -44,6 +49,7 @@ export interface Container {
   outboxRepo: OutboxRepository;
   communityRepo: CommunityRepository;
   emailSender: EmailSender;
+  aiClient: AiClient;
   authService: AuthService;
   invitationService: InvitationService;
   householdService: HouseholdService;
@@ -112,18 +118,34 @@ function extractRepoOverrides(overrides: Partial<Container>): Partial<Repositori
   return result;
 }
 
+function createCoreServices(repos: Repositories, clock: Clock) {
+  const emailSender = new ConsoleEmailSender();
+  const aiClient = new GeminiService();
+  const authService = new AuthService(repos.householdRepo, repos.auditRepo, clock);
+  const invitationService = new InvitationService(repos.householdRepo, repos.auditRepo, clock);
+  const householdService = new HouseholdService(repos.householdRepo, repos.auditRepo, clock);
+  const auditService = new AuditService(repos.auditRepo);
+  const impactService = new ImpactService();
+
+  return {
+    emailSender,
+    aiClient,
+    authService,
+    invitationService,
+    householdService,
+    auditService,
+    impactService,
+  };
+}
+
 function createDefaultServices(
   repos: Repositories,
   providers: { scenario: ScenarioProvider; chain: AirQualityProvider },
   clock: Clock,
   cfg: Config,
 ) {
-  const emailSender = new ConsoleEmailSender();
-  const authService = new AuthService(repos.householdRepo, repos.auditRepo, clock);
-  const invitationService = new InvitationService(repos.householdRepo, repos.auditRepo, clock);
-  const householdService = new HouseholdService(repos.householdRepo, repos.auditRepo, clock);
+  const core = createCoreServices(repos, clock);
   const planService = new PlanService(repos.householdRepo, repos.auditRepo, providers.chain, clock);
-  const impactService = new ImpactService();
   const communityService = new CommunityService(
     repos.communityRepo,
     repos.auditRepo,
@@ -138,27 +160,21 @@ function createDefaultServices(
     providers.chain,
     clock,
   );
-  const outboxService = new OutboxService(repos.outboxRepo, emailSender, clock);
-  const auditService = new AuditService(repos.auditRepo);
+  const outboxService = new OutboxService(repos.outboxRepo, core.emailSender, clock);
   const demoService = new DemoService(
     clock instanceof FakeClock ? clock : new FakeClock(),
     providers.scenario,
     alertService,
     repos.auditRepo,
-    authService,
+    core.authService,
   );
 
   return {
-    emailSender,
-    authService,
-    invitationService,
-    householdService,
+    ...core,
     planService,
-    impactService,
     communityService,
     alertService,
     outboxService,
-    auditService,
     demoService,
   };
 }

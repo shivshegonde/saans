@@ -70,6 +70,7 @@ describe("CPCB NAQI Calculations (aqi.cpcb.test)", () => {
   it("handles negative or unknown pollutant inputs gracefully", () => {
     expect(computeSubIndex("unknown", 50)).toBe(0);
     expect(computeSubIndex("pm25", -10)).toBe(0);
+    expect(computeSubIndex("pm25", 30.5)).toBe(0);
   });
 
   it("computes US EPA AQI mapping accurately", () => {

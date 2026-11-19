@@ -1,10 +1,9 @@
 import { Clock } from "../core/ports/clock.js";
+import type { EmailSender } from "../core/ports/emailSender.js";
 import { OutboxRepository } from "../repositories/ports/outboxRepo.js";
 import { OutboxItemDto } from "shared";
 
-export interface EmailSender {
-  send(to: string, subject: string, body: string): Promise<boolean>;
-}
+export type { EmailSender };
 
 export class ConsoleEmailSender implements EmailSender {
   async send(_to: string, _subject: string, _body: string): Promise<boolean> {

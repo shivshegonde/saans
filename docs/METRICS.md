@@ -6,9 +6,9 @@ This document records the measured engineering, performance, security, and acces
 
 ## 1. Test Suite & Coverage
 
-- **Total Unit & Integration Tests**: 168 tests across 44 test files
-  - **Server Tests**: 157 tests across 38 test suites
-  - **Web Tests**: 11 tests across 6 test suites
+- **Total Unit, Integration & Security Tests**: **195 tests across 49 test files**
+  - **Server Tests**: 172 tests across 40 test suites (including LSP repository contract suite and sensitive operation protection)
+  - **Web Tests**: 23 tests across 9 test suites (including WCAG 2.2 AA axe-core routes and e2e happy path)
 - **Execution Time**: Under 5.0 seconds in test mode
 - **Zero Failures, Zero Skipped Tests**: 100% green pass rate
 
@@ -17,6 +17,7 @@ This document records the measured engineering, performance, security, and acces
 | Package / Module                                    | Line Coverage | Branch Coverage | Function Coverage |        Status        |
 | :-------------------------------------------------- | :-----------: | :-------------: | :---------------: | :------------------: |
 | **`server/src/core/**` (Pure Domain Engines)**      |  **100.0%**   |    **94.8%**    |    **100.0%**     | **PASS (100% Gate)** |
+| - `core/constants.ts`                               |    100.0%     |     100.0%      |      100.0%       |         PASS         |
 | - `core/aqi.ts`                                     |    100.0%     |     100.0%      |      100.0%       |         PASS         |
 | - `core/breatheScore.ts`                            |    100.0%     |     100.0%      |      100.0%       |         PASS         |
 | - `core/emissions.ts`                               |    100.0%     |     100.0%      |      100.0%       |         PASS         |

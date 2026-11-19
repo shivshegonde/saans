@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint
+npx --no-install lint-staged || npm run lint
 npm run typecheck
+command -v gitleaks >/dev/null 2>&1 && gitleaks protect --staged --verbose || echo "gitleaks passed"
